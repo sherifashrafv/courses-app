@@ -1,14 +1,16 @@
 <template>
   <div>
-    <component :is="layout"> </component>
+    <component :is="layout">
+      <slot></slot>
+    </component>
   </div>
 </template>
 <script>
-const defaultlayout = "default";
+const defaultlayout = "default-layout";
 export default {
   computed: {
     layout() {
-      return this.$route.meta.layout || defaultlayout + "-layout";
+      return this.$route.meta.layout || defaultlayout;
     },
   },
 };

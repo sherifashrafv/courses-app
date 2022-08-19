@@ -7,15 +7,30 @@
       The biggest Arabic library of video based courses
     </p>
     <img
+      @click="showModalHandel"
       class="home_vedios_play"
       src="@/assets/Images/Icons/play-button2.png"
       alt=""
     />
+    <Vd-Modal :show="showModal" :modalHide="modalHide"> </Vd-Modal>
     <button class="btn-home-vedios">sign up</button>
   </section>
 </template>
 <script>
 export default {
   name: "home-vedio",
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  methods: {
+    showModalHandel() {
+      this.showModal = !this.showModal;
+    },
+    modalHide() {
+      this.showModal = false;
+    },
+  },
 };
 </script>

@@ -38,6 +38,7 @@
         <form class="form_validation_login">
           <div class="input-group mb-4">
             <input
+              v-model="email"
               type="text"
               placeholder="Email"
               class="form-control input_customize"
@@ -48,6 +49,7 @@
           </div>
           <div class="input-group mb-4 position-relative">
             <input
+              v-model="password"
               placeholder="Password"
               type="text"
               class="form-control input_customize"
@@ -98,8 +100,32 @@
   </div>
 </template>
 <script>
+import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "login-page",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  validations: {
+    email: { email, required },
+    password: { required, minLength: minLength(0, 25) },
+  },
+  methods: {
+    submit() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.$store.dispatch("logIn", {
+          email: this.email,
+          password: this.password,
+        });
+      } else {
+        this.$v.errors = true;
+      }
+    },
+  },
 };
 </script>
 <style>

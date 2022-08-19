@@ -1,18 +1,25 @@
 <template>
   <div>
-    <HomeVedio />
-    <CoursesAndFetured />
-    <World />
-    <Subscripe />
+    <WithOutAuth v-if="auth"></WithOutAuth>
+    <WithAuth v-else></WithAuth>
   </div>
 </template>
 <script>
-import HomeVedio from "@/components/User/Home/HomeVedio/index.vue";
-import CoursesAndFetured from "@/components/User/Home/HomeCourses/index.vue";
-import World from "@/components/User/Home/Map/index.vue";
-import Subscripe from "@/components/User/Home/Subscripe/index.vue";
+import WithOutAuth from "@/views/user/Home/WithOutAuth/index.vue";
+import WithAuth from "@/views/user/Home/WithAuth/index";
 export default {
   name: "home-page",
-  components: { HomeVedio, CoursesAndFetured, World, Subscripe },
+  data() {
+    return {
+      auth: false,
+    };
+  },
+  components: { WithOutAuth, WithAuth },
+  mounted() {
+    let userAuth = localStorage.getItem("user-info");
+    if (userAuth) {
+      this.auth = true;
+    }
+  },
 };
 </script>

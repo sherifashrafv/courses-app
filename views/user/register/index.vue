@@ -6,8 +6,11 @@
       <div class="auth-content">
         <div class="auth-header">
           <h5 class="auth-title text-center">SignUp For Free</h5>
-          <h6 class="account_exist text-center">
-            Access Your Existing Account
+          <h6
+            style="line-height: 1.5; letter-spacing: 0.2"
+            class="account_exist text-center"
+          >
+            To The Biggest Video Based Arabic Content Library Of Courses
           </h6>
         </div>
         <!--  -->
@@ -15,6 +18,7 @@
           class="sign_up_social_registering d-flex flex-column align-items-center gap-2 justify-content-center"
         >
           <div
+            @click="fc_signUp"
             role="button"
             class="d-flex flex-row align-items-center face_book_register_button_signUp gap-3 my-4"
           >
@@ -24,6 +28,7 @@
             <span class="m-auto">Facebook SignUp</span>
           </div>
           <div
+            @click="google_signUp"
             role="button"
             class="d-flex flex-row align-items-center google_register_button_signUp gap-3 my-4"
           >
@@ -36,14 +41,18 @@
         <!--  -->
         <h5 class="or_text">OR</h5>
         <form class="form_validation_login">
-          <button
+          <router-link
+            tag="button"
+            to="/signUpWithEmail"
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
             <span
               ><i class="fa-regular fa-envelope text-white fw-bold"></i>
             </span>
-            <span class="text-white fw-normal ps-2">Login With Your Email</span>
-          </button>
+            <span class="text-white fw-normal ps-2"
+              >SignUp With Your Email</span
+            >
+          </router-link>
           <div class="mt-3 text-center"></div>
           <hr class="line_login_dec" />
           <p class="text-center">
@@ -60,6 +69,20 @@
 <script>
 export default {
   name: "register-page",
+  methods: {
+    fc_signUp() {
+      this.$store.dispatch("FacebookSignUp");
+    },
+    google_signUp() {
+      this.$store.dispatch("GoogleSignUp");
+    },
+  },
+  mounted() {
+    // const user = localStorage.getItem("user");
+    // if (user) {
+    //   this.$router.push("/");
+    // }
+  },
 };
 </script>
 <style>

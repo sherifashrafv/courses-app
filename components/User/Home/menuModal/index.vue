@@ -10,7 +10,10 @@
               <h4>Categories</h4>
             </div>
             <ul class="main_menu_categories d-flex flex-column w-100">
-              <li class="">
+              <li
+                @click="activeTab = ''"
+                :class="[activeTab === '' ? 'active' : '']"
+              >
                 <div
                   class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
                 >
@@ -20,7 +23,10 @@
                   ></span>
                 </div>
               </li>
-              <li class="">
+              <li
+                @click="activeTab = '2'"
+                :class="[activeTab === '2' ? 'active' : '']"
+              >
                 <div
                   class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
                 >
@@ -158,7 +164,7 @@
               </span>
             </div>
           </div>
-          <div class="data_fetched d-flex flex-column">
+          <div v-if="activeTab === ''" class="data_fetched d-flex flex-column">
             <router-link
               to=""
               class="listed-course d-flex flex-row align-items-center mb-5"
@@ -211,6 +217,7 @@
               >View All</router-link
             >
           </div>
+          <div v-if="activeTab === '2'">saasasassa</div>
         </div>
       </div>
     </div>
@@ -228,6 +235,11 @@ export default {
     modalHide: {
       type: Function,
     },
+  },
+  data() {
+    return {
+      activeTab: "1",
+    };
   },
 };
 </script>
