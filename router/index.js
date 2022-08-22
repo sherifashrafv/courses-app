@@ -49,8 +49,8 @@ const routes = [
     component: InstractorPageWating,
   },
   {
-    name: "admin",
-    path: "/admin",
+    name: "instractor",
+    path: "/instractor/:email/:id",
     component: InstractorsAuth,
     meta: {
       layout: "custome-layout",

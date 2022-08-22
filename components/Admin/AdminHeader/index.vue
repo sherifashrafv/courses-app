@@ -17,8 +17,13 @@
               <h5 class="logo_text_admin ps-1 m-0 p-0">Instractors</h5>
             </div>
           </div>
-          <div class="instractor-image">
-            <img src="@/assets/Images/users/download.png" alt="" />
+          <div class="d-flex flex-row align-items-center">
+            <p style="color: #eee" class="p-0 m-0 pe-2">
+              {{ this.user.displayName }}
+            </p>
+            <div class="instractor-image">
+              <img :src="this.user.image" alt="" />
+            </div>
           </div>
         </div>
         <div>
@@ -129,6 +134,9 @@ export default {
     navVisibility() {
       return this.$store.state.admin.visibilityNav;
     },
+    user() {
+      return this.$store.state.user;
+    },
   },
   methods: {
     toggleNav() {
@@ -138,6 +146,7 @@ export default {
       this.$store.dispatch("admin/logOut");
     },
   },
+  mounted() {},
 };
 </script>
 <style scoped>

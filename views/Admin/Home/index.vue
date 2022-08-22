@@ -7,15 +7,23 @@
       rel="stylesheet"
     />
     <div :class="navVisibility ? 'nav-visible sc-y' : 'nav-hide sc-y'">
-      <AdminHeader />
+      <AdminHeader></AdminHeader>
       <router-view />
     </div>
   </div>
 </template>
 <script>
 import AdminHeader from "@/components/Admin/AdminHeader/index.vue";
+// import axios from "axios";
 export default {
   name: "Admin-Vue",
+  data() {
+    return {
+      information: [],
+      email: "",
+      id: null,
+    };
+  },
   components: {
     AdminHeader,
   },
@@ -31,12 +39,20 @@ export default {
     deleteItem(id) {
       this.$store.dispatch("admin/DeleteItem", id);
     },
+    // async AcceptTheInstructor() {
+    //   await axios
+    //     .get(`/instactors?Email=${this.email}&id=${this.id}`)
+    //     .then((res) => {
+    //       this.information = res.data;
+    //     });
+    // },
+  },
+  created() {
+    this.email = this.$route.params.email;
+    this.id = this.$route.params.id;
   },
   mounted() {
-    // let admin = localStorage.getItem("admin");
-    // if (!admin) {
-    //   this.$router.push("/");
-    // }
+    // this.AcceptTheInstructor();
   },
 };
 </script>

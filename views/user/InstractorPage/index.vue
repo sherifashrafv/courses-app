@@ -1,8 +1,10 @@
 <template>
   <div>
     <div v-for="inst in this.information" :key="inst.id">
-      <InstarctorDashBoard v-if="inst.accepted" />
-      <WithOutAccept v-else />
+      <InstarctorDashBoard
+        v-if="inst.accepted ? goToInstractorPage(inst.Email) : notAccepted()"
+      />
+      <WithOutAccept />
     </div>
   </div>
 </template>
@@ -16,9 +18,11 @@ export default {
   name: "instractor-wating",
   data() {
     return {
-      email: [],
-      password: [],
+      email: "",
+      id: null,
       information: [],
+      accepted: null,
+      notAcceptedYet: false,
     };
   },
   components: {
@@ -31,20 +35,28 @@ export default {
   methods: {
     async AcceptTheInstructor() {
       await axios
-        .get(`/instactors?email=${this.email}&password=${this.password}`)
+        .get(`/instactors?email=${this.email}&id=${this.id}`)
         .then((res) => {
           this.information = res.data;
         });
+    },
+    goToInstractorPage(name) {
+      this.$router.push(`/instractor/${name}/${this.id}`);
+    },
+    notAccepted() {
+      this.notAcceptedYet = true;
     },
   },
   created() {
     const instructor = localStorage.getItem("instractor-information");
     this.email = JSON.parse(instructor).Email;
-    this.password = JSON.parse(instructor).Password;
+    this.id = JSON.parse(instructor).id;
     this.AcceptTheInstructor();
-    // this.$store.dispatch("admin/AcceptTheInstructor", this.instructorAuth);
+
     //
   },
-  mounted() {},
+  mounted() {
+    console.log(this.notAcceptedYet);
+  },
 };
 </script>

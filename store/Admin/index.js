@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
-import { db } from "@/Firebase/firebase.js";
+// import { db } from "@/Firebase/firebase.js";
 import axios from "axios";
-import { collection, onSnapshot } from "firebase/firestore";
+// import { collection, onSnapshot } from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
@@ -21,13 +21,14 @@ export default {
     loader: false,
     AcceptTheInstructor: false,
     instractors: null,
+    CategoriesMix: [],
   },
   mutations: {
     SHOW_NAV(state, payLoad) {
       state.visibilityNav = payLoad;
     },
     GET_CATEGORIES(state, payLoad) {
-      state.CategoriesListed.push(payLoad);
+      state.CategoriesListed = payLoad;
     },
     SET_LOADER(state, payLoad) {
       state.loader = payLoad;
@@ -40,15 +41,26 @@ export default {
     },
   },
   actions: {
+    deleteCourse: async (store, { id, category }) => {
+      const myRegx = category.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+      console.log(myRegx, id);
+      axios.delete(`/${myRegx}/${id}`);
+    },
     getProducts: async ({ commit }) => {
-      onSnapshot(collection(db, "Categories"), (querySnapshot) => {
-        // const CategoriesListed = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          commit("GET_CATEGORIES", data);
-          commit("SET_LOADER", false);
-        });
-      });
+      // onSnapshot(collection(db, "Categories"), (querySnapshot) => {
+      //   // const CategoriesListed = [];
+      //   querySnapshot.forEach((doc) => {
+      //     const data = doc.data();
+      //     commit("GET_CATEGORIES", data);
+      //     commit("SET_LOADER", false);
+      //   });
+      // });
+      let result = await axios.get("/Categories");
+      if (result.status == 200 && result.data.length > 0) {
+        commit("GET_CATEGORIES", result.data);
+      } else {
+        console.log("conection not good");
+      }
     },
     AddCourse: async ({ commit }, { firebaseFiles, form }) => {
       const NameOfCategories = firebaseFiles.Categorieslisted;
@@ -75,6 +87,9 @@ export default {
             })
             .then(() => {
               commit("SET_LOADER", false);
+            })
+            .catch((err) => {
+              console.log(err);
             });
         });
       });
@@ -122,6 +137,86 @@ export default {
           commit("SET_INSTRACTOR", ...res.data);
         });
     },
+    // get cousrses of the user
+    get_ArtsDesign: async (store, { email, userId }) => {
+      console.log(email, userId);
+      const result = await axios.get(
+        `/ArtsDesign?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+      } else {
+        console.log("==0");
+      }
+    },
+    get_SoftSkills: async (store, { email, userId }) => {
+      console.log(email, userId);
+      let result = await axios.get(
+        `/SoftSkills?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+    get_MediaPhotographyFilm: async (store, { email, userId }) => {
+      const result = await axios.get(
+        `/MediaPhotographyFilm?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+    get_TechnologyScienceProductivity: async (store, { email, userId }) => {
+      const result = await axios.get(
+        `/TechnologyScienceProductivity?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+    get_ParentingRelationships: async (store, { email, userId }) => {
+      let result = await axios.get(
+        `/ParentingRelationships?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+    get_Entrepreneurship: async (store, { email, userId }) => {
+      const result = await axios.get(
+        `/Entrepreneurship?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+    get_MentalHealthWellness: async (store, { email, userId }) => {
+      const result = await axios.get(
+        `/Entrepreneurship?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+        console.log("> 0 ");
+      } else {
+        console.log("==0");
+      }
+    },
+
     //
     // logInAdmin: async ({ commit }, { email, password }) => {
     //   commit("SET_LOADER_INSTRACTOR", true);

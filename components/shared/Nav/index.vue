@@ -120,7 +120,7 @@ export default {
       this.showSettingsMenu = false;
     },
     navFixed() {
-      this.$refs.navbar.classList.toggle("fixed-nav-bar", window.scrollY > 400);
+      this.$refs.navbar.classList.toggle("fixed-nav-bar", window.scrollY > 10);
     },
   },
   computed: {

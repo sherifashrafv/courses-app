@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="title_carousel mb-5">{{ this.title }}</h1>
     <VueSlickCarousel
       id="slick_slider"
       ref="carousel"
@@ -94,6 +95,7 @@ import "vue-slick-carousel/dist/vue-slick-carousel.css";
 export default {
   name: "ve-carousel-courses",
   components: { VueSlickCarousel },
+  props: ["title"],
   data() {
     return {
       settings: {
@@ -143,4 +145,11 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+.title_carousel {
+  font-weight: 500;
+  line-height: 1.31;
+  letter-spacing: 0.52px;
+  font-size: 24px;
+}
+</style>

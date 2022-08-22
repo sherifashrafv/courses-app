@@ -23,7 +23,7 @@
               <option value="General">General</option>
               <option value="Master">Master</option>
             </select>
-            <div
+            <!-- <div
               class="input-group pirce_listed-selectors mb-4 d-flex flex-row gap-2"
             >
               <input
@@ -41,7 +41,7 @@
                 <option value="LE">جنيه مصري</option>
                 <option value="$">Dollar ($)</option>
               </select>
-            </div>
+            </div> -->
             <div class="input_type_file_background-course my-4">
               <input
                 @change="uploadImage"
@@ -71,13 +71,12 @@
                 <option selected disabled>Courses-Listed</option>
                 <option
                   v-for="(list, i) in get_Categories_listed"
-                  :key="i"
+                  :key="list"
                   v-bind:selected="i == 0"
                 >
-                  {{ list.title }}
+                  {{ list }}
                 </option>
               </select>
-              <button class="btn_categories_add">Add Categories</button>
             </div>
             <div class="description_about_course mb-3">
               <textarea
@@ -114,22 +113,25 @@ export default {
     modalHide: {
       type: Function,
     },
+    id: {
+      type: Number,
+    },
+    userInformation: {
+      type: Object,
+    },
   },
   data() {
     return {
       courseName: "",
-      price: "",
       listed: "Courses-Listed",
       courseLevel: "Course-Level",
       discription: "",
-      Currnecy: "Currnecy",
       backgroundImage: [],
     };
   },
   validations: {
     courseName: { required, minLength: minLength(0, 25) },
     listed: { required },
-    price: { required },
     courseLevel: { required },
     discription: { minLength: minLength(0, 1000) },
     backgroundImage: { required },
@@ -146,20 +148,40 @@ export default {
     async submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.$store.dispatch("admin/AddCourse", {
-          firebaseFiles: {
-            Categorieslisted: this.listed,
-            image: this.backgroundImage,
-          },
-          form: {
-            title: this.courseName,
-            price: Number(this.price),
-            Category: this.listed,
-            courseLevel: this.courseLevel,
-            discription: this.discription,
-            Currnecy: this.Currnecy,
-          },
-        });
+        let {
+          Email,
+          FirstName,
+          LastName,
+          MobilePhone,
+          linkedInUrl,
+          FacebookUrl,
+          id,
+        } = this.userInformation;
+        console.log(id);
+        this.$store
+          .dispatch("admin/AddCourse", {
+            firebaseFiles: {
+              Categorieslisted: this.listed,
+              image: this.backgroundImage,
+            },
+            form: {
+              title: this.courseName,
+              Category: this.listed,
+              courseLevel: this.courseLevel,
+              discription: this.discription,
+              email: Email,
+              MobilePhone: MobilePhone,
+              FirstName: FirstName,
+              linkedInUrl: linkedInUrl,
+              FacebookUrl: FacebookUrl,
+              lastName: LastName,
+              userId: id,
+            },
+          })
+          .then(() => {
+            this.$emit("cancelHandel");
+            window.location.reload();
+          });
       } else {
         console.log("not validation");
       }

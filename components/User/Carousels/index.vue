@@ -93,10 +93,10 @@
         </div>
       </div>
     </VueSlickCarousel>
-    <button ref="prevbutton" class="prev_button disc_section" @click="prev">
+    <button ref="prevbutton" class="disc_section_prev_button" @click="prev">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
-    <button class="next_button disc_section" @click="next">
+    <button class="next_button_disc_section" @click="next">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
   </section>
@@ -178,7 +178,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .carousel-card.main_card_content_discripe {
   min-width: 490px !important;
   max-width: 490px !important;
@@ -186,7 +186,7 @@ export default {
   margin-right: 20px;
   background: transparent !important;
 }
-.slick-track {
+>>> .slick-track {
   margin-left: 0 !important;
   margin-right: 0 !important;
   display: flex !important;
@@ -217,16 +217,37 @@ section.section_carousle.content {
   margin-bottom: 35px;
   color: #a1a1a1;
 }
-.next_button.disc_section {
+.next_button_disc_section {
+  position: absolute;
+  border-radius: 10px;
+  background-color: var(--navigation-button-background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 11px;
   right: 7.2% !important;
-  height: 72%;
-  top: 50%;
+  height: 72% !important;
+  top: 50% !important;
   transform: translatey(-50%);
+  width: 38px;
 }
-.prev_button.disc_section {
-  left: 7.2%;
-  height: 72%;
-  top: 50%;
-  transform: translatey(-50%);
+.disc_section_prev_button {
+  position: absolute;
+  border-radius: 10px;
+  background-color: var(--navigation-button-background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 11px;
+  left: 7.2% !important;
+  height: 72% !important;
+  top: 50% !important;
+  transform: translatey(-50%) !important;
+  width: 38px;
+  display: none;
 }
 </style>
