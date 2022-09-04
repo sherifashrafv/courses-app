@@ -2,6 +2,14 @@
   <div
     class="login_parent d-flex flex-row align-items-center justify-content-center"
   >
+    <Teleport to="#Errros">
+      <transition name="fade">
+        <div v-if="userExist" class="user_exist_error">
+          account exists with different sign up way try to log in
+        </div>
+      </transition>
+    </Teleport>
+
     <div class="login_container my-5">
       <div class="auth-content">
         <div class="auth-header">
@@ -27,16 +35,6 @@
             </span>
             <span class="m-auto">Facebook SignUp</span>
           </div>
-          <div
-            @click="google_signUp"
-            role="button"
-            class="d-flex flex-row align-items-center google_register_button_signUp gap-3 my-4"
-          >
-            <span class="google_image">
-              <img src="../../../assets/Images/Icons/google.png" alt="" />
-            </span>
-            <span class="m-auto">Google SignUp</span>
-          </div>
         </div>
         <!--  -->
         <h5 class="or_text">OR</h5>
@@ -57,8 +55,8 @@
           <hr class="line_login_dec" />
           <p class="text-center">
             <span style="font-size: 15px"> already have an account? </span>
-            <router-link class="sign_up_link ms-2" to="/signUp"
-              >Sign Up</router-link
+            <router-link class="sign_up_link ms-2" to="/login"
+              >Log In</router-link
             >
           </p>
         </form>
@@ -67,8 +65,13 @@
   </div>
 </template>
 <script>
+// const store = require("@/store/index").default;
+import Teleport from "vue2-teleport";
 export default {
   name: "register-page",
+  components: {
+    Teleport,
+  },
   methods: {
     fc_signUp() {
       this.$store.dispatch("FacebookSignUp");
@@ -77,11 +80,19 @@ export default {
       this.$store.dispatch("GoogleSignUp");
     },
   },
-  mounted() {
-    // const user = localStorage.getItem("user");
-    // if (user) {
-    //   this.$router.push("/");
-    // }
+  computed: {
+    userExist() {
+      return this.$store.state.userExist;
+    },
+  },
+  watch: {
+    userExist(newvalue) {
+      if (newvalue) {
+        setTimeout(() => {
+          this.$store.commit("USER_EXIST", false);
+        }, 2000);
+      }
+    },
   },
 };
 </script>
@@ -177,5 +188,26 @@ export default {
 }
 .show_password {
   font-size: 12px;
+}
+.user_exist_error {
+  background: #eb2027;
+  padding: 15px;
+  border-radius: 5px 0 0 7px;
+  text-transform: capitalize;
+  font-weight: 300;
+  position: fixed;
+  top: 20%;
+  right: 0;
+  transition: 0.5s all ease-in-out;
+}
+/* rules that target nested elements */
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 0;
+}
+
+.fade-enter,
+.fade-leave-to {
+  transition: opacity 0.25s ease-in-out;
 }
 </style>

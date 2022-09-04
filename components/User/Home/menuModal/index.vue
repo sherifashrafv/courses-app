@@ -6,149 +6,20 @@
           class="categories_get_random d-flex flex-row justify-content-between"
         >
           <div class="categories_nav_list m-0">
-            <div class="head_title_categories p-4">
-              <h4>Categories</h4>
+            <div class="head_title_categories">
+              <h4 class="m-0">Categories</h4>
             </div>
             <ul class="main_menu_categories d-flex flex-column w-100">
               <li
-                @click="activeTab = ''"
-                :class="[activeTab === '' ? 'active' : '']"
+                v-for="(course, i) in Categories"
+                :key="i"
+                @click="activeTab = course"
+                :class="[activeTab === course ? 'active' : '']"
               >
                 <div
                   class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
                 >
-                  <span class="tab_text_categories">Languages</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li
-                @click="activeTab = '2'"
-                :class="[activeTab === '2' ? 'active' : '']"
-              >
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Arts & Design</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Soft Skills</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories"
-                    >Media, Photography & Film</span
-                  >
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Business Management</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Sales & Marketing</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories"
-                    >Technology, Science & Productivity</span
-                  >
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories"
-                    >Parenting & Relationships</span
-                  >
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Kids Development</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Lifestyle & Health</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Entrepreneurship</span>
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories"
-                    >Mental Health & Wellness</span
-                  >
-                  <span class="arrow_category_list"
-                    ><i class="fa-solid fa-chevron-right"></i
-                  ></span>
-                </div>
-              </li>
-              <li class="">
-                <div
-                  class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
-                >
-                  <span class="tab_text_categories">Languages</span>
+                  <span class="tab_text_categories">{{ course }}</span>
                   <span class="arrow_category_list"
                     ><i class="fa-solid fa-chevron-right"></i
                   ></span>
@@ -164,66 +35,53 @@
               </span>
             </div>
           </div>
-          <div v-if="activeTab === ''" class="data_fetched d-flex flex-column">
-            <router-link
-              to=""
-              class="listed-course d-flex flex-row align-items-center mb-5"
+          <div class="data_fetched d-flex flex-column position-relative">
+            <ul
+              v-if="activeTab === CategoryTitle"
+              class="courses_listed-links_mx"
             >
-              <div class="course_image">
-                <img src="@/assets/Images/Home/download.png" alt="" />
-              </div>
-              <div class="content_of_course">
-                <p class="title_course">IELTS Exam Preparation</p>
-                <p class="author_instractor">Mohamed Arafa</p>
-              </div>
-            </router-link>
+              <li v-if="activeMenu" class="spinner_getItems">
+                <ve-loader></ve-loader>
+              </li>
+              <li v-else>
+                <transition-group class="content__list" name="company">
+                  <li
+                    v-for="course in coursesListed.slice(0, 4)"
+                    :key="course.id"
+                  >
+                    <router-link
+                      :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}`"
+                      class="listed-course d-flex flex-row align-items-center mb-5"
+                    >
+                      <div class="course_image">
+                        <img :src="course.backgroundImage" alt="" />
+                      </div>
+                      <div class="content_of_course">
+                        <p class="title_course">{{ course.courseName }}</p>
+                        <p class="author_instractor">
+                          {{ course.FirstName + " " + course.LastName }}
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                </transition-group>
+              </li>
+            </ul>
             <router-link
-              to=""
-              class="listed-course d-flex flex-row align-items-center mb-5"
-            >
-              <div class="course_image">
-                <img src="@/assets/Images/Home/download.png" alt="" />
-              </div>
-              <div class="content_of_course">
-                <p class="title_course">IELTS Exam Preparation</p>
-                <p class="author_instractor">Mohamed Arafa</p>
-              </div>
-            </router-link>
-            <router-link
-              to=""
-              class="listed-course d-flex flex-row align-items-center mb-5"
-            >
-              <div class="course_image">
-                <img src="@/assets/Images/Home/download.png" alt="" />
-              </div>
-              <div class="content_of_course">
-                <p class="title_course">IELTS Exam Preparation</p>
-                <p class="author_instractor">Mohamed Arafa</p>
-              </div>
-            </router-link>
-            <router-link
-              to=""
-              class="listed-course d-flex flex-row align-items-center mb-5"
-            >
-              <div class="course_image">
-                <img src="@/assets/Images/Home/download.png" alt="" />
-              </div>
-              <div class="content_of_course">
-                <p class="title_course">IELTS Exam Preparation</p>
-                <p class="author_instractor">Mohamed Arafa</p>
-              </div>
-            </router-link>
-            <router-link to="1322" class="view_all_courses"
+              to="/coursePage"
+              :class="
+                activeMenu ? 'view_all_courses d-none' : 'view_all_courses'
+              "
               >View All</router-link
             >
           </div>
-          <div v-if="activeTab === '2'">saasasassa</div>
         </div>
       </div>
     </div>
   </transition>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "ve-modal",
   props: {
@@ -238,8 +96,98 @@ export default {
   },
   data() {
     return {
-      activeTab: "1",
+      activeTab: "Languages",
+      courses: [],
+      coursesListed: [],
+      activeMenu: false,
+      Categories: [
+        "Languages",
+        "Arts & Design",
+        "Soft Skills",
+        "Media, Photography & Film",
+        "Business Management",
+        "Sales & Marketing",
+        "Technology, Science & Productivity",
+        "Parenting & Relationships",
+        "Lifestyle & Health",
+        "Entrepreneurship",
+        "Mental Health & Wellness",
+      ],
+      CategoryTitle: "",
     };
+  },
+  methods: {
+    async getCourse(title) {
+      const regx = title.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+      this.activeTab = title;
+      this.CategoryTitle = title;
+      this.activeMenu = true;
+      await axios.get(`/${regx}.json`).then((res) => {
+        this.activeMenu = false;
+        let newData = res.data;
+        let course = [];
+        console.log(res.data.documents);
+        for (let key in newData) {
+          newData[key].id = key;
+          course.push(newData[key]);
+        }
+        this.courses = course;
+      });
+    },
+  },
+  watch: {
+    async courses(newgetcourses, oldCourse) {
+      if (newgetcourses) {
+        this.activeMenu = true;
+        newgetcourses.forEach((ele) => {
+          axios.get(`/${this.CategoryTitle}/${ele.id}.json`).then((res) => {
+            this.activeMenu = false;
+            let newData = res.data;
+            let course = [];
+            for (let key in newData) {
+              newData[key].id = key;
+              course.push(newData[key]);
+              console.log(course);
+            }
+            this.coursesListed.push(...course);
+          });
+        });
+      }
+      if (oldCourse) {
+        this.coursesListed = [];
+        console.log("newData");
+      }
+    },
+    async activeTab(newCategory) {
+      if (newCategory) {
+        console.log("newCategory");
+        const regx = newCategory.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+        this.activeTab = regx;
+        this.activeMenu = true;
+        this.CategoryTitle = regx;
+        await axios.get(`/${regx}.json`).then((res) => {
+          let newData = res.data;
+          let course = [];
+          this.activeMenu = false;
+          console.log(res.data.documents);
+          for (let key in newData) {
+            newData[key].id = key;
+            course.push(newData[key]);
+          }
+          this.courses = course;
+        });
+      } else {
+        this.courses = [];
+      }
+    },
+  },
+  mounted() {
+    if (this.activeTab.includes("Languages")) {
+      this.getCourse("Languages");
+    } else {
+      this.coursesListed = [];
+      this.courses = [];
+    }
   },
 };
 </script>
@@ -258,18 +206,16 @@ export default {
   width: 912px;
   min-width: unset !important;
   max-width: unset !important;
-  top: 66px;
+  top: 75px;
   left: 211.875px;
   position: fixed;
-  height: fit-content;
+
   z-index: 1500;
-  max-height: 650px;
-  min-height: 650px;
 }
 .modal-container .modal-content::before {
   content: "";
   position: absolute;
-  top: -7%;
+  top: -5%;
   left: 25px;
   border-width: 23px;
   border-color: transparent transparent #1b1f1f transparent;
@@ -280,22 +226,28 @@ export default {
 .fade-leave-active {
   opacity: 0;
 }
-
+.categories_get_random {
+  height: 100vh;
+}
 .fade-enter,
 .fade-leave-to {
   transition: opacity 0.25s ease-in-out;
 }
 .categories_get_random div {
   width: calc(100% / 2);
+  max-height: 650px;
+  padding-bottom: 10px;
+}
+.categories_get_random div:first-child {
+  overflow-y: hidden;
+  overflow-x: none;
 }
 .arrow_category_list {
   font-size: 12px;
   color: #3b4242;
   font-weight: bold;
 }
-.data_fetched {
-  background: #252a2a;
-}
+
 .main_menu_categories {
   max-height: 485px;
   overflow-y: auto;
@@ -316,10 +268,11 @@ export default {
   font-family: "Roboto", "sans-serif";
 }
 .head_title_categories {
-  padding: 0px 0px 25px 0px;
+  padding: 12px 0px 9px 17px;
   font-size: 20px;
   font-weight: 500;
   color: #a1a1a1;
+  font-size: 23px;
 }
 .button_browse_courses_categories {
   margin-top: 10px;
@@ -332,7 +285,8 @@ export default {
   cursor: pointer;
 }
 .data_fetched {
-  padding: 30px;
+  padding: 0 30px;
+  background: #252a2a;
 }
 /* .course_image {
   margin-right: 36px;
@@ -368,5 +322,52 @@ export default {
 }
 .categories_nav_list {
   background: #1b1f1f;
+}
+.courses_listed-links_mx {
+  max-height: 561px;
+}
+.courses_listed-links_mx li:first-child {
+  padding-top: 15px !important;
+}
+a.view_all_courses.spinnerActive {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.spinner_getItems {
+  position: absolute;
+  top: 50%;
+  padding: 0 !important;
+  left: 50%;
+}
+
+/* animation */
+/* base */
+.company {
+  backface-visibility: hidden;
+}
+
+/* moving */
+.company-move {
+  transition: all 2s ease-in-out 2s;
+}
+
+/* appearing */
+.company-enter-active {
+  transition: all 2s ease-out;
+}
+
+/* disappearing */
+.company-leave-active {
+  transition: all 2s ease-in;
+  position: absolute;
+  z-index: 0;
+}
+
+/* appear at / disappear to */
+.company-enter,
+.company-leave-to {
+  opacity: 0;
 }
 </style>

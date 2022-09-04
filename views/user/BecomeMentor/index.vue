@@ -289,7 +289,17 @@ export default {
   data() {
     return {
       ShowModal: false,
+      id: null,
+      accepted: "",
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    insturctor() {
+      return this.$store.state.insturctor;
+    },
   },
   components: {
     InstractorsModal,
@@ -316,12 +326,33 @@ export default {
     hideModal() {
       this.ShowModal = false;
     },
+    getInstructorInformation(id) {
+      this.$store.dispatch("getUserInstructor", {
+        id: id,
+      });
+    },
   },
-  mounted() {
-    let instractors = localStorage.getItem("instractor-information");
-    if (instractors) {
-      this.$router.push("instractor-page");
-    }
+  watch: {
+    user(newvalue) {
+      if (newvalue) {
+        this.accepted = newvalue.InstructorAccepted;
+        this.getInstructorInformation(newvalue.id);
+      }
+    },
+    accepted(newvalue) {
+      if (newvalue) {
+        this.$router.push(
+          `/instractor/user/${this.user.email}/id/${this.user.id}`
+        );
+      } else {
+        this.$router.push("/become-Mentor");
+      }
+    },
+    insturctor(value) {
+      this.accepted = value.accepted;
+      this.email = value.Email;
+      this.id = value.id;
+    },
   },
 };
 </script>

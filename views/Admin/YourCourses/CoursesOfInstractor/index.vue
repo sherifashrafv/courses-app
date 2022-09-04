@@ -3,10 +3,7 @@
     <div
       class="d-flex flex-row align-items-center justify-content-between my-3"
     >
-      <h1 class="length_courses">
-        You Have <span> {{ courses.length + " " }}</span
-        >Course
-      </h1>
+      <h1 class="length_courses">You Have <span> </span>Course</h1>
       <button
         @click="showModalHandelar"
         class="btn btn-danger custome_instractors_styles"
@@ -14,46 +11,20 @@
         Add Course
       </button>
     </div>
-    <div class="break-line my-4"></div>
     <ModalVediosAdd
-      :userInformation="informationInstractor"
       :show="showModal"
       :modalHide="hideModal"
       @cancelHandel="hideModal"
     ></ModalVediosAdd>
-    <div class="row gy-3">
-      <!-- v-for="course in courses" :key="course.id" -->
-      <div v-for="(course, i) in courses" :key="i * 2" class="col-12">
-        <div class="courses_card d-flex flex-row gap-3 position-relative">
-          <div class="image_background_course-card">
-            <img :src="course.image" alt="" />
-          </div>
-          <div class="content_about_course_card mt-2">
-            <h1 class="title_about_course_card_intractor">
-              {{ course.title }}
-            </h1>
-            <p class="intractor_name_card">
-              {{ course.FirstName + " " + course.lastName }}
-            </p>
-            <p class="description_about-course_card">
-              {{ course.discription.substring(0, 350) }}...
-            </p>
-            <span
-              @click="deleteItem(course.id, course.Category)"
-              class="delete_course"
-            >
-              <img src="@/assets/Images/Icons/delete.png" alt="" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="break-line my-4"></div>
   </div>
 </template>
 <script>
 import ModalVediosAdd from "@/components/Admin/ModalVedios/index.vue";
+// import axios from "axios";
+// import axios from "axios";
 export default {
-  name: "Courses-Listed-From-User",
+  name: "CoursesListed",
   data() {
     return {
       showModal: false,
@@ -66,20 +37,24 @@ export default {
     hideModal() {
       this.showModal = false;
     },
-    deleteItem(id, category) {
-      this.$store.dispatch("admin/deleteCourse", {
-        id: id,
-        category: category,
-      });
+    async deleteItem(course) {
+      console.log(course);
+      // let category = course.Category;
+      // let myRegx = category.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+      // await axios.delete(`/${myRegx}/` + course.id);
+
+      //   this.$store.dispatch("admin/deleteCourse", {
+      //     id: id,
+      //     category: myRegx,
+      //     userId: uid,
+      //     title: title,
+      //   });
     },
   },
-  props: {
-    courses: {
-      type: Array,
-    },
-    informationInstractor: {
-      type: Object,
-    },
+  computed: {
+    // getAllCourses() {
+    //   return this.$store.state.admin.CategoriesMix;
+    // },
   },
   components: {
     ModalVediosAdd,

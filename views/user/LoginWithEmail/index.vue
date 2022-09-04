@@ -12,7 +12,7 @@
         </div>
         <!--  -->
         <h5 class="or_text">OR</h5>
-        <form class="form_validation_login">
+        <form @submit.prevent="submit" class="form_validation_login">
           <div class="input-group mb-4">
             <input
               type="text"
@@ -27,6 +27,41 @@
             <span class="input_icon"
               ><i class="fa-regular fa-envelope"></i
             ></span>
+          </div>
+          <div class="input-group mb-4">
+            <input
+              type="text"
+              placeholder="LastName"
+              v-model="lastName"
+              :class="
+                $v.lastName.$error
+                  ? 'form-control input_customize error'
+                  : 'form-control input_customize'
+              "
+            />
+            <span class="input_icon"
+              ><i class="fa-regular fa-envelope"></i
+            ></span>
+          </div>
+          <div class="input_type_file_userImage my-4">
+            <input
+              @change="uploadImage"
+              id="file"
+              type="file"
+              class="file_user-upload"
+              accept="image/*"
+            />
+            <label
+              for="file"
+              class="input_file_uploader-background position-relative"
+            >
+              User Image
+              <img
+                class="image_add-file"
+                src="@/assets/Images/Icons/avatar_user.jpg"
+                alt=""
+              />
+            </label>
           </div>
           <div class="input-group mb-4">
             <input
@@ -62,7 +97,6 @@
             </span>
           </div>
           <button
-            @click.prevent="submit"
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
             <span
@@ -91,23 +125,34 @@ export default {
       name: "",
       password: "",
       email: "",
+      userImage: [],
+      lastName: "",
     };
   },
   validations: {
     email: { email, required },
     password: { required, minLength: minLength(0, 25) },
     name: { required, minLength: minLength(0, 25) },
+    lastName: { required, minLength: minLength(0, 25) },
+    userImage: { required },
   },
   methods: {
+    uploadImage(e) {
+      this.userImage = e.target.files[0];
+    },
     submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
+        console.log("validation-true");
         this.$store.dispatch("createUser", {
-          name: this.name,
           email: this.email,
           password: this.password,
+          name: this.name,
+          userImage: this.userImage,
+          lastName: this.lastName,
         });
       } else {
+        console.log("validation-false");
         this.$v.errors = true;
       }
     },

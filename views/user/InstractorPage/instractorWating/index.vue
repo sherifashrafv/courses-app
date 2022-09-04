@@ -24,6 +24,46 @@
 <script>
 export default {
   name: "instractor-wating",
+  data() {
+    return {
+      ShowModal: false,
+      id: null,
+    };
+  },
+  methods: {
+    getInstructorInformation(id) {
+      this.$store.dispatch("getUserInstructor", {
+        id: id,
+      });
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    insturctor() {
+      return this.$store.state.insturctor;
+    },
+  },
+  watch: {
+    user(newvalue) {
+      if (newvalue) {
+        this.id = newvalue.id;
+        this.getInstructorInformation(newvalue.id);
+      }
+    },
+    insturctor(value) {
+      this.accepted = value.accepted;
+      this.email = value.Email;
+      this.id = value.id;
+      if (value.accepted) {
+        this.$router.push(`/instractor/user/${value.Email}/id/${value.id}`);
+      } else {
+        this.$router.push("/instractor");
+      }
+    },
+  },
+  mounted() {},
 };
 </script>
 <style></style>

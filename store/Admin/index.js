@@ -10,7 +10,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import router from "@/router";
+// import router from "@/router";
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import router from "@/router";
 export default {
@@ -41,20 +41,7 @@ export default {
     },
   },
   actions: {
-    deleteCourse: async (store, { id, category }) => {
-      const myRegx = category.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
-      console.log(myRegx, id);
-      axios.delete(`/${myRegx}/${id}`);
-    },
     getProducts: async ({ commit }) => {
-      // onSnapshot(collection(db, "Categories"), (querySnapshot) => {
-      //   // const CategoriesListed = [];
-      //   querySnapshot.forEach((doc) => {
-      //     const data = doc.data();
-      //     commit("GET_CATEGORIES", data);
-      //     commit("SET_LOADER", false);
-      //   });
-      // });
       let result = await axios.get("/Categories");
       if (result.status == 200 && result.data.length > 0) {
         commit("GET_CATEGORIES", result.data);
@@ -63,6 +50,34 @@ export default {
       }
     },
     AddCourse: async ({ commit }, { firebaseFiles, form }) => {
+      const NameOfCategories = firebaseFiles.Categorieslisted;
+      const image = firebaseFiles.image;
+      const storage = getStorage();
+      const storageRef = await ref(
+        storage,
+        `${NameOfCategories}/${
+          Math.random((91000000 * 5405465312) / 950000) + image.name
+        }`
+      );
+      // get instructor information
+      await uploadBytesResumable(storageRef, image, image).then(() => {
+        getDownloadURL(storageRef).then((url) => {
+          axios
+            .post(`/${NameOfCategories}`, {
+              ...form,
+              image: url,
+            })
+            .then(() => {
+              commit("SET_LOADER", false);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      });
+    },
+    // update informations
+    updatedInformationUser: async ({ commit }, { firebaseFiles, form }) => {
       const NameOfCategories = firebaseFiles.Categorieslisted;
       const image = firebaseFiles.image;
       const storage = getStorage();
@@ -87,6 +102,7 @@ export default {
             })
             .then(() => {
               commit("SET_LOADER", false);
+              window.location.reload();
             })
             .catch((err) => {
               console.log(err);
@@ -94,42 +110,7 @@ export default {
         });
       });
     },
-    intractorsApply: async (
-      { commit },
-      { informations, CvPicture, accepted }
-    ) => {
-      const storage = getStorage();
-      const storageRef = await ref(
-        storage,
-        `instractors/${
-          Math.random((91000000 * 5405465312) / 950000) + CvPicture.name
-        }`
-      );
-      commit("SET_LOADER", true);
-      await uploadBytesResumable(storageRef, CvPicture, CvPicture).then(() => {
-        getDownloadURL(storageRef).then((url) => {
-          axios
-            .post("/instactors", {
-              ...informations,
-              accepted,
-              cvImage: url,
-            })
-            .then((res) => {
-              commit("SET_LOADER", false);
-              router.push("/instractor-page");
-              // to save in locale storge
-              localStorage.setItem(
-                "instractor-information",
-                JSON.stringify(res.data)
-              );
-              // end
-            })
-            .catch((error) => {
-              console.log("network is not available", error);
-            });
-        });
-      });
-    },
+    //
     AcceptTheInstructor: async ({ commit }, instr) => {
       axios
         .get(`/instactors?email=${instr.email}&password=${instr}`)
@@ -142,6 +123,17 @@ export default {
       console.log(email, userId);
       const result = await axios.get(
         `/ArtsDesign?email=${email}&userId=${userId}`
+      );
+      if (result.status == 200 && result.data.length > 0) {
+        store.state.CategoriesMix.push(...result.data);
+      } else {
+        console.log("==0");
+      }
+    },
+    get_Languages: async (store, { email, userId }) => {
+      console.log(email, userId);
+      const result = await axios.get(
+        `/Languages?email=${email}&userId=${userId}`
       );
       if (result.status == 200 && result.data.length > 0) {
         store.state.CategoriesMix.push(...result.data);

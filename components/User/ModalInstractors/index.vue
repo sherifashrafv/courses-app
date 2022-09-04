@@ -110,7 +110,7 @@ import Teleport from "vue2-teleport";
 import { required, minLength, email, numeric } from "vuelidate/lib/validators";
 import maxLength from "vuelidate/lib/validators/maxLength";
 export default {
-  name: "ve-modal",
+  name: "ve-modal-instruetor",
   props: {
     show: {
       type: Boolean,
@@ -184,13 +184,17 @@ export default {
     Loader() {
       return this.$store.state.admin.loader;
     },
+    user() {
+      return this.$store.state.user;
+    },
   },
   methods: {
     async submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.$store
-          .dispatch("admin/intractorsApply", {
+          .dispatch("intractorsApply", {
+            user: this.user,
             informations: {
               FirstName: this.FirstName,
               LastName: this.LastName,
@@ -201,8 +205,9 @@ export default {
               FacebookUrl: this.FacebookUrl,
               discription: this.discription,
             },
+            image: this.user.image,
             CvPicture: this.CvPicture,
-            accepted: false,
+            accepted: true,
           })
           .then(() => {
             this.$emit("cancelHandel");
@@ -218,6 +223,7 @@ export default {
   components: {
     Teleport,
   },
+  mounted() {},
 };
 </script>
 <style scoped>

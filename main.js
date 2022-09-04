@@ -31,6 +31,7 @@ import Loader from "@/components/shared/Loader/index.vue";
 //
 import VedioModal from "@/components/shared/vediioModal/index.vue";
 // end teleport
+
 Vue.config.productionTip = false;
 Vue.component("ve-slick", Slick);
 Vue.component("ve-carousel", Carousel);

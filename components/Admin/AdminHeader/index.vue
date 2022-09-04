@@ -2,32 +2,19 @@
   <div>
     <div>
       <nav
-        class="profile_settings_head d-flex flex-row align-items-center justify-content-center"
+        class="profile_settings_head d-flex flex-row align-items-center justify-content-between"
       >
         <div class="w-100 d-flex align-items-center justify-content-center">
-          <div class="m-auto d-flex align-items-center justify-content-center">
-            <div>
-              <img
-                class="img_logo_admin"
-                src="@/assets/Images/Icons/xx.png"
-                alt=""
-              />
-            </div>
-            <div>
-              <h5 class="logo_text_admin ps-1 m-0 p-0">Instractors</h5>
-            </div>
+          <div>
+            <img
+              class="img_logo_admin"
+              src="@/assets/Images/Icons/xx.png"
+              alt=""
+            />
           </div>
-          <div class="d-flex flex-row align-items-center">
-            <p style="color: #eee" class="p-0 m-0 pe-2">
-              {{ this.user.displayName }}
-            </p>
-            <div class="instractor-image">
-              <img :src="this.user.image" alt="" />
-            </div>
+          <div>
+            <h5 class="logo_text_admin ps-1 m-0 p-0">Instractors</h5>
           </div>
-        </div>
-        <div>
-          <div class="img_user_rounded"></div>
         </div>
       </nav>
       <header
@@ -35,13 +22,36 @@
       >
         <nav>
           <ul class="links-admin_settings">
-            <li
-              :class="{ active: $route.name == '' }"
-              class="d-flex flex-row align-items-center"
-            >
+            <li class="home_router-link">
+              <router-link class="text-capitalize" :to="{ name: 'home' }">
+                <span><i class="fa-solid fa-arrow-left"></i></span>
+                <span> Go To Home </span>
+              </router-link>
+            </li>
+            <li :class="{ active: $route.name == 'settings' }">
               <router-link
                 class="text-capitalize align-items-center d-flex gap-2 w-100"
-                to=""
+                :to="{ name: 'settings' }"
+              >
+                <span class="bg-user">
+                  <img
+                    class="img-fluid"
+                    src="@/assets/Images/Icons/mechanicalgears.png"
+                    alt=""
+                  />
+                </span>
+                Settings
+              </router-link>
+            </li>
+
+            <li
+              @click="SelectedCourses"
+              :class="{ active: $route.name == 'courses' }"
+              class="listed_categories-links position-relative"
+            >
+              <div
+                class="text-capitalize align-items-center d-flex gap-2 w-100"
+                to="category"
               >
                 <span class="bg-user">
                   <img
@@ -51,76 +61,23 @@
                   />
                 </span>
                 Courses
-              </router-link>
-            </li>
-            <!-- <li
-              :class="{ active: $route.name == '' }"
-              class="d-flex flex-row align-items-center"
-            >
-              <div
-                class="text-capitalize align-items-center d-flex gap-2 w-100"
-              >
-                <router-link
-                  class="text-capitalize align-items-center d-flex gap-2 w-100"
-                  to="/dasdsad"
-                >
-                  <span class="bg-box">
-                    <img
-                      class="img_fluid"
-                      src="@/assets/Images/Icons/paymentmethod.png"
-                      alt=""
-                    />
-                  </span>
-                  PayMents
-                </router-link>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+              <div style="overflow: hidden">
+                <ul ref="courseslinks" class="courses_listed_links">
+                  <li tag="li" v-for="(list, i) in Categories" :key="i * 2">
+                    <router-link
+                      :to="{
+                        name: 'courses',
+                        params: { name: list },
+                      }"
+                    >
+                      {{ list }}
+                    </router-link>
+                  </li>
+                </ul>
               </div>
             </li>
-            <li
-              :class="{ active: $route.name == '' }"
-              class="d-flex flex-row align-items-center"
-            >
-              <div
-                class="text-capitalize align-items-center d-flex gap-2 w-100"
-              >
-                <div
-                  @click="logOut"
-                  class="user-log_out text-capitalize align-items-center d-flex gap-2 w-100"
-                  to="/dasdsad"
-                >
-                  <span class="box_courses_bg">
-                    <img
-                      class="img-fluid"
-                      src="@/assets/Images/Icons/online-learning.png"
-                      alt=""
-                    />
-                  </span>
-                  Your Courses
-                </div>
-              </div>
-            </li>
-            <li
-              :class="{ active: $route.name == '' }"
-              class="d-flex flex-row align-items-center"
-            >
-              <div
-                class="text-capitalize align-items-center d-flex gap-2 w-100"
-              >
-                <div
-                  @click="logOut"
-                  class="user-log_out text-capitalize align-items-center d-flex gap-2 w-100"
-                  to="/dasdsad"
-                >
-                  <span class="log_out_box">
-                    <img
-                      class="w-100 w-100"
-                      src="@/assets/Images/Icons/logout_user.png"
-                      alt=""
-                    />
-                  </span>
-                  Log Out
-                </div>
-              </div>
-            </li> -->
           </ul>
         </nav>
       </header>
@@ -130,6 +87,26 @@
 <script>
 export default {
   name: "nav-settings",
+  data() {
+    return {
+      coursesList: [],
+      id: null,
+      email: "",
+      Categories: [
+        "Languages",
+        "Arts & Design",
+        "Soft Skills",
+        "Media, Photography & Film",
+        "Business Management",
+        "Sales & Marketing",
+        "Technology, Science & Productivity",
+        "Parenting & Relationships",
+        "Lifestyle & Health",
+        "Entrepreneurship",
+        "Mental Health & Wellness",
+      ],
+    };
+  },
   computed: {
     navVisibility() {
       return this.$store.state.admin.visibilityNav;
@@ -145,15 +122,33 @@ export default {
     logOut() {
       this.$store.dispatch("admin/logOut");
     },
+    SelectedCourses() {
+      this.$refs.courseslinks.classList.toggle("active");
+    },
   },
-  mounted() {},
+  mounted() {
+    this.email = this.$route.params.email;
+    this.id = this.$route.params.id;
+    this.$store.dispatch("getUserInformation");
+  },
+  watch: {
+    "$route.params": {
+      handler: function (params) {
+        this.email = params.email;
+        this.id = params.id;
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>
 <style scoped>
 .profile_settings_head {
   background: #1e2121;
 }
-.admin-header {
+.home_router-link a:hover {
+  background: transparent !important;
 }
 .profile_settings_head {
   display: block;
@@ -181,7 +176,8 @@ ul {
   margin: 0 !important;
 }
 .links-admin_settings li a,
-.user-log_out {
+.user-log_out,
+.listed_categories-links {
   text-decoration: none;
   display: block;
   color: white;
@@ -189,6 +185,7 @@ ul {
 }
 .links-admin_settings li {
   margin-bottom: 10px;
+  cursor: pointer;
 }
 ul li a:hover,
 .user-log_out:hover,
@@ -255,5 +252,36 @@ nav {
   justify-content: center;
   border-radius: 10px;
   padding: 0 4px;
+}
+ul.courses_listed_anmimation {
+  position: absolute;
+  top: 100%;
+}
+.courses_listed_links {
+  margin-top: 20px !important;
+  transition: all 0.5s ease-in-out;
+  transform: translateY(-131%);
+  opacity: 0;
+  height: 0;
+}
+.courses_listed_links.active {
+  background: transparent !important;
+  transform: translateY(0);
+  opacity: 1;
+  height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.courses_listed_links li {
+  transition: all 0.5s ease-in-out;
+  padding: 15px;
+  word-break: break-word;
+}
+.courses_listed_links li a {
+  background: transparent !important;
+  padding: 0 !important;
+}
+.courses_listed_links.active li:hover {
+  background: #252a2a;
 }
 </style>

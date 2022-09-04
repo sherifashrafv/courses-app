@@ -39,20 +39,10 @@ export default {
     deleteItem(id) {
       this.$store.dispatch("admin/DeleteItem", id);
     },
-    // async AcceptTheInstructor() {
-    //   await axios
-    //     .get(`/instactors?Email=${this.email}&id=${this.id}`)
-    //     .then((res) => {
-    //       this.information = res.data;
-    //     });
-    // },
-  },
-  created() {
-    this.email = this.$route.params.email;
-    this.id = this.$route.params.id;
   },
   mounted() {
-    // this.AcceptTheInstructor();
+    this.email = this.$route.params.email;
+    this.id = this.$route.params.id;
   },
 };
 </script>

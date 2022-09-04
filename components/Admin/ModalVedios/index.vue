@@ -23,25 +23,6 @@
               <option value="General">General</option>
               <option value="Master">Master</option>
             </select>
-            <!-- <div
-              class="input-group pirce_listed-selectors mb-4 d-flex flex-row gap-2"
-            >
-              <input
-                v-model="price"
-                type="number"
-                placeholder="Price"
-                :class="'form-control input_customize vedios'"
-              />
-              <select
-                v-model="Currnecy"
-                class="form-select level_course mb-4"
-                aria-label="Default select example"
-              >
-                <option disabled selected>Currnecy</option>
-                <option value="LE">جنيه مصري</option>
-                <option value="$">Dollar ($)</option>
-              </select>
-            </div> -->
             <div class="input_type_file_background-course my-4">
               <input
                 @change="uploadImage"
@@ -103,7 +84,7 @@ import Teleport from "vue2-teleport";
 import { required, minLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "ve-modal",
+  name: "modalAddVedios",
   props: {
     show: {
       type: Boolean,
@@ -180,7 +161,6 @@ export default {
           })
           .then(() => {
             this.$emit("cancelHandel");
-            window.location.reload();
           });
       } else {
         console.log("not validation");

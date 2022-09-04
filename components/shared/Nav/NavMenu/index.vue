@@ -10,7 +10,7 @@
               >
                 <img
                   class="current_user-image_menu"
-                  :src="getUser.image"
+                  :src="getUser.userimage"
                   alt=""
                 />
                 <div class="ps-3">
@@ -21,6 +21,7 @@
             </li>
             <router-link
               to="/subscribe"
+              @click.native="cancel"
               class="subscribe_link-button d-flex flex-row align-items-center justify-content-center"
               tag="li"
             >
@@ -28,7 +29,7 @@
             </router-link>
             <div class="break-line"></div>
             <ul class="profile_list_settings">
-              <router-link to="ss">
+              <router-link @click.native="cancel" to="ss">
                 <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
@@ -42,7 +43,7 @@
                 </li>
               </router-link>
 
-              <router-link to="ss">
+              <router-link @click.native="cancel" to="ss">
                 <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
@@ -55,7 +56,7 @@
                   <span>my courses</span>
                 </li>
               </router-link>
-              <router-link to="ss">
+              <router-link @click.native="cancel" to="ss">
                 <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
@@ -71,27 +72,29 @@
               <div class="break-line"></div>
               <div class="anchor_logOut">
                 <li
+                  v-if="accepted"
+                  @click="
+                    DashBoardRoute({ email: getUser.email, id: getUser.id })
+                  "
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
-                  <router-link
-                    v-if="instractorsLink"
+                  <a
                     class="text-decoration-underline text-center"
-                    to="/instractor-page"
+                    :to="`/instractor/user/${getUser.email}/id/${getUser.id}`"
                   >
                     Your DashBoard
-                  </router-link>
-                  <router-link
-                    v-else
-                    class="text-decoration-underline"
-                    to="/Become-Mentor"
-                  >
+                  </a>
+                </li>
+                <li @click="BecomeMentor({ route: 'Become-Mentor' })" v-else>
+                  <a class="text-decoration-underline" to="/Become-Mentor">
                     Become an instructor
-                  </router-link>
+                  </a>
                 </li>
               </div>
               <div class="break-line"></div>
               <div class="anchor_logOut">
                 <li
+                  @click="logOut"
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
                   <span class="pe-3"
@@ -109,64 +112,25 @@
       </div>
     </transition>
   </Teleport>
-  <!-- <ul class="profile_list_settings">
-    <router-link to="ss">
-      <li class="d-flex flex-row align-items-center padding_listed_information">
-        <span class="pe-3"
-          ><img
-            class="img_user_listed-links"
-            src="@/assets/Images/Icons/wishlist.png"
-            alt=""
-        /></span>
-        <span>Saved Courses</span>
-      </li>
-    </router-link>
-
-    <router-link to="ss">
-      <li class="d-flex flex-row align-items-center padding_listed_information">
-        <span class="pe-3"
-          ><img
-            class="img_user_listed-links"
-            src="@/assets/Images/Icons/youtube.png"
-            alt=""
-        /></span>
-        <span>my courses</span>
-      </li>
-    </router-link>
-    <router-link to="ss">
-      <li class="d-flex flex-row align-items-center padding_listed_information">
-        <span class="pe-3"
-          ><img
-            class="img_user_listed-links"
-            src="@/assets/Images/Icons/cogwheel.png"
-            alt=""
-        /></span>
-        <span>Account Settings</span>
-      </li>
-    </router-link>
-    <div class="break-line"></div>
-    <div class="anchor_logOut">
-      <li class="d-flex flex-row align-items-center padding_listed_information">
-        <span class="pe-3"
-          ><img
-            class="img_user_listed-links"
-            src="@/assets/Images/Icons/logout_user.png"
-            alt=""
-        /></span>
-        <span>Logout</span>
-      </li>
-    </div>
-  </ul> -->
 </template>
 <script>
 import Teleport from "vue2-teleport";
 export default {
-  props: ["show", "modalHide"],
   name: "nav-menu",
   data() {
     return {
-      instractorsLink: false,
+      accepted: false,
     };
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    modalHide: {
+      type: Function,
+    },
   },
   computed: {
     getUser() {
@@ -176,13 +140,45 @@ export default {
   components: {
     Teleport,
   },
+  methods: {
+    cancel() {
+      this.$emit("modalHide");
+    },
+    logOut() {
+      this.$store.dispatch("logOut");
+    },
+    DashBoardRoute({ email, id }) {
+      this.$emit("modalHide");
+      this.$router.push(`/instractor/user/${email}/id/${id}`);
+      window.location.reload();
+    },
+    BecomeMentor({ route }) {
+      this.$emit("modalHide");
+      this.$router.push(`/${route}`);
+      window.location.reload();
+    },
+  },
   mounted() {
-    const instractors = localStorage.getItem("instractor-information");
-    if (instractors) {
-      this.instractorsLink = true;
-    } else {
-      this.instractorsLink = false;
+    const user = localStorage.getItem("user-info");
+    if (user) {
+      this.$store.dispatch("getUserInformation", {
+        id: JSON.parse(user).id,
+      });
     }
+  },
+  watch: {
+    getUser(newvalue) {
+      if (newvalue) {
+        this.accepted = newvalue.InstructorAccepted;
+      }
+    },
+    accepted(newvalue) {
+      if (newvalue) {
+        this.accepted = newvalue;
+      } else {
+        this.accepted = false;
+      }
+    },
   },
 };
 </script>
@@ -217,7 +213,7 @@ export default {
 .modal-container .modal-content::before {
   content: "";
   position: absolute;
-  top: -7%;
+  top: -44px;
   left: 25px;
   border-width: 23px;
   border-color: transparent transparent #1b1f1f transparent;
@@ -234,8 +230,10 @@ export default {
   transition: opacity 0.25s ease-in-out;
 }
 .categories_get_random div {
+  padding: 11px 12px;
   width: calc(100% / 2);
 }
+
 .arrow_category_list {
   font-size: 12px;
   color: #3b4242;

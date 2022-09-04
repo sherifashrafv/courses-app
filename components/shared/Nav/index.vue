@@ -12,7 +12,7 @@
                 <router-link
                   exact
                   to="/"
-                  class="logo_image d-flex flex-row align-items-center gap-2 text-decoration-none text-white"
+                  class="logo_image d-flex flex-row align-items-center text-decoration-none"
                 >
                   <img src="@/assets/Images/Icons/xx.png" />
                   almonmon
@@ -20,9 +20,7 @@
               </h4>
             </div>
             <div>
-              <ul
-                class="links_mentors m-0 p-0 d-flex flex-row align-items-center gap-4"
-              >
+              <ul class="links_mentors p-0 d-flex flex-row align-items-center">
                 <li role="button" @click="showModalHandler">
                   <h5 class="m-0">
                     courses
@@ -30,7 +28,12 @@
                   </h5>
                 </li>
                 <li>
-                  <router-link tag="h5" class="m-0 p=0" to="/instractors">
+                  <router-link
+                    role="button"
+                    tag="h5"
+                    class="m-0 p=0"
+                    to="/instractors"
+                  >
                     instractors
                   </router-link>
                 </li>
@@ -62,7 +65,11 @@
                   role="button"
                   class="current_user-image position-relative"
                 >
-                  <img v-if="getUser.image" :src="getUser.image" alt="" />
+                  <img
+                    v-if="getUser.userimage"
+                    :src="getUser.userimage"
+                    alt=""
+                  />
                   <img
                     v-else
                     src="@/assets/Images/Icons/avatar_user.jpg"
@@ -72,6 +79,7 @@
                   <SettingsMenu
                     :modalHide="hideSettingsMenu"
                     :show="showSettingsMenu"
+                    @cancel="hideSettingsMenu"
                   ></SettingsMenu>
                   <!--  -->
                 </li>
@@ -104,6 +112,9 @@ export default {
       ShowModal: false,
       currentUser: false,
       showSettingsMenu: false,
+      user: [],
+      menuCourses: false,
+      CourseByNanme: [],
     };
   },
   methods: {
@@ -120,7 +131,15 @@ export default {
       this.showSettingsMenu = false;
     },
     navFixed() {
-      this.$refs.navbar.classList.toggle("fixed-nav-bar", window.scrollY > 10);
+      if (window.scrollY >= 0) {
+        this.$refs.navbar.classList.add("fixed-nav-bar");
+        let body = document.querySelector("body");
+        body.style.marginTop = "9vh";
+      } else {
+        this.$refs.navbar.classList.remove("fixed-nav-bar");
+        let body = document.querySelector("body");
+        body.style.marginTop = "0";
+      }
     },
   },
   computed: {
@@ -128,9 +147,19 @@ export default {
       return this.$store.state.user;
     },
   },
+  watch: {
+    getUser(newValue) {
+      if (newValue) {
+        this.user = newValue;
+      }
+    },
+  },
   mounted() {
     let user = localStorage.getItem("user-info");
     if (user) {
+      this.$store.dispatch("getUserInformation", {
+        id: JSON.parse(user).id,
+      });
       this.currentUser = true;
     }
     window.addEventListener("scroll", this.navFixed);

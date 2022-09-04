@@ -15,6 +15,7 @@
           class="social_registering d-flex flex-row align-items-center gap-4 justify-content-center"
         >
           <div
+            @click="loginWithFaceBook"
             role="button"
             class="d-flex flex-row align-items-center face_book_register_button gap-3 my-4"
           >
@@ -23,25 +24,20 @@
             </span>
             <span class="m-auto">Facebook Login</span>
           </div>
-          <div
-            role="button"
-            class="d-flex flex-row align-items-center google_register_button gap-3 my-4"
-          >
-            <span class="google_image">
-              <img src="../../../assets/Images/Icons/google.png" alt="" />
-            </span>
-            <span class="m-auto">Facebook Login</span>
-          </div>
         </div>
         <!--  -->
         <h5 class="or_text">OR</h5>
-        <form class="form_validation_login">
+        <form @submit.prevent class="form_validation_login">
           <div class="input-group mb-4">
             <input
               v-model="email"
               type="text"
               placeholder="Email"
-              class="form-control input_customize"
+              :class="
+                $v.email.$error
+                  ? 'form-control input_customize error'
+                  : 'form-control input_customize'
+              "
             />
             <span class="input_icon"
               ><i class="fa-regular fa-envelope"></i
@@ -51,8 +47,12 @@
             <input
               v-model="password"
               placeholder="Password"
-              type="text"
-              class="form-control input_customize"
+              type="password"
+              :class="
+                $v.password.$error
+                  ? 'form-control input_customize error'
+                  : 'form-control input_customize'
+              "
             />
             <span class="input_icon"><i class="fa-solid fa-lock"></i></span>
             <span class="show_password">
@@ -75,6 +75,7 @@
             </label>
           </div>
           <button
+            @click="submit"
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
             <span
@@ -117,13 +118,26 @@ export default {
     submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
+        console.log("validation");
         this.$store.dispatch("logIn", {
           email: this.email,
           password: this.password,
         });
       } else {
+        console.log("not validation");
         this.$v.errors = true;
       }
+    },
+    loginWithFaceBook() {
+      this.$store.dispatch("FacebookSignUp");
+    },
+  },
+  computed: {
+    error() {
+      return this.$store.state.ErrorLogin;
+    },
+    errorMessage() {
+      return this.$store.state.ErrorMessage;
     },
   },
 };
@@ -156,6 +170,7 @@ export default {
   padding: 10px 21px;
   font-size: 17px;
   font-weight: 500;
+  width: 250px;
 }
 .google_register_button {
   border-radius: 4px;

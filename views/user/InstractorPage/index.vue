@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div v-for="inst in this.information" :key="inst.id">
-      <InstarctorDashBoard
-        v-if="inst.accepted ? goToInstractorPage(inst.Email) : notAccepted()"
-      />
+    <div>
       <WithOutAccept />
     </div>
   </div>
@@ -11,9 +8,9 @@
 <script>
 import WithOutAccept from "@/views/user/InstractorPage/instractorWating/index.vue";
 import { mapState } from "vuex";
-import axios from "axios";
 // import axios from "axios";
-import InstarctorDashBoard from "@/views/Admin/Home/index.vue";
+// import axios from "axios";
+// import InstarctorDashBoard from "@/views/Admin/Home/index.vue";
 export default {
   name: "instractor-wating",
   data() {
@@ -22,41 +19,40 @@ export default {
       id: null,
       information: [],
       accepted: null,
-      notAcceptedYet: false,
     };
   },
   components: {
     WithOutAccept,
-    InstarctorDashBoard,
+    // InstarctorDashBoard,
   },
   computed: {
     ...mapState("admin", ["instractors"]),
   },
   methods: {
-    async AcceptTheInstructor() {
-      await axios
-        .get(`/instactors?email=${this.email}&id=${this.id}`)
-        .then((res) => {
-          this.information = res.data;
-        });
-    },
-    goToInstractorPage(name) {
-      this.$router.push(`/instractor/${name}/${this.id}`);
-    },
-    notAccepted() {
-      this.notAcceptedYet = true;
-    },
+    // async AcceptTheInstructor() {
+    //   await axios
+    //     .get(`/instactors?email=${this.email}&id=${this.id}`)
+    //     .then((res) => {
+    //       res.data.forEach((ele) => {
+    //         this.accepted = ele.accepted;
+    //       });
+    //       this.information = res.data;
+    //     });
+    // },
   },
   created() {
-    const instructor = localStorage.getItem("instractor-information");
-    this.email = JSON.parse(instructor).Email;
-    this.id = JSON.parse(instructor).id;
-    this.AcceptTheInstructor();
-
+    // const instructor = localStorage.getItem("instractor-information");
+    // this.email = JSON.parse(instructor).Email;
+    // this.id = JSON.parse(instructor).id;
+    // this.AcceptTheInstructor();
     //
   },
-  mounted() {
-    console.log(this.notAcceptedYet);
+  watch: {
+    // accepted(newAccepted) {
+    //   if (newAccepted) {
+    //     this.$router.push(`/instractor/user/${this.email}/id/${this.id}`);
+    //   }
+    // },
   },
 };
 </script>

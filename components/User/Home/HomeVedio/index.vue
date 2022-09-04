@@ -12,7 +12,12 @@
       src="@/assets/Images/Icons/play-button2.png"
       alt=""
     />
-    <Vd-Modal :show="showModal" :modalHide="modalHide"> </Vd-Modal>
+    <Vd-Modal
+      :url="'https://www.youtube.com/embed/7_JgswKYPnQ?autoplay=1&mute=1'"
+      :show="showModal"
+      :modalHide="modalHide"
+    >
+    </Vd-Modal>
     <button class="btn-home-vedios">sign up</button>
   </section>
 </template>
