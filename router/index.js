@@ -5,18 +5,27 @@ import Login from "@/views/user/Login/index.vue";
 import Register from "@/views/user/register/index.vue";
 import SignUpWithEmail from "@/views/user/LoginWithEmail/index.vue";
 import NProgress from "nprogress";
-import Instractors from "@/views/user/Instractors/index.vue";
+import Mentors from "@/views/user/Instractors/index.vue";
+import "nprogress/nprogress.css";
 // import Admin from "./Admin/index.js";
 import BecomeMentor from "@/views/user/BecomeMentor/index.vue";
 import InstractorsAuth from "@/views/user/InstractorPage/index.vue";
-// import YourCourses from "@/views/Admin/YourCourses/index.vue";
 import InstractorPageWating from "@/views/user/InstractorPage/index.vue";
-// import CoursePages from "@/views/Admin/CoursesPage/index.vue";
 import InstarctorDashBoard from "@/views/Admin/Home/index.vue";
 import ProfileSettings from "@/views/Admin/YourCourses/index.vue";
 import CoursesPage from "@/views/Admin/CoursesPage/index.vue";
 import CourseDetails from "@/views/Admin/CourseDetails/index.vue";
 import SpecifcCoursePage from "@/views/user/CoursePage/index.vue";
+import Courses from "@/views/Shared/Courses/index.vue";
+import FavoriteCourses from "@/views/user/FavourteWishList/index.vue";
+// function asyncComponent(importComponent) {
+//   return importComponent();
+//   Nprogress.start();
+//   importComponent().then(() => {
+//     Nprogress.done();
+//     return importComponent();
+//   });
+// }
 Vue.use(VueRouter);
 const routes = [
   {
@@ -26,13 +35,18 @@ const routes = [
   },
   {
     name: "coursePage",
-    path: "/coursePage/:categoryCourse/:userid/:id",
+    path: "/coursePage/:categoryCourse/:userid/:id/:courseTitle",
     component: SpecifcCoursePage,
   },
   {
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/favorite-page",
+    name: "favorites",
+    component: FavoriteCourses,
   },
   {
     path: "/signUp",
@@ -45,9 +59,9 @@ const routes = [
     component: SignUpWithEmail,
   },
   {
-    path: "/instractors",
-    name: "instractors",
-    component: Instractors,
+    path: "/Mentors",
+    name: "Mentors",
+    component: Mentors,
   },
   {
     path: "/Become-Mentor",
@@ -58,6 +72,11 @@ const routes = [
     path: "/instractor-page",
     name: "become-instractor",
     component: InstractorPageWating,
+  },
+  {
+    path: "/courses",
+    name: "courses-page",
+    component: Courses,
   },
   {
     name: "instractor",
@@ -95,12 +114,21 @@ const routes = [
       },
     ],
   },
+  {
+    name: "instractor",
+    path: "/instractor",
+    component: InstractorsAuth,
+  },
 ];
 // const routes = [...baseRoutes, ...Admin];
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior() {
+    // page scroll to top for all route navigations
+    return { x: 0, y: 0 };
+  },
 });
 router.beforeResolve((to, from, next) => {
   // If this isn't an initial page load.

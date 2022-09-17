@@ -1,8 +1,10 @@
 <template>
   <section>
     <div class="container">
-      <div class="interests_section my-3">
-        <div class="describe_intrsted d-flex flex-column">
+      <div
+        class="interests_section d-flex flex-lg-row flex-md-column flex-sm-column justify-content-lg-between align-items-md-center justify-content-sm-between"
+      >
+        <div class="describe_intrsted align-self-md-start d-flex flex-column">
           <h4>What are your interests?</h4>
           <h5>Help us show you courses that you actually like</h5>
           <img

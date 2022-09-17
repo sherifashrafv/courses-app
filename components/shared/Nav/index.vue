@@ -1,14 +1,17 @@
 <template>
   <div>
     <header ref="navbar" class="nav_specific_styles">
-      <div class="container-fluid">
+      <div class="container">
         <div
           class="w-100 d-flex flex-row align-items-center justify-content-between"
         >
           <!-- logo&subscribe -->
           <div class="logo_subscripe d-flex flex-row align-items-center gap-4">
-            <div class="logo_links">
-              <h4 class="logo ms-3 m-0 p-0">
+            <div class="logo_links d-flex align-items-center">
+              <span class="icon_menu_mobile">
+                <img src="@/assets/Images/Icons/menus.png" alt="" />
+              </span>
+              <h4 class="logo me-3 m-0 p-0">
                 <router-link
                   exact
                   to="/"
@@ -19,7 +22,7 @@
                 </router-link>
               </h4>
             </div>
-            <div>
+            <div class="links_mentors_main-parent">
               <ul class="links_mentors p-0 d-flex flex-row align-items-center">
                 <li role="button" @click="showModalHandler">
                   <h5 class="m-0">
@@ -32,7 +35,7 @@
                     role="button"
                     tag="h5"
                     class="m-0 p=0"
-                    to="/instractors"
+                    to="/Mentors"
                   >
                     instractors
                   </router-link>
@@ -49,6 +52,17 @@
           <div class="search_langs position-relative">
             <div>
               <ul class="user_menu d-flex gap-3 align-items-center">
+                <ve-SearchTerm></ve-SearchTerm>
+                <li class="mobile_serach_component">
+                  <span class="search_typing"> Search... </span>
+                  <img
+                    src="@/assets/Images/Icons/magnifying-glass.png"
+                    alt=""
+                  />
+                </li>
+                <li class="space_line">
+                  <hr />
+                </li>
                 <li class="lang">
                   <p>ع</p>
                 </li>
@@ -93,7 +107,11 @@
           </div>
         </div>
       </div>
-      <NavMenu :modalHide="hideModal" :show="ShowModal"></NavMenu>
+      <NavMenu
+        @hide="hideModal"
+        :modalHide="hideModal"
+        :show="ShowModal"
+      ></NavMenu>
     </header>
     <router-view />
   </div>

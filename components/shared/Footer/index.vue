@@ -60,7 +60,7 @@
                   class="links_footer"
                   tag="li"
                   role="button"
-                  to="/About"
+                  to="/courses"
                 >
                   Browse courses
                 </router-link>

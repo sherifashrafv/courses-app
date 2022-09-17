@@ -13,7 +13,7 @@ import {
 import { db, auth } from "@/Firebase/firebase";
 import router from "@/router";
 Vue.use(Vuex);
-// let user = localStorage.getItem("user-info");
+let user = localStorage.getItem("user-info");
 let insturctor = localStorage.getItem("instructor-apply");
 import axios from "axios";
 import {
@@ -34,7 +34,7 @@ import {
 axios.defaults.baseURL = "https://almentor-vuejs-default-rtdb.firebaseio.com/";
 export default new Vuex.Store({
   state: {
-    user: [],
+    user: user ? JSON.parse(user) : [],
     AuthError: null,
     progressLoading: false,
     buttonLoader: false,
@@ -299,6 +299,7 @@ export default new Vuex.Store({
           localStorage.setItem("user-info", JSON.stringify({ id: id, email }));
           router.push("/");
           window.scrollTo(0, 0);
+          window.location.reload();
         })
         .catch((error) => {
           console.log("error", error);
@@ -443,6 +444,7 @@ export default new Vuex.Store({
         });
       });
     },
+    // get instr
   },
   modules: {
     admin: AdminStore,

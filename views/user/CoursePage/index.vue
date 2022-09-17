@@ -76,8 +76,166 @@ linear-gradient(
             </p>
           </div>
           <div class="Course_Content">
-            <h2 class="m-0">Course Content</h2>
+            <h2 class="mb-0 mt-4">In this course you will learn</h2>
+            <AboutCourseContent></AboutCourseContent>
           </div>
+          <div class="course_benfits">
+            <h2 class="course_benfits_title">Course Benefits</h2>
+            <ul class="benfits p-2 mb-0 mt-3">
+              <li class="p-2 mb-3">
+                <span>
+                  <img
+                    class="benfit_img"
+                    src="@/assets/Images/Icons/padlock.png"
+                    alt=""
+                  />
+                </span>
+                <span class="title_benfit ps-3">Access anywhere, anytime.</span>
+              </li>
+              <li class="p-2 mb-3">
+                <span>
+                  <img
+                    class="benfit_img"
+                    src="@/assets/Images/Icons/open-book.png"
+                    alt=""
+                  />
+                </span>
+                <span class="title_benfit ps-3">Learn at your own pace. </span>
+              </li>
+              <li class="p-2 mb-3">
+                <span>
+                  <img
+                    class="benfit_img"
+                    src="@/assets/Images/Icons/certification.png"
+                    alt=""
+                  />
+                </span>
+                <span class="title_benfit ps-3"
+                  >Certificate of completion.</span
+                >
+              </li>
+              <li class="p-2 mb-3">
+                <span>
+                  <img
+                    class="benfit_img"
+                    src="@/assets/Images/Icons/pdf.png"
+                    alt=""
+                  />
+                </span>
+                <span class="title_benfit ps-3"
+                  >Download PDF file for course content.</span
+                >
+              </li>
+              <li class="p-2 mb-3">
+                <span>
+                  <img
+                    class="benfit_img"
+                    src="@/assets/Images/Icons/communication.png"
+                    alt=""
+                  />
+                </span>
+                <span class="title_benfit ps-3">Ask the mentor.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg_whg">
+            <h1>Course requirements and prerequisites</h1>
+            <div class="ind_c d-flex align-items-center">
+              <span></span>
+              <h4>Some business or management experience is preferable.</h4>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row position-relative my-5">
+              <ve-carousel
+                :title="'Courses you might like'"
+                :courses="ArtsDesignListed"
+              >
+              </ve-carousel>
+            </div>
+          </div>
+          <!--  -->
+          <div class="course_content">
+            <h4 class="course_benfits_title mb-5">Course Content</h4>
+            <div v-for="(sec, i) in sections" :key="sec.id" class="col-12">
+              <div
+                :data-card="`#${sec.title}`"
+                style="height: 60px"
+                class="card_section_have_been_add d-flex align-items-center justify-content-between"
+              >
+                <h1 class="title_section_course m-0">
+                  Section {{ i + 1 }} : {{ sec.title }}
+                </h1>
+                <span
+                  @click="
+                    activeTabs.length <= 0
+                      ? openSections({
+                          sectionTitle: sec.title,
+                          userId: sec.userId,
+                        })
+                      : closeTabs()
+                  "
+                  style="right: 12px; position: static"
+                  class="open_sections"
+                >
+                  <i
+                    :class="
+                      activeTabs == sec.title
+                        ? 'fa-solid fa-minus'
+                        : 'fa-solid fa-plus'
+                    "
+                  ></i>
+                </span>
+              </div>
+
+              <transition name="fade">
+                <div
+                  v-if="activeTabs === sec.title"
+                  class="section_main_wrapper_open"
+                >
+                  <div
+                    class="add-lesson d-flex align-items-center justify-content-between"
+                  >
+                    <h2 class="add_lesson-title">Lessons</h2>
+                    <!-- end-lessons-modal -->
+                  </div>
+                  <div
+                    v-for="(lesson, i) in lessons"
+                    :key="lesson.id"
+                    class="lessons_added"
+                  >
+                    <h1
+                      @click="openVedioModal({ url: lesson.url })"
+                      class="lesson_title"
+                    >
+                      Lesson {{ i + 1 }} : {{ lesson.title }}
+                    </h1>
+                    <Vd-Modal
+                      :url="url"
+                      :show="vedioModal"
+                      :modalHide="hideVedioModal"
+                    >
+                    </Vd-Modal>
+                  </div>
+                </div>
+              </transition>
+            </div>
+            <div
+              v-if="sections.length === 0"
+              style="height: 60px"
+              class="card_section_have_been_add d-flex align-items-center justify-content-between"
+            >
+              <h1 class="title_section_course m-0">Nothing Added Yet</h1>
+            </div>
+            <div
+              v-if="sections.length > 0"
+              style="height: 60px"
+              class="card_section_have_been_add d-flex align-items-center justify-content-between"
+            >
+              <h1 class="title_section_course m-0">End</h1>
+            </div>
+          </div>
+          <div class="course_content"></div>
         </div>
         <div class="col-md-12 col-lg-4">
           <div class="details_wrapper">
@@ -155,16 +313,30 @@ linear-gradient(
 </template>
 <script>
 import axios from "axios";
+import AboutCourseContent from "@/components/User/AboutCourseContent/index.vue";
 export default {
   name: "CoursePage",
+  components: {
+    AboutCourseContent,
+  },
   data() {
     return {
       userid: "",
       id: "",
       title: "",
       course: [],
+      categoryCourse: "",
+      lessons: [],
+      activeTabs: "",
+      url: "",
+      vedioModal: false,
+      //
+      ArtsDesign: [],
+      ArtsDesignListed: [],
+      sections: [],
     };
   },
+
   methods: {
     async get_course() {
       await axios
@@ -173,12 +345,102 @@ export default {
           this.course = res.data;
         });
     },
+    async ArtsAndDesign() {
+      await axios.get("/ArtsDesign.json").then((res) => {
+        let newData = res.data;
+        let course = [];
+        console.log(res.data);
+        for (let key in newData) {
+          newData[key].id = key;
+          course.push(newData[key]);
+        }
+        this.ArtsDesign = course;
+      });
+    },
+    async getSections({ categoryName, courseId, id }) {
+      await axios
+        .get(`/${categoryName}-sections/${id}/${courseId}.json`)
+        .then((res) => {
+          let newData = res.data;
+          let course = [];
+          for (let key in newData) {
+            newData[key].id = key;
+            course.push(newData[key]);
+          }
+          this.sections = course;
+        });
+    },
+    async getLessons(title) {
+      await axios
+        .get(`/${this.categoryCourse}-lessons/${this.userid}/${title}.json`)
+        .then((res) => {
+          this.loader = false;
+          console.log(res.data);
+          let newData = res.data;
+          let course = [];
+          for (let key in newData) {
+            newData[key].id = key;
+            course.push(newData[key]);
+          }
+          this.lessons = course;
+          this.lessonId = course.id;
+        });
+    },
+    async openSections({ sectionTitle }) {
+      this.activeTabs = sectionTitle;
+      this.getLessons(sectionTitle);
+    },
+    closeTabs() {
+      this.activeTabs = "";
+    },
+    openVedioModal({ url }) {
+      this.url = url;
+      this.vedioModal = !this.vedioModal;
+    },
+    hideVedioModal() {
+      this.vedioModal = false;
+    },
+  },
+  watch: {
+    async ArtsDesign(newgetcourses) {
+      if (newgetcourses) {
+        newgetcourses.forEach((ele) => {
+          axios.get(`/ArtsDesign/${ele.id}.json`).then((res) => {
+            let newData = res.data;
+            let course = [];
+            for (let key in newData) {
+              newData[key].id = key;
+              course.push(newData[key]);
+              console.log(course);
+            }
+            this.ArtsDesignListed.push(...course);
+          });
+        });
+      }
+    },
+    "$route.params": {
+      handler: function (params) {
+        const myRegx = params.categoryCourse.replace(
+          /[/^\s+|\s+$/|&;$%@"<>()+,]/gm,
+          ""
+        );
+        this.getSections({
+          categoryName: myRegx,
+          id: params.userid,
+          courseId: params.id,
+        });
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   mounted() {
     this.title = this.$route.params.categoryCourse;
+    this.categoryCourse = this.$route.params.categoryCourse;
     this.id = this.$route.params.id;
     this.userid = this.$route.params.userid;
     this.get_course();
+    this.ArtsAndDesign();
   },
 };
 </script>

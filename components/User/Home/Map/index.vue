@@ -33,7 +33,9 @@
               </p>
             </div>
             <div class="button_browse_courses">
-              <button class="btn-courses">Browse Courses</button>
+              <router-link tag="button" to="/courses" class="btn-courses"
+                >Browse Courses</router-link
+              >
             </div>
             <!--  -->
           </div>

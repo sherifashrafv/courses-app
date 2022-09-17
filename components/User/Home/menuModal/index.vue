@@ -14,7 +14,7 @@
                 v-for="(course, i) in Categories"
                 :key="i"
                 @click="activeTab = course"
-                :class="[activeTab === course ? 'active' : '']"
+                :class="[CategoryTitle === course ? 'active' : '']"
               >
                 <div
                   class="w-100 p-3 d-flex flex-row justify-content-between align-items-center"
@@ -26,14 +26,17 @@
                 </div>
               </li>
             </ul>
-            <div
+            <router-link
+              to="courses"
+              tag="div"
               class="button_browse_courses_categories d-flex align-items-center justify-content-between"
+              @click.native="$emit('hide')"
             >
               <span class="m-auto"> Browse Courses </span>
               <span>
                 <i class="fa-solid fa-arrow-right-long"></i>
               </span>
-            </div>
+            </router-link>
           </div>
           <div class="data_fetched d-flex flex-column position-relative">
             <ul
@@ -119,7 +122,7 @@ export default {
   methods: {
     async getCourse(title) {
       const regx = title.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
-      this.activeTab = title;
+      this.activeTab = regx;
       this.CategoryTitle = title;
       this.activeMenu = true;
       await axios.get(`/${regx}.json`).then((res) => {
@@ -164,12 +167,11 @@ export default {
         const regx = newCategory.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
         this.activeTab = regx;
         this.activeMenu = true;
-        this.CategoryTitle = regx;
+        this.CategoryTitle = newCategory;
         await axios.get(`/${regx}.json`).then((res) => {
           let newData = res.data;
           let course = [];
           this.activeMenu = false;
-          console.log(res.data.documents);
           for (let key in newData) {
             newData[key].id = key;
             course.push(newData[key]);

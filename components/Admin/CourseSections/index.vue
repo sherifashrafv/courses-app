@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-5">
     <div class="row">
       <div class="col-12 mb-5">
         <div class="d-flex flex-row justify-content-between">
@@ -18,7 +18,7 @@
       <div v-for="(sec, i) in sections" :key="sec.id" class="col-12">
         <div :data-card="`#${sec.title}`" class="card_section_have_been_add">
           <h1 class="title_section_course m-0">
-            Lesson {{ i + 1 }} : {{ sec.title }}
+            Section {{ i + 1 }} : {{ sec.title }}
           </h1>
           <span
             @click="delete_element({ id: sec.id, sectionTitle: sec.title })"
@@ -54,7 +54,7 @@
             <div
               class="add-lesson d-flex align-items-center justify-content-between"
             >
-              <h2 class="add_lesson-title">Lessons:</h2>
+              <h2 class="add_lesson-title">Lessons</h2>
               <button
                 @click="showModalHandelLessons"
                 class="btn btn-dark add_lesson-button"

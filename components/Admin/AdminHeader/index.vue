@@ -53,14 +53,18 @@
                 class="text-capitalize align-items-center d-flex gap-2 w-100"
                 to="category"
               >
-                <span class="bg-user">
+                <span v-if="$route.name == 'courses'"> </span>
+                <span v-else class="bg-user">
                   <img
                     class="img-fluid"
                     src="@/assets/Images/Icons/online-learning.png"
                     alt=""
                   />
                 </span>
-                Courses
+                <span v-if="$route.name == 'courses'">
+                  {{ $route.params.name }}
+                </span>
+                <span v-else> Courses </span>
                 <i class="fa-solid fa-chevron-down"></i>
               </div>
               <div style="overflow: hidden">
@@ -68,6 +72,7 @@
                   <li tag="li" v-for="(list, i) in Categories" :key="i * 2">
                     <router-link
                       :to="{
+                        exact,
                         name: 'courses',
                         params: { name: list },
                       }"
@@ -76,6 +81,21 @@
                     </router-link>
                   </li>
                 </ul>
+              </div>
+            </li>
+            <li
+              @click="logout"
+              class="logout_box text-white d-block text-capitalize align-items-center gap-2"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <span class="bg-logout">
+                  <img
+                    class="img-fluid"
+                    src="@/assets/Images/Icons/log-out.png"
+                    alt=""
+                  />
+                </span>
+                LogOut
               </div>
             </li>
           </ul>
@@ -125,17 +145,25 @@ export default {
     SelectedCourses() {
       this.$refs.courseslinks.classList.toggle("active");
     },
+    logout() {
+      localStorage.removeItem("user-info");
+      this.$router.push("/");
+      window.location.reload();
+    },
   },
   mounted() {
     this.email = this.$route.params.email;
     this.id = this.$route.params.id;
-    this.$store.dispatch("getUserInformation");
   },
   watch: {
     "$route.params": {
       handler: function (params) {
         this.email = params.email;
         this.id = params.id;
+        if (params.id) {
+          console.log(params.id);
+          this.$store.dispatch("getUserInformation", { id: params.id });
+        }
       },
       deep: true,
       immediate: true,
@@ -183,6 +211,9 @@ ul {
   color: white;
   padding: 15px 20px;
 }
+.links-admin_settings {
+  height: 200px;
+}
 .links-admin_settings li {
   margin-bottom: 10px;
   cursor: pointer;
@@ -220,6 +251,16 @@ nav.show {
   justify-content: center;
   border-radius: 10px;
   padding: 0 4px;
+}
+.bg-logout {
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 0 4px;
+  background: #cc3737;
 }
 .bg-box {
   height: 35px;
@@ -268,7 +309,7 @@ ul.courses_listed_anmimation {
   background: transparent !important;
   transform: translateY(0);
   opacity: 1;
-  height: 400px;
+  height: 165px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -281,7 +322,11 @@ ul.courses_listed_anmimation {
   background: transparent !important;
   padding: 0 !important;
 }
-.courses_listed_links.active li:hover {
-  background: #252a2a;
+.courses_listed_links.active li:hover,
+a.router-link-exact-active.router-link-active {
+  background: #252a2a !important;
+}
+.logout_box {
+  padding: 15px 20px;
 }
 </style>

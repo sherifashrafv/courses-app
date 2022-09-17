@@ -365,7 +365,7 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.spinner = true;
-        const instructorRef = doc(db, "instructors", id);
+        const instructorRef = doc(db, "users", id);
         updateDoc(instructorRef, {
           FirstName: this.name,
           day: this.dayConfirm,
@@ -376,11 +376,11 @@ export default {
           gender: this.gender,
         }).then(() => {
           this.spinner = false;
-          const q = query(collection(db, "instructors"), where("id", "==", id));
+          const q = query(collection(db, "users"), where("id", "==", id));
           getDocs(q).then((doc) => {
             doc.forEach((doc) => {
               console.log(doc.data());
-              // this.$store.commit("INSTURACTOR_INFORMATION", doc.data());
+              this.$store.commit("USER_INFORMATION", doc.data());
             });
           });
         });
@@ -391,7 +391,7 @@ export default {
   },
   mounted() {
     // this.getInformation();
-    this.$store.dispatch("getUserInstructor", {
+    this.$store.dispatch("getUserInformation", {
       id: this.$route.params.id,
     });
     this.id = this.$route.params.id;
@@ -401,7 +401,7 @@ export default {
   },
   computed: {
     instructor() {
-      return this.$store.state.insturctor;
+      return this.$store.state.user;
     },
   },
   watch: {
@@ -412,7 +412,7 @@ export default {
     },
     instructor(newInstr) {
       if (newInstr) {
-        this.name = newInstr.FirstName;
+        this.name = newInstr.firstName;
         this.gender = newInstr.gender;
         this.dayConfirm = newInstr.day;
         this.YearsConfirm = newInstr.year;

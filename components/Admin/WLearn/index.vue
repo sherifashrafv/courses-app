@@ -69,7 +69,6 @@
             <div v-else class="learn_description _img_uploded_active">
               <img :src="image1" alt="" />
             </div>
-            <h3>What You Learn</h3>
             <!--  -->
             <div
               :class="
@@ -170,9 +169,9 @@
               @click="add_first_description"
               class="btn_submit_information"
             >
-              <div v-if="loader" class="loader_lessons_active">
+              <span v-if="loader" class="loader_lessons_active">
                 <ve-loader></ve-loader>
-              </div>
+              </span>
               <span v-else>submit</span>
             </button>
           </div>
@@ -181,7 +180,28 @@
         <div v-else class="col-md-12 col-lg-8">
           <div class="main_learn_layout">
             <div class="learn_description position-relative">
-              {{ data.FirstTextArea }}
+              <div @click="editText1" class="edit_text">
+                <i
+                  :class="
+                    textedit1
+                      ? 'fa-solid fa-keyboard'
+                      : 'fa-solid fa-text-slash'
+                  "
+                ></i>
+              </div>
+              <span v-if="textedit1">
+                {{ data.FirstTextArea }}
+              </span>
+              <textarea
+                v-else
+                class="text_what-you_learn w-100 h-100"
+                cols="30"
+                ref="editText1"
+                rows="10"
+                maxlength="168"
+                :placeholder="refText1"
+                v-model="refText1"
+              ></textarea>
             </div>
             <div class="learn_description _img_uploded position-relative">
               <img :src="data.image1" alt="" />
@@ -194,17 +214,57 @@
                   @change="modifiedImage1({ $event, id: data.id })"
                 />
                 <label for="img_modified" class="img_modified_label">
-                  <img
-                    src="../../../../src/assets/Images/Icons/write.png"
-                    alt=""
-                /></label>
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </label>
               </div>
             </div>
             <div class="learn_description position-relative">
-              {{ data.SecondTextArea }}
+              <div @click="editText2" class="edit_text">
+                <i
+                  :class="
+                    textedit2
+                      ? 'fa-solid fa-keyboard'
+                      : 'fa-solid fa-text-slash'
+                  "
+                ></i>
+              </div>
+              <span v-if="textedit2">
+                {{ data.SecondTextArea }}
+              </span>
+              <textarea
+                v-else
+                class="text_what-you_learn w-100 h-100"
+                cols="30"
+                ref="editText2"
+                rows="10"
+                maxlength="168"
+                :placeholder="refText2"
+                v-model="refText2"
+              ></textarea>
             </div>
             <div class="learn_description position-relative">
-              {{ data.ThrdTextArea }}
+              <div @click="editText3" class="edit_text">
+                <i
+                  :class="
+                    textedit3
+                      ? 'fa-solid fa-keyboard'
+                      : 'fa-solid fa-text-slash'
+                  "
+                ></i>
+              </div>
+              <span v-if="textedit3">
+                {{ data.ThrdTextArea }}
+              </span>
+              <textarea
+                v-else
+                class="text_what-you_learn w-100 h-100"
+                cols="30"
+                ref="editText3"
+                rows="10"
+                maxlength="168"
+                :placeholder="refText3"
+                v-model="refText3"
+              ></textarea>
             </div>
             <div class="learn_description img_spesifc position-relative">
               <img :src="data.image2" alt="" />
@@ -217,12 +277,26 @@
                   @change="modifiedImage2({ $event, id: data.id })"
                 />
                 <label for="img_modified2" class="img_modified_label">
-                  <img
-                    src="../../../../src/assets/Images/Icons/write.png"
-                    alt=""
-                /></label>
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </label>
               </div>
             </div>
+          </div>
+          <div
+            v-if="
+              textedit1 === false || textedit2 === false || textedit3 === false
+            "
+            class="submit_informations"
+          >
+            <button
+              @click="add_first_description"
+              class="btn_submit_information"
+            >
+              <span v-if="loader" class="loader_lessons_active">
+                <ve-loader></ve-loader>
+              </span>
+              <span v-else>edit</span>
+            </button>
           </div>
         </div>
       </div>
@@ -275,6 +349,12 @@ export default {
       imageModifed2: "",
       loader: false,
       specifcId: "",
+      refText1: "",
+      refText2: "",
+      refText3: "",
+      textedit1: true,
+      textedit2: true,
+      textedit3: true,
     };
   },
 
@@ -326,7 +406,8 @@ export default {
             ThrdTextArea: this.ThrdTextArea,
             image1: this.image1,
             image2: this.image2,
-            id: this.id,
+            id: this.courseid,
+            courseName: this.courseName,
           }
         ).then(() => {
           axios
@@ -421,10 +502,12 @@ export default {
     modifiedImage1({ $event, id }) {
       this.specifcId = id;
       this.ModifiedImage1 = $event.target.files[0];
+      this.getWhatYouWillOBJ();
     },
     modifiedImage2({ $event, id }) {
       this.specifcId = id;
       this.ModifiedImage2 = $event.target.files[0];
+      this.getWhatYouWillOBJ();
     },
     async updateImage1({ newValue }) {
       const washingtonRef = doc(
@@ -494,6 +577,59 @@ export default {
       });
       // commit("SET_LOADER", true);
     },
+    editText1() {
+      this.textedit1 = !this.textedit1;
+      this.refText1 = "";
+      this.$nextTick(() => this.$refs.editText1.focus());
+    },
+    editText2() {
+      this.textedit2 = !this.textedit2;
+      this.refText2 = "";
+      this.$nextTick(() => this.$refs.editText2.focus());
+    },
+    editText3() {
+      this.textedit3 = !this.textedit3;
+      this.refText3 = "";
+      this.$nextTick(() => this.$refs.editText3.focus());
+    },
+    add_edit_description() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.loader = true;
+        setDoc(
+          doc(
+            db,
+            `what You Will Learn-${this.categoryCourse}`,
+            this.courseName
+          ),
+          {
+            FirstTextArea: this.FirstTextArea,
+            SecondTextArea: this.SecondTextArea,
+            ThrdTextArea: this.ThrdTextArea,
+            image1: this.image1,
+            image2: this.image2,
+            id: this.courseid,
+          }
+        ).then(() => {
+          axios
+            .post(
+              `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `,
+              {
+                FirstTextArea: this.refText1,
+                SecondTextArea: this.refText2,
+                ThrdTextArea: this.refText3,
+                image1: this.image1,
+                image2: this.image2,
+              }
+            )
+            .then(() => {
+              this.loader = false;
+            });
+        });
+      } else {
+        console.log("not-validation");
+      }
+    },
   },
   watch: {
     "$route.params": {
@@ -534,6 +670,11 @@ export default {
     imageModifed2(newValue) {
       if (newValue) {
         this.updateImage2({ newValue, id: this.specifcId });
+      }
+    },
+    data(newValue) {
+      if (newValue) {
+        this.refText1 = newValue.FirstTextArea;
       }
     },
   },

@@ -10,7 +10,7 @@
           <p>And get access to all almentor courses whenever you like</p>
           <button class="btn_btn-saveIntersted active">Choose Plan</button>
         </div>
-        <div class="d-flex flex-row gap-4">
+        <div class="d-flex flex-row gap-4 flex-wrap justify-content-center">
           <div class="simplified-subscription-card ng-star-inserted_s">
             <h6 class="simplified-subscription-card__title">Monthly Plan</h6>
             <div class="simplified-subscription-card__body">

@@ -5,6 +5,7 @@
     </component>
   </div>
 </template>
+
 <script>
 const defaultlayout = "default-layout";
 export default {
@@ -15,4 +16,3 @@ export default {
   },
 };
 </script>
-<style></style>

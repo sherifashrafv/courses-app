@@ -29,7 +29,14 @@
             </router-link>
             <div class="break-line"></div>
             <ul class="profile_list_settings">
-              <router-link @click.native="cancel" to="ss">
+              <a
+                @click="
+                  courseWish_list_route({
+                    email: getUser.email,
+                    id: getUser.id,
+                  })
+                "
+              >
                 <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
@@ -41,9 +48,13 @@
                   /></span>
                   <span>Saved Courses</span>
                 </li>
-              </router-link>
+              </a>
 
-              <router-link @click.native="cancel" to="ss">
+              <a
+                @click="
+                  myCoursesRoute({ email: getUser.email, id: getUser.id })
+                "
+              >
                 <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
@@ -55,9 +66,14 @@
                   /></span>
                   <span>my courses</span>
                 </li>
-              </router-link>
-              <router-link @click.native="cancel" to="ss">
+              </a>
+              <a
+                @click="
+                  DashBoardRoute({ email: getUser.email, id: getUser.id })
+                "
+              >
                 <li
+                  role="button"
                   class="d-flex flex-row align-items-center padding_listed_information"
                 >
                   <span class="pe-3"
@@ -68,7 +84,8 @@
                   /></span>
                   <span>Account Settings</span>
                 </li>
-              </router-link>
+              </a>
+
               <div class="break-line"></div>
               <div class="anchor_logOut">
                 <li
@@ -156,6 +173,16 @@ export default {
       this.$emit("modalHide");
       this.$router.push(`/${route}`);
       window.location.reload();
+    },
+    myCoursesRoute({ email, id }) {
+      this.$emit("modalHide");
+      this.$router.push(`/instractor/user/${email}/id/${id}/courses/Languages`);
+      window.location.reload();
+    },
+    courseWish_list_route() {
+      this.$emit("modalHide");
+      this.$router.push(`/favorite-page`);
+      // window.location.reload();
     },
   },
   mounted() {
@@ -253,7 +280,8 @@ export default {
   cursor: pointer;
   color: var(--map-numbers-count);
 }
-.main_menu_categories li:hover {
+.main_menu_categories li:hover,
+.main_menu_categories li.active {
   background: #3b4242;
 }
 .tab_text_categories {

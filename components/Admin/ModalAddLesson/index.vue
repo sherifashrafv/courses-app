@@ -102,6 +102,8 @@ export default {
           .then(() => {
             this.$emit("close");
             this.$emit("getLessons", this.sectionTitle);
+            this.youtubeLink = "";
+            this.lessonName = "";
           });
         console.log("done");
       } else {

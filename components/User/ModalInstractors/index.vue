@@ -23,6 +23,14 @@
             </div>
             <div class="input-group mb-4">
               <input
+                v-model="LastName"
+                type="text"
+                placeholder="Last Name"
+                :class="'form-control input_customize vedios'"
+              />
+            </div>
+            <div class="input-group mb-4">
+              <input
                 v-model="Password"
                 type="text"
                 placeholder="Password"
