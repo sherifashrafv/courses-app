@@ -5,17 +5,17 @@
         <div class="input_serach_async h-100 position-relative">
           <input
             v-model="course"
-            placeholder="Search courses, topics, instructors..."
+            :placeholder="$t('navbar.Search')"
             class="w-100 h-100"
             type="text"
           />
-          <div class="results">
+
+          <!-- <div class="results">
             <div
               style="color: #a1a1a1; font-size: 18px"
               class="d-flex align-items-center justify-content-end"
             >
-              <!-- <p class="me-2 mb-0">{{ course }}</p>
-              <i class="fa-solid fa-magnifying-glass fs-5"></i> -->
+              <p class="me-2 mb-0">{{ course }}</p>
             </div>
             <div class="d-flex align-items-center justify-content-center gap-4">
               <div>
@@ -50,7 +50,7 @@
                 {{ query }}
               </li>
             </ul>
-          </div>
+          </div> -->
         </div>
       </div>
     </li>
@@ -157,5 +157,12 @@ export default {
   background-size: 16px 12px !important;
   box-shadow: none !important;
   margin-top: 1rem;
+}
+.search_button {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  cursor: pointer;
 }
 </style>

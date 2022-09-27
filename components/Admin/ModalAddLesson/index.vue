@@ -9,7 +9,11 @@
                 v-model="lessonName"
                 type="text"
                 placeholder="Lesson Title"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.lessonName.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
@@ -17,7 +21,11 @@
                 v-model="youtubeLink"
                 type="text"
                 placeholder="Youtube Link"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.youtubeLink.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <Button

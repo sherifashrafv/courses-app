@@ -4,107 +4,197 @@
       <h3 style="color: #eee">{{ title }}</h3>
       <VueSlickCarousel id="slick_slider" ref="carousel" v-bind="settings">
         <!-- first-col -->
-        <div class="category-fh-100">
-          <div
-            class="imag_categories_ h-100 img_1 w-100 d-flex flex-column justify-content-center align-items-center"
-          >
-            <h5>Languages</h5>
+        <router-link
+          tag="div"
+          role="button"
+          :to="`/${$i18n.locale}/categories/Languages`"
+        >
+          <div class="category-fh-100">
+            <div
+              class="imag_categories_ h-100 img_1 w-100 d-flex flex-column justify-content-center align-items-center"
+            >
+              <h5>
+                {{ $t("Categories.Languages") }}
+              </h5>
+            </div>
           </div>
-        </div>
+        </router-link>
         <!-- end -->
         <!-- second-col -->
         <div class="DBB-boxes d-flex flex-column gap-5 justify-content-between">
-          <div
-            class="category_half_height img_1 d-flex flex-column align-items-center justify-content-center"
+          <router-link
+            :to="`${$i18n.locale}/categories/Arts & Design`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h4>Arts & Design</h4>
-          </div>
-          <div
-            class="category_half_height img_2 d-flex flex-column align-items-center justify-content-center"
+            <div
+              class="category_half_height img_1 d-flex flex-column align-items-center justify-content-center"
+            >
+              <h4>
+                {{ $t("Categories.Arts & Design") }}
+              </h4>
+            </div>
+          </router-link>
+          <router-link
+            :to="`/${$i18n.locale}/categories/Soft Skills`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h4>Soft Skills</h4>
-          </div>
+            <div
+              class="category_half_height img_2 d-flex flex-column align-items-center justify-content-center"
+            >
+              <h4>
+                {{ $t("Categories.Soft Skills") }}
+              </h4>
+            </div>
+          </router-link>
         </div>
         <!-- end -->
         <!-- third_col -->
         <div
           class="category-full-width-cards d-flex flex-column justify-content-between"
         >
-          <div
-            class="media_photos_films d-flex flex-column justify-content-center align-items-center"
+          <router-link
+            :to="`/${$i18n.locale}/categories/Soft Skills`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h3>Media, Photography & Film</h3>
-          </div>
+            <div
+              class="media_photos_films d-flex flex-column justify-content-center align-items-center"
+            >
+              <h3>
+                {{ $t("Categories.Media, Photography & Film") }}
+              </h3>
+            </div>
+          </router-link>
           <div
             class="flex_wrapper_business d-flex flex-row justify-content-center align-items-center gap-5"
           >
-            <div
-              class="Business_Management d-flex text-center flex-column justify-content-center align-items-center"
+            <router-link
+              :to="`${$i18n.locale}/categories/Business Management`"
+              class="h-100 text-decoration-none text-white"
             >
-              <h4>Business Management</h4>
-            </div>
-            <div
-              class="Sales_Marketing text-center d-flex flex-column justify-content-center align-items-center"
+              <div
+                class="Business_Management d-flex text-center flex-column justify-content-center align-items-center"
+              >
+                <h4>
+                  {{ $t("Categories.Business Management") }}
+                </h4>
+              </div>
+            </router-link>
+            <router-link
+              :to="`/${$i18n.locale}/categories/Sales & Marketing`"
+              class="h-100 text-decoration-none text-white"
             >
-              <h4>Sales & Marketing</h4>
-            </div>
+              <div
+                class="Sales_Marketing text-center d-flex flex-column justify-content-center align-items-center"
+              >
+                <h4>
+                  {{ $t("Categories.Sales & Marketing") }}
+                </h4>
+              </div>
+            </router-link>
           </div>
         </div>
         <!-- end -->
         <!-- fourth-col -->
         <div class="category-fh-100">
-          <div
-            class="imag_categories_ h-100 img_2 w-100 d-flex flex-column justify-content-center align-items-center"
+          <router-link
+            :to="`/${$i18n.locale}/categories/Languages`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h5>Languages</h5>
-          </div>
+            <div
+              class="imag_categories_ h-100 img_2 w-100 d-flex flex-column justify-content-center align-items-center"
+            >
+              <h5>
+                {{ $t("Categories.Language") }}
+              </h5>
+            </div>
+          </router-link>
         </div>
         <!-- end -->
         <!-- start-fifth -->
         <div class="DBB-boxes d-flex flex-column gap-5 justify-content-between">
-          <div
-            class="category_half_height img_3 d-flex flex-column align-items-center justify-content-center"
+          <router-link
+            :to="`/${$i18n.locale}/categories/Parenting & Relationships`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h4>Parenting & Relationships</h4>
-          </div>
-          <div
-            class="category_half_height img_4 d-flex flex-column align-items-center justify-content-center"
+            <div
+              class="category_half_height img_3 d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5>
+                {{ $t("Categories.Parenting & Relationships") }}
+              </h5>
+            </div>
+          </router-link>
+          <router-link
+            :to="`/${$i18n.locale}/categories/Kids Development`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h4>Kids Development</h4>
-          </div>
+            <div
+              class="category_half_height img_4 d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5>
+                {{ $t("Categories.Kids Development") }}
+              </h5>
+            </div>
+          </router-link>
         </div>
         <!-- end-fifth -->
         <div
           class="category-full-width-cards d-flex flex-column justify-content-between"
         >
-          <div
-            class="Lifestyle_Health d-flex flex-column justify-content-center align-items-center"
+          <router-link
+            :to="`/${$i18n.locale}/categories/Lifestyle & Health`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h3>Lifestyle & Health</h3>
-          </div>
+            <div
+              class="Lifestyle_Health d-flex flex-column justify-content-center align-items-center"
+            >
+              <h5>
+                {{ $t("Categories.Lifestyle & Health") }}
+              </h5>
+            </div>
+          </router-link>
           <div
             class="flex_wrapper_business d-flex flex-row justify-content-center align-items-center gap-5"
           >
-            <div
-              class="Entrepreneurship d-flex text-center flex-column justify-content-center align-items-center"
+            <router-link
+              :to="`/${$i18n.locale}/categories/Entrepreneurship`"
+              class="h-100 text-decoration-none text-white"
             >
-              <h4>Entrepreneurship</h4>
-            </div>
-            <div
-              class="Mental_Health_Wellness text-center d-flex flex-column justify-content-center align-items-center"
+              <div
+                class="Entrepreneurship d-flex text-center flex-column justify-content-center align-items-center"
+              >
+                <h5>
+                  {{ $t("Categories.Entrepreneurship") }}
+                </h5>
+              </div>
+            </router-link>
+            <router-link
+              :to="`/${$i18n.locale}/categories/Mental Health & Wellness`"
+              class="h-100 text-decoration-none text-white"
             >
-              <h4>Mental Health & Wellness</h4>
-            </div>
+              <div
+                class="Mental_Health_Wellness text-center d-flex flex-column justify-content-center align-items-center"
+              >
+                <h5>
+                  {{ $t("Categories.Mental Health & Wellness") }}
+                </h5>
+              </div>
+            </router-link>
           </div>
         </div>
         <!-- sixth-col -->
 
         <div class="category-fh-100">
-          <div
-            class="imag_categories_ h-100 img_5 w-100 d-flex flex-column justify-content-center align-items-center"
+          <router-link
+            :to="`/${$i18n.locale}/categories/Education`"
+            class="h-100 text-decoration-none text-white"
           >
-            <h5>Education</h5>
-          </div>
+            <div
+              class="imag_categories_ h-100 img_5 w-100 d-flex flex-column justify-content-center align-items-center"
+            >
+              <h5>{{ $t("Categories.Education") }}</h5>
+            </div>
+          </router-link>
         </div>
         <!-- end -->
       </VueSlickCarousel>
@@ -113,6 +203,9 @@
       </button>
       <button ref="nexbutton" class="next_button_disc_section" @click="next">
         <i class="fa-solid fa-chevron-right"></i>
+      </button>
+      <button ref="prevbutton" class="prev_button_disc_section" @click="prev">
+        <i class="fa-solid fa-chevron-left"></i>
       </button>
     </div>
   </div>
@@ -182,16 +275,18 @@ export default {
     prev() {
       this.$refs.carousel.prev();
     },
-    // handleBeforeChange(event, slick) {
-    //   if (slick == 0) {
-    //     this.$refs.prevbutton.classList.add("d-none");
-    //   } else if (slick > 0) {
-    //     this.$refs.prevbutton.classList.remove("d-none");
-    //     this.$refs.prevbutton.classList.add("d-flex");
-    //   }
-    // },
+    handleBeforeChange(event, slick) {
+      if (slick == 0) {
+        this.$refs.prevbutton.classList.add("d-none");
+      } else if (slick > 0) {
+        this.$refs.prevbutton.classList.remove("d-none");
+        this.$refs.prevbutton.classList.add("d-flex");
+      }
+    },
   },
-  props: ["title"],
+  props: {
+    title: String,
+  },
   mounted() {
     // this.handleBeforeChange();
   },
@@ -345,6 +440,22 @@ export default {
   color: #909090;
   font-size: 20px;
   right: 0 !important;
+  height: 38px !important;
+  top: 50% !important;
+  transform: translateY(-50%);
+  width: 38px;
+}
+.prev_button_disc_section {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #0d0d0d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #909090;
+  font-size: 20px;
+  left: 0 !important;
   height: 38px !important;
   top: 50% !important;
   transform: translateY(-50%);

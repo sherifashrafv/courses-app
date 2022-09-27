@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="carousel-card">
+  <fragment>
+    <div v-for="(lis, i) in list" :key="i * 20" class="carousel-card">
       <div class="movie--isloading">
         <div class="loading-image"></div>
         <div class="loading-content">
@@ -11,15 +11,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </fragment>
 </template>
 <script>
+import { Fragment } from "vue-fragment";
+
 export default {
   props: ["list"],
+  components: { Fragment },
   name: "skate-loading",
 };
 </script>
-<style scoped>
+<style>
 .movie--isloading {
   height: 252px;
   border-radius: 4px;

@@ -132,108 +132,6 @@ export default new Vuex.Store({
           }
         });
     },
-    // google signup
-    // GoogleSignUp() {
-    //   const provider = new GoogleAuthProvider();
-    //   signInWithPopup(auth, provider).catch(function (error) {
-    //     // An error happened.
-    //     if (error.code === "auth/account-exists-with-different-credential") {
-    //       // User's email already exists.
-    //       // The pending Google credential.
-    //       var pendingCred = error.credential;
-    //       // The provider account's email address.
-    //       var email = error.email;
-    //       // Get sign-in methods for this email.
-    //       auth.fetchSignInMethodsForEmail(email).then(function (methods) {
-    //         // Step 3.
-    //         // If the user has several sign-in methods,
-    //         // the first method in the list will be the "recommended" method to use.
-    //         if (methods[0] === "password") {
-    //           // Asks the user their password.
-    //           // In real scenario, you should handle this asynchronously.
-    //           auth
-    //             .signInWithEmailAndPassword(email)
-    //             .then(function (result) {
-    //               // Step 4a.
-    //               return result.user.linkWithCredential(pendingCred);
-    //             })
-    //             .then(function () {
-    //               // Google account successfully linked to the existing Firebase user.
-    //             });
-    //           return;
-    //         }
-    //         // All the other cases are external providers.
-    //         // Construct provider object for that provider.
-    //         // TODO: implement getProviderForProviderId.
-    //         // At this point, you should let the user know that they already have an account
-    //         // but with a different provider, and let them validate the fact they want to
-    //         // sign in with this provider.
-    //         // Sign in to provider. Note: browsers usually block popup triggered asynchronously,
-    //         // so in real scenario you should ask the user to click on a "continue" button
-    //         // that will trigger the signInWithPopup.
-    //         auth.signInWithPopup(provider).then(function (result) {
-    //           // Remember that the user may have signed in with an account that has a different email
-    //           // address than the first one. This can happen as Firebase doesn't control the provider's
-    //           // sign in flow and the user is free to login using whichever account they own.
-    //           // Step 4b.
-    //           // Link to Google credential.
-    //           // As we have access to the pending credential, we can directly call the link method.
-    //           result.user
-    //             .linkAndRetrieveDataWithCredential(pendingCred)
-    //             .then(function () {
-    //               // Google account successfully linked to the existing Firebase user.
-    //             });
-    //         });
-    //       });
-    //     }
-    //   });
-    //   // signInWithPopup(auth, provider)
-    //   //   .then((res) => {
-    //   //     const user = res.user;
-    //   //     const credential = GoogleAuthProvider.credentialFromResult(res);
-    //   //     const token = credential.accessToken;
-    //   //     if (credential === token) {
-    //   //       console.log("error");
-    //   //     } else {
-    //   //       setDoc(doc(db, "users", user.uid), {
-    //   //         password: "",
-    //   //         firstName: "",
-    //   //         email: user.email,
-    //   //         lastName: "",
-    //   //         id: user.uid,
-    //   //         userimage: user.photoURL,
-    //   //         displayName: user.displayName,
-    //   //         InstructorAccepted: false,
-    //   //       }).then(() => {
-    //   //         localStorage.setItem(
-    //   //           "user-info",
-    //   //           JSON.stringify({
-    //   //             firstName: "",
-    //   //             email: user.email,
-    //   //             lastName: "",
-    //   //             id: user.uid,
-    //   //             userimage: user.photoURL,
-    //   //           })
-    //   //         );
-
-    //   //         // router.push("/");
-    //   //       });
-    //   //     }
-    //   //     console.log(credential, token);
-
-    //   //     commit("SIGN_UP_WITH_FACEBOOK", {
-    //   //       displayName: user.displayName,
-    //   //       image: user.photoURL,
-    //   //       email: user.email,
-    //   //     });
-    //   //     // router.push("/");
-    //   //   })
-    //   //   .catch((error) => {
-    //   //     const credential = GoogleAuthProvider.credentialFromError(error);
-    //   //     console.log(credential);
-    //   //   });
-    // },
-    // log in With Google
     //  create user-SignUpWithEmail-Password
     createUser: async (
       { commit },
@@ -280,13 +178,20 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           if (error.code == "auth/email-already-in-use") {
-            commit("ERROR_MESSAGES", "email is already in use");
+            commit("ERROR_HANDLE", {
+              payload: true,
+              payload2: "email already in use",
+            });
           } else if (error.code == "auth/invalid-email") {
-            commit("SET_ERROR", "invalid email");
-          } else if (error.code == "auth/operation-not-allowed") {
-            commit("SET_ERROR", "operation-not-allowed");
+            commit("ERROR_HANDLE", {
+              payload: true,
+              payload2: "Wrong Email",
+            });
           } else if (error.code == "auth/weak-password") {
-            commit("SET_ERROR", "Weak-Password");
+            commit("ERROR_HANDLE", {
+              payload: true,
+              payload2: "Week Password",
+            });
           }
         });
     },
@@ -303,12 +208,17 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           console.log("error", error);
-
           if (error.code == "auth/wrong-password") {
             console.log("error", error);
             commit("ERROR_HANDLE", {
               payload: true,
-              payload2: "Email Wrong or Password",
+              payload2: "Wrong Password",
+            });
+          }
+          if (error.code == "auth/user-not-found") {
+            commit("ERROR_HANDLE", {
+              payload: true,
+              payload2: "user not found",
             });
           }
           if (error.code == "auth/user-not-found") {
@@ -410,6 +320,7 @@ export default new Vuex.Store({
       }
     ) => {
       commit("SET_BUTTON_LOADER", true);
+      console.log(instructor);
       const storage = getStorage();
       const storageRef = await ref(
         storage,
@@ -423,7 +334,7 @@ export default new Vuex.Store({
         backgroundImage
       ).then(() => {
         getDownloadURL(storageRef).then((url) => {
-          const { Email, FirstName, LastName, userimage } = instructor;
+          const { email, firstName, lastName, userimage } = instructor;
           commit("SET_BUTTON_LOADER", false);
           axios
             .post(`/${categoryCourse}/${id}.json`, {
@@ -431,20 +342,18 @@ export default new Vuex.Store({
               userid: id,
               backgroundImage: url,
               courseName: courseName,
-              Email: Email,
-              FirstName: FirstName,
-              LastName: LastName,
+              Email: email,
+              FirstName: firstName,
+              LastName: lastName,
               userimage: userimage,
               categoryCourse: categoryCourse,
             })
             .then(() => {
-              window.location.reload();
               commit("SET_BUTTON_LOADER", false);
             });
         });
       });
     },
-    // get instr
   },
   modules: {
     admin: AdminStore,

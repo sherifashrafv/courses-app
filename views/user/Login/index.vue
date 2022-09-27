@@ -5,9 +5,9 @@
     <div class="login_container my-5">
       <div class="auth-content">
         <div class="auth-header">
-          <h5 class="auth-title text-center">Login</h5>
+          <h5 class="auth-title text-center">{{ $t("registering.Login") }}</h5>
           <h6 class="account_exist text-center">
-            Access Your Existing Account
+            {{ $t("registering.Access Your Existing Account") }}
           </h6>
         </div>
         <!--  -->
@@ -22,17 +22,19 @@
             <span class="f_icon">
               <i class="fa-brands fa-facebook-f"></i>
             </span>
-            <span class="m-auto">Facebook Login</span>
+            <span class="m-auto">{{ $t("registering.Facebook Login") }}</span>
           </div>
         </div>
         <!--  -->
-        <h5 class="or_text">OR</h5>
+        <h5 class="or_text">
+          {{ $t("registering.or_text") }}
+        </h5>
         <form @submit.prevent class="form_validation_login">
           <div class="input-group mb-4">
             <input
               v-model="email"
               type="text"
-              placeholder="Email"
+              :placeholder="$t('registering.email')"
               :class="
                 $v.email.$error
                   ? 'form-control input_customize error'
@@ -46,7 +48,8 @@
           <div class="input-group mb-4 position-relative">
             <input
               v-model="password"
-              placeholder="Password"
+              ref="passowrdtrigger"
+              :placeholder="$t('registering.password')"
               type="password"
               :class="
                 $v.password.$error
@@ -55,24 +58,31 @@
               "
             />
             <span class="input_icon"><i class="fa-solid fa-lock"></i></span>
-            <span class="show_password">
-              <i class="fa-solid fa-eye"></i>
+            <span ref="icon" @click="passowrdtrigger()" class="show_password">
+              <i ref="specifc" class="fa-solid fa-eye"></i>
             </span>
           </div>
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="defaultCheck1"
-            />
-            <label
-              id="input_check_lavel"
-              class="form-check-label"
-              for="defaultCheck1"
-            >
-              Remember Me
-            </label>
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="defaultCheck1"
+                />
+                <label
+                  id="input_check_lavel"
+                  class="form-check-label"
+                  for="defaultCheck1"
+                >
+                  {{ $t("registering.Remember Me") }}
+                </label>
+              </div>
+              <div v-if="error" class="error bg-danger text-white p-3">
+                {{ errorMessage }}
+              </div>
+            </div>
           </div>
           <button
             @click="submit"
@@ -81,19 +91,28 @@
             <span
               ><i class="fa-regular fa-envelope text-white fw-bold"></i>
             </span>
-            <span class="text-white fw-normal ps-2">Login With Your Email</span>
+            <span class="text-white fw-normal ps-2">{{
+              $t("registering.Login With Your Email")
+            }}</span>
           </button>
           <div class="mt-3 text-center">
-            <router-link to="/forgetPassword" class="link_forget_password"
-              >Forgot your password?</router-link
+            <router-link
+              :to="`/${$i18n.locale}/forgetPassword`"
+              class="link_forget_password"
+              >{{ $t("registering.Forgot your password") }}</router-link
             >
           </div>
           <hr class="line_login_dec" />
           <p class="text-center">
-            <span style="font-size: 15px"> Don't have an account? </span>
-            <router-link class="sign_up_link ms-2" to="/signUp"
-              >Sign Up</router-link
+            <span style="font-size: 15px">
+              {{ $t("registering.Dont have an account") }}
+            </span>
+            <router-link
+              class="sign_up_link ms-2"
+              :to="`/${$i18n.locale}/signUp`"
             >
+              {{ $t("registering.signUp") }}
+            </router-link>
           </p>
         </form>
       </div>
@@ -130,6 +149,22 @@ export default {
     },
     loginWithFaceBook() {
       this.$store.dispatch("FacebookSignUp");
+    },
+    passowrdtrigger() {
+      let password = this.$refs.passowrdtrigger;
+      let icon = this.$refs.icon;
+      let spec = this.$refs.specifc;
+      if (password.type === "password") {
+        password.type = "text";
+        icon.classList.toggle("active");
+        spec.classList = "";
+        spec.className = "fa-solid fa-eye";
+      } else {
+        icon.classList.toggle("active");
+        password.type = "password";
+        spec.classList = "";
+        spec.className = "fa-solid fa-eye-slash";
+      }
     },
   },
   computed: {

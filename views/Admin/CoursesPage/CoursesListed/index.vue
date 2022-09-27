@@ -34,7 +34,7 @@
             <router-link
               tag="buttton"
               :to="`/instractor/user/${course.Email}/id/${course.userid}/vedios/${course.categoryCourse}/${course.id}/${course.courseName}`"
-              class="btn btn-danger go_to_pag"
+              class="btn btn-danger go_to_page"
             >
               <i class="fa-solid fa-arrow-right-long"></i>
             </router-link>

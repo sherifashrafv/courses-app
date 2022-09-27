@@ -4,7 +4,7 @@
       <div @click.self="modalHide" class="modal-container" v-if="show">
         <div class="modal-content">
           <div class="position-relative h-100">
-            <span class="close_handelar">x</span>
+            <span @click="modalHide" class="close_handelar">x</span>
             <div
               class="d-flex h-100 flex-row align-items-center justify-content-center"
             >
@@ -101,8 +101,19 @@ export default {
   height: 80px;
 }
 .close_handelar {
+  width: 30px;
+  color: #a1a1a1;
   position: absolute;
   top: 0;
   right: 0;
+  border-radius: 50%;
+  border-color: #252a2a;
+  border-style: solid;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  cursor: pointer;
 }
 </style>

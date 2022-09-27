@@ -29,8 +29,20 @@ linear-gradient(
         <div class="row overflow-hidden">
           <div class="col-md-12 col-lg-8">
             <div class="course_main_wrapper">
-              <div class="img_course_background">
-                <img :src="course.backgroundImage" alt="" />
+              <div class="img_course_background position-relative">
+                <img
+                  v-if="course.backgroundImage"
+                  :src="course.backgroundImage"
+                  alt=""
+                />
+                <img v-else src="@/assets/Images/Icons/Loader.svg" alt="" />
+                <div @click="showModalVd" class="modal_open_vedio">
+                  <div v-if="previewVedio.length > 0" class="icon_vedio_modal">
+                    <i class="fa-solid fa-play"></i>
+                  </div>
+                </div>
+                <Vd-Modal :url="url" :show="showVd" :modalHide="hideVd">
+                </Vd-Modal>
               </div>
             </div>
           </div>
@@ -80,22 +92,34 @@ linear-gradient(
                   </p>
                   <div class="break-line my-4"></div>
                   <div
-                    style="cursor: pointer"
-                    class="d-flex justify-content-center"
+                    class="d-flex align-items-center justify-content-center p-5 w-100"
                   >
-                    <div class="share_modal d-flex align-items-center">
-                      <img
-                        style="
-                          width: 15px;
-                          margin-right: 8px;
-                          object-fit: cover;
-                          object-position: center;
-                        "
-                        src="@/assets/Images/Icons/share.png"
-                        alt=""
-                      />
-                      <p class="m-0">Share Course</p>
-                    </div>
+                    <button
+                      v-if="previewVedio.length > 0"
+                      style="height: 100% !important; width: fit-content"
+                      class="btn btn-dark add_section"
+                      @click="deleteVedioModal"
+                    >
+                      <template> Remove Preview Vedio </template>
+                      <template v-if="loader">
+                        <ve-loader></ve-loader>
+                      </template>
+                    </button>
+                    <button
+                      v-else
+                      @click="previewModal"
+                      class="btn btn-dark add_section"
+                    >
+                      Add Preview Vedio
+                    </button>
+                    <Preview_Modal
+                      :show="preview"
+                      :modalHide="hidePreviewModal"
+                      @cancelModal="hidePreviewModal"
+                      :categoryName="CategoryCourse"
+                      :userId="id"
+                      @getVedio="getPreviwVedio"
+                    ></Preview_Modal>
                   </div>
                 </div>
               </div>
@@ -150,12 +174,14 @@ import axios from "axios";
 import ModalAddSection from "@/components/Admin/ModalAddSection/index.vue";
 import Sections from "@/components/Admin/CourseSections/index.vue";
 import WhatYouWillLearn from "@/components/Admin/WLearn/index.vue";
+import Preview_Modal from "../../../components/Admin/preview_Modal/index.vue";
 export default {
   name: "course-details-page",
   components: {
     ModalAddSection,
     Sections,
     WhatYouWillLearn,
+    Preview_Modal,
   },
   data() {
     return {
@@ -168,6 +194,12 @@ export default {
       CategoryCourse: "",
       courseId: "",
       sections: [],
+      previewVedio: [],
+      preview: false,
+      showVd: false,
+      url: "",
+      courseTitle: "",
+      loader: false,
     };
   },
   watch: {
@@ -179,6 +211,7 @@ export default {
         );
         this.route = myRegx;
         this.id = params.id;
+        this.courseTitle = params.title;
         this.courseId = params.courseId;
         this.getCourse({
           categoryName: params.category,
@@ -193,6 +226,11 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    previewVedio(newValue) {
+      newValue.forEach((element) => {
+        this.url = element.url;
+      });
     },
   },
   methods: {
@@ -225,10 +263,79 @@ export default {
           this.sections = course;
         });
     },
+    previewModal() {
+      this.preview = !this.preview;
+    },
+    hidePreviewModal() {
+      this.preview = !this.preview;
+    },
+    async getPreviwVedio() {
+      await axios
+        .get(
+          `/${this.CategoryCourse}-previews/${this.id}/${this.courseTitle}.json`
+        )
+        .then((res) => {
+          this.loader = false;
+          console.log(res.data);
+          let newData = res.data;
+          let course = [];
+          for (let key in newData) {
+            newData[key].id = key;
+            course.push(newData[key]);
+          }
+          this.previewVedio = course;
+        });
+    },
+    showModalVd() {
+      this.showVd = !this.showVd;
+    },
+    async deleteVedioModal() {
+      console.log();
+      this.loader = true;
+      await axios
+        .delete(
+          `/${this.CategoryCourse}-previews/${this.id}/${this.courseTitle}.json`
+        )
+        .then(() => {
+          this.getPreviwVedio();
+          this.loader = false;
+        });
+    },
+    hideVd() {
+      this.showVd = false;
+    },
   },
   mounted() {
-    // await this.getSections();
+    const categoryName = this.$route.params.category;
+    const myRegx = categoryName.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+    console.log(myRegx);
+    this.id = this.$route.params.id;
+    this.CategoryCourse = myRegx;
+    this.courseid = this.$route.params.courseId;
+    this.getPreviwVedio();
+    document.title = this.$route.params.courseTitle;
   },
 };
 </script>
-<style></style>
+<style scoped>
+.modal_open_vedio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon_vedio_modal {
+  width: 40px;
+  height: 40px;
+  background: white;
+  text-align: center;
+  border-radius: 50%;
+  color: black;
+  line-height: 40px;
+  cursor: pointer;
+}
+</style>

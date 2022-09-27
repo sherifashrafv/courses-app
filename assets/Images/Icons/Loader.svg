@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="image-logo-placeholder" viewBox="0.00201416015625 -0.00006103515625 22.487060546875 28.071044921875" style="height: 100%; width: 100%;" width="48px" height="48px">
+  <style>
+    @keyframes logoSpinAnimation {
+      0% {
+        animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(0.86, 0.86);">
+    <g class="ldl-ani" style="transform: rotate(0deg); transform-origin: 11.2455px 14.0355px; animation: 0.952381s linear 0s infinite normal forwards running logoSpinAnimation;">
+      <g class="ldl-layer">
+        <g class="ldl-ani">
+          <path transform="translate(518.411 -269.207)" d="M-496.8 276.076a11.212 11.212 0 0 0-2.41-3.575 11.2 11.2 0 0 0-3.574-2.41 11.179 11.179 0 0 0-4.378-.884 11.175 11.175 0 0 0-4.378.884 11.194 11.194 0 0 0-3.575 2.41 11.2 11.2 0 0 0-2.41 3.575 11.175 11.175 0 0 0-.884 4.378 11.178 11.178 0 0 0 .884 4.378 11.2 11.2 0 0 0 2.41 3.575 11.212 11.212 0 0 0 3.575 2.41 10.958 10.958 0 0 0 1.145.412l.4 6.049 2.877-4.086 2.918-4.176a9.07 9.07 0 0 1-2.963.494 9.033 9.033 0 0 1-3.389-.653 9.037 9.037 0 0 1-3.013-2 9 9 0 0 1-2.653-6.4 8.995 8.995 0 0 1 2.653-6.4 8.995 8.995 0 0 1 6.4-2.652 9 9 0 0 1 6.4 2.652 9 9 0 0 1 2.652 6.4 9 9 0 0 1-2.652 6.4 9.13 9.13 0 0 1-1.758 1.373l-2.246 3.214a11.189 11.189 0 0 0 1.978-.628 11.22 11.22 0 0 0 3.575-2.41 11.221 11.221 0 0 0 2.41-3.575 11.177 11.177 0 0 0 .884-4.378 11.174 11.174 0 0 0-.878-4.377z" fill="#eb2027" id="Path_4132" style="fill: rgb(235, 32, 39);"/>
+        </g>
+      </g>
+      <g class="ldl-layer">
+        <g class="ldl-ani">
+          <path transform="translate(506.375 -278.755)" d="M-497.684 285.229l7.448 4.563a.268.268 0 0 1 0 .456l-8.065 4.964a.268.268 0 0 1-.409-.228V285.1a.268.268 0 0 1 .4-.232z" id="Path_4133" style="fill: rgb(235, 32, 39);"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

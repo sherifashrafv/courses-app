@@ -8,44 +8,59 @@
       :options="settings"
       :dots="true"
     >
-      <div v-for="course in courses" :Key="course.id">
-        <router-link
-          tag="div"
-          role="button"
-          :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
-          class="carousel-card"
-        >
-          <img class="img_card_carosuel" :src="course.backgroundImage" alt="" />
-          <div class="course_body">
-            <p class="card-title">{{ course.courseName }}</p>
-            <div
-              class="card-call-to-action d-flex flex-row align-items-center justify-content-between"
-            >
-              <p class="course-card-subtitle">
-                {{ course.FirstName + " " + course.LastName }}
-              </p>
-              <span
-                v-if="savedCourses"
-                @click.capture="addToWish($event, course, index)"
-                class="img_wishlist_course"
-                :ref="'courses' + course.id"
-              >
-                <img src="@/assets/Images/Icons/wishlist.png" alt="" />
-              </span>
-              <span v-else style="opacity: 0.3" class="img_wishlist_course">
-                <img src="@/assets/Images/Icons/wishlist.png" alt="" />
-              </span>
+      <!--  -->
+      <template v-if="loading">
+        <div v-for="(lis, i) in fakeArray" :key="i * 20" class="carousel-card">
+          <div class="movie--isloading">
+            <div class="loading-image"></div>
+            <div class="loading-content">
+              <div class="loading-text-container">
+                <div class="loading-main-text"></div>
+                <div class="loading-sub-text"></div>
+              </div>
             </div>
           </div>
-        </router-link>
-      </div>
+        </div>
+      </template>
+      <!--  -->
+      <template v-else>
+        <div v-for="course in courses" :Key="course.id">
+          <router-link
+            tag="div"
+            role="button"
+            :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
+            class="carousel-card"
+          >
+            <img
+              v-if="course.backgroundImage"
+              class="img_card_carosuel"
+              :src="course.backgroundImage"
+              alt=""
+            />
+            <div class="course_body">
+              <p class="card-title">{{ course.courseName }}</p>
+              <div
+                class="card-call-to-action d-flex flex-row align-items-center justify-content-between"
+              >
+                <p class="course-card-subtitle">
+                  {{ course.FirstName + " " + course.LastName }}
+                </p>
+                <span
+                  @click.capture="addToSavedVedios($event, course)"
+                  class="img_wishlist_course"
+                  :ref="'courses' + course.id"
+                >
+                  <img src="@/assets/Images/Icons/wishlist.png" alt="" />
+                </span>
+                <!-- <span v-else style="opacity: 0.3" class="img_wishlist_course">
+                <img src="@/assets/Images/Icons/wishlist.png" alt="" /> -->
+                <!-- </span> -->
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </template>
     </Slick>
-    <!-- <button v-if="coursesGot.length > 0" class="next_button" @click="prev">
-      <i class="fa-solid fa-chevron-left"></i>
-    </button>
-    <button v-if="coursesGot.length > 0" class="prev_button" @click="next">
-      <i class="fa-solid fa-chevron-right"></i>
-    </button> -->
   </div>
 </template>
 <script>
@@ -62,7 +77,11 @@ export default {
       nextBu: false,
       wishList: [],
       wishListed: [],
+      full: [],
       savedCourses: false,
+      fakeArray: Array(8).fill(""),
+      user: null,
+      id: null,
       settings: {
         arrows: true,
         infinite: true,
@@ -85,7 +104,16 @@ export default {
           {
             breakpoint: 767,
             settings: {
-              slidesToShow: 1,
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              variableWidth: false,
+              arrows: true,
+            },
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 2,
               slidesToScroll: 1,
               variableWidth: true,
               arrows: true,
@@ -96,7 +124,16 @@ export default {
             settings: {
               slidesToShow: 1,
               arrows: true,
-              variableWidth: true,
+              variableWidth: false,
+              slidesToScroll: 1,
+            },
+          },
+          {
+            breakpoint: 638,
+            settings: {
+              slidesToShow: 1,
+              arrows: true,
+              variableWidth: false,
               slidesToScroll: 1,
             },
           },
@@ -120,38 +157,58 @@ export default {
         this.$refs.prevbutton.classList.add("d-flex");
       }
     },
-    async getWishList(id) {
-      await axios
-        .get(`/wishList/${id}.json`)
+    async getWishList() {
+      let user = localStorage.getItem("user-info");
+      let id = JSON.parse(user).id;
+      axios
+        .get(`/savedCourses/${id}.json`)
         .then((res) => {
-          let newData = res.data;
-          let wishList = [];
-          for (let key in newData) {
-            newData[key].id = key;
-            // this.wishList.push(newData[key]);
-            wishList.push(newData[key]);
-          }
-          this.wishList = wishList;
+          this.wishList = res.data;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error.code);
         });
     },
-    async addToWish(e, item) {
+    async addToSavedVedios(e, item) {
       e.preventDefault();
-      const found = this.wishList.find((course) => course.id === item.id);
-      let refurnce = localStorage.getItem("user-info");
-      let id = JSON.parse(refurnce).id;
-      if (found) {
-        this.$refs["courses" + item.id][0].classList.remove("active");
-        axios.delete(`/wishList/${id}/${item.id}.json`).then(() => {
-          this.getWishList(id);
-        });
+
+      if (this.user) {
+        if (this.wishList === null) {
+          this.$refs["courses" + item.id][0].classList.add("active");
+          await axios
+            .post(`savedCourses/${this.id}/${item.id}.json`, {
+              ...item,
+            })
+            .then(() => {
+              this.getWishList();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else if (this.wishList) {
+          console.log(item.id);
+          let found = this.wishListed.find((ele) => ele.id == item.id);
+          if (found) {
+            await axios
+              .delete(`savedCourses/${this.id}/${item.id}.json`)
+              .then(() => {
+                this.getWishList();
+              });
+            this.$refs["courses" + item.id][0].classList.remove("active");
+          } else {
+            await axios
+              .post(`savedCourses/${this.id}/${item.id}.json`, {
+                ...item,
+              })
+              .then(() => {
+                this.getWishList();
+              });
+          }
+        } else if (this.wishList.length === 0) {
+          console.log(0);
+        }
       } else {
-        this.$refs["courses" + item.id][0].classList.add("active");
-        await axios.post(`/wishList/${id}/${item.id}.json`, item).then(() => {
-          this.getWishList(id);
-        });
+        this.$router.push(`/${this.$i18n.locale}/login`);
       }
     },
   },
@@ -161,9 +218,28 @@ export default {
     }
   },
   mounted() {
-    let refurnce = localStorage.getItem("user-info");
-    let id = JSON.parse(refurnce).id;
-    this.getWishList(id);
+    let user = localStorage.getItem("user-info");
+    this.user = JSON.parse(user);
+    this.id = JSON.parse(user).id;
+    this.getWishList();
+    this.$watch(
+      (vm) => [vm.courses, vm.wishListed],
+      (val) => {
+        val[0].forEach((ele) => {
+          let found = val[1].find((course) => course.id === ele.id);
+          console.log(found);
+          if (found) {
+            this.$refs["courses" + ele.id][0].classList.add("active");
+          } else {
+            this.$refs["courses" + ele.id][0].classList.remove("active");
+          }
+        });
+      },
+      {
+        immediate: true, // run immediately
+        deep: true, // detects changes inside objects. not needed here, but maybe in other cases
+      }
+    );
   },
   updated() {
     this.$nextTick(function () {
@@ -179,6 +255,9 @@ export default {
     courses: {
       type: Array,
     },
+    loading: {
+      type: Boolean,
+    },
   },
   watch: {
     courses(newValue) {
@@ -189,30 +268,18 @@ export default {
     user(newValue) {
       if (newValue) {
         this.savedCourses = true;
-        this.getWishList(newValue.id);
+        // this.getWishList(newValue.id);
       }
     },
-    wishList(newwishList) {
-      if (newwishList) {
-        newwishList.forEach((ele) => {
-          const found = newwishList.find((course) => course.id === ele.id);
-          if (found) {
-            this.$refs["courses" + ele.id][0].classList.add("active");
-          } else {
-            this.$refs["courses" + ele.id][0].classList.remove("active");
-          }
-          //
-          axios.get(`/wishList/${this.user.id}/${ele.id}.json`).then((res) => {
-            let newData = res.data;
-            let course = [];
-            for (let key in newData) {
-              newData[key].id = key;
-              course.push(newData[key]);
-              console.log(course);
-            }
-            this.wishListed = course;
-          });
-        });
+    wishList(newValue) {
+      if (newValue) {
+        let newData = newValue;
+        let course = [];
+        for (let key in newData) {
+          newData[key].id = key;
+          course.push(newData[key]);
+        }
+        this.wishListed = course;
       }
     },
     "$route.name": {
@@ -223,6 +290,12 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+  },
+
+  computed: {
+    users() {
+      return this.$store.state.user;
     },
   },
 };
@@ -310,11 +383,19 @@ button.slick-next.slick-arrow {
   font-size: 18px;
   font-weight: 500;
   line-height: 1.25;
-  margin-top: 2rem;
+  margin-top: 1rem;
+}
+@media (max-width: 639px) {
+  .carousel-card {
+    max-width: 100% !important;
+  }
 }
 @media (max-width: 600px) {
   .card-call-to-action {
     margin-top: 2rem;
+  }
+  .carousel-card {
+    max-width: 100%;
   }
 }
 @media (max-width: 768px) {
@@ -334,7 +415,7 @@ button.slick-next.slick-arrow {
 }
 @media (min-width: 992px) {
   .card-call-to-action {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
   .next_button,
   .prev_button {
@@ -345,14 +426,21 @@ button.slick-next.slick-arrow {
   .slick-slide {
     width: 254px;
   }
-  /* >>> .slick-track {
-    transform: translate(0, 0) !important;
-  } */
+}
+@media (max-width: 1199px) {
+}
+.fade-in-enter-active {
+  transition: all 0.5s ease;
 }
 
-/* Custom */
+.fade-in-leave-active {
+  transition: all 0.5s ease;
+}
 
-@media (max-width: 1199px) {
+.fade-in-enter,
+.fade-in-leave-to {
+  position: absolute; /* add for smooth transition between elements */
+  opacity: 0;
 }
 /*  */
 </style>

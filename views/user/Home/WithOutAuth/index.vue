@@ -1,12 +1,17 @@
 <template>
   <div>
-    <CarouselsWithDescription :list="fakeArray" :courses="LanguagesListed" />
+    <CarouselsWithDescription
+      :loading="loader"
+      :list="fakeArray"
+      :courses="LanguagesListed"
+    />
     <div class="container">
       <div class="row position-relative my-5">
         <ve-carousel
+          :loading="loader"
           :list="fakeArray"
           :courses="ArtsDesignListed"
-          :title="'Arts & Design'"
+          :title="$t('categoires.ArtsDesign')"
         >
         </ve-carousel>
       </div>
@@ -14,7 +19,11 @@
     <Interesting />
     <div class="container">
       <div class="row position-relative my-5">
-        <ve-carousel :courses="SoftSkillsListed" :title="'Soft Skills'">
+        <ve-carousel
+          :loading="loader"
+          :courses="SoftSkillsListed"
+          :title="$t('categoires.SoftSkills')"
+        >
         </ve-carousel>
       </div>
     </div>
@@ -22,8 +31,9 @@
     <div class="container">
       <div class="row position-relative my-5">
         <ve-carousel
+          :loading="loader"
           :courses="MediaPhotographyFilmListed"
-          :title="'MediaPhotographyFilm'"
+          :title="$t('categoires.MediaPhotographyFilm')"
         >
         </ve-carousel>
       </div>
@@ -31,30 +41,40 @@
     <div class="container">
       <div class="row position-relative my-5">
         <ve-carousel
+          :loading="loader"
           :courses="BusinessManagementListed"
-          :title="'BusinessManagement'"
+          :title="$t('categoires.BusinessManagement')"
         >
-        </ve-carousel>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel :courses="SalesMarketingListed" :title="'SalesMarketing'">
         </ve-carousel>
       </div>
     </div>
     <div class="container">
       <div class="row position-relative my-5">
         <ve-carousel
-          :courses="SoftSkillsListed"
-          :title="'Enjoy Learning Arts and Crafts'"
+          :loading="loader"
+          :courses="SalesMarketingListed"
+          :title="$t('categoires.SalesMarketing')"
         >
         </ve-carousel>
       </div>
     </div>
     <div class="container">
       <div class="row position-relative my-5">
-        <ve-carousel :courses="ArtsDesignListed" :title="'Crash Courses'">
+        <ve-carousel
+          :loading="loader"
+          :courses="SoftSkillsListed"
+          :title="$t('categoires.EnjoyLearningArtsandCrafts')"
+        >
+        </ve-carousel>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row position-relative my-5">
+        <ve-carousel
+          :loading="loader"
+          :courses="ArtsDesignListed"
+          :title="$t('categoires.CrashCourses')"
+        >
         </ve-carousel>
       </div>
     </div>
@@ -62,8 +82,9 @@
     <div class="container">
       <div class="row position-relative my-5">
         <ve-carousel
+          :loading="loader"
           :courses="SoftSkillsListed"
-          :title="'For Your Mental Health'"
+          :title="$t('categoires.ForYourMentalHealth')"
         >
         </ve-carousel>
       </div>
@@ -98,6 +119,7 @@ export default {
       //
       SalesMarketing: [],
       SalesMarketingListed: [],
+      loader: true,
     };
   },
   components: {
@@ -106,92 +128,88 @@ export default {
     SubscribeForPrice,
   },
   methods: {
-    // getLanguages
-    async getLanguages() {
-      await axios.get("/Languages.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.Languages = course;
-      });
-    },
-    // ArtsAndDesign
-    async ArtsAndDesign() {
-      await axios.get("/ArtsDesign.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.ArtsDesign = course;
-      });
-    },
-    //GSoftSkills
-    async GSoftSkills() {
-      await axios.get("/SoftSkills.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.SoftSkills = course;
-      });
-    },
-    //  MediaPhotographyFilm
-    async GMediaPhotographyFilm() {
-      await axios.get("/MediaPhotographyFilm.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.MediaPhotographyFilm = course;
-      });
-    },
-    //  BusinessManagement
-    async GBusinessManagement() {
-      await axios.get("/BusinessManagement.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.BusinessManagement = course;
-      });
-    },
-    //  BusinessManagement
-    async GSalesMarketing() {
-      await axios.get("/SalesMarketing.json").then((res) => {
-        let newData = res.data;
-        let course = [];
-        console.log(res.data);
-        for (let key in newData) {
-          newData[key].id = key;
-          course.push(newData[key]);
-        }
-        this.SalesMarketing = course;
-      });
+    async getAll() {
+      axios
+        .all([
+          axios.get(`/Languages.json`),
+          axios.get(`/ArtsDesign.json`),
+          axios.get(`/SoftSkills.json`),
+          axios.get(`/BusinessManagement.json`),
+          axios.get(`/SalesMarketing.json`),
+          axios.get("/MediaPhotographyFilm.json"),
+        ])
+        .then(
+          axios.spread(
+            (
+              Languages,
+              ArtsDesign,
+              SoftSkills,
+              BusinessManagement,
+              SalesMarkitng,
+              MediaPhotographyFilm
+            ) => {
+              // lang
+              let lang = Languages.data;
+              let course = [];
+              for (let key in lang) {
+                lang[key].id = key;
+                course.push(lang[key]);
+              }
+              this.Languages = course;
+              //
+              let arts = ArtsDesign.data;
+              let courseArtsDesign = [];
+              for (let key in arts) {
+                arts[key].id = key;
+                courseArtsDesign.push(arts[key]);
+              }
+              this.ArtsDesign = courseArtsDesign;
+              // end-ArtsDesign
+              // //////////
+              let soft = SoftSkills.data;
+              let courseSoftSkills = [];
+              for (let key in soft) {
+                soft[key].id = key;
+                courseSoftSkills.push(soft[key]);
+              }
+              this.SoftSkills = courseSoftSkills;
+              // ////////
+              // start Business
+              let Business = BusinessManagement.data;
+              let courseBusinessManagement = [];
+              for (let key in Business) {
+                Business[key].id = key;
+                courseBusinessManagement.push(Business[key]);
+              }
+              this.BusinessManagement = courseBusinessManagement;
+              // SalesMarketing
+              let sales = SalesMarkitng.data;
+              let courseSalesMarkitng = [];
+              for (let key in sales) {
+                sales[key].id = key;
+                courseSalesMarkitng.push(sales[key]);
+              }
+              this.SalesMarketing = courseSalesMarkitng;
+              // MediaPhotographyFilm
+              let media = MediaPhotographyFilm.data;
+              let courseMedia = [];
+              for (let key in media) {
+                media[key].id = key;
+                courseMedia.push(media[key]);
+              }
+              this.MediaPhotographyFilm = courseMedia;
+            }
+          )
+        )
+        .finally(() => {
+          this.loader = false;
+        })
+        .catch((error) => console.log(error));
     },
   },
+
   mounted() {
-    this.getLanguages();
-    this.ArtsAndDesign();
-    this.GSoftSkills();
-    this.GMediaPhotographyFilm();
-    this.GBusinessManagement();
-    this.GSalesMarketing();
+    this.getAll();
   },
   watch: {
     // Languages
@@ -256,11 +274,12 @@ export default {
         newgetcourses.forEach((ele) => {
           axios.get(`/MediaPhotographyFilm/${ele.id}.json`).then((res) => {
             let newData = res.data;
+            console.log(res.data);
             let course = [];
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
+              console.log(newData);
             }
             this.MediaPhotographyFilmListed.push(...course);
           });

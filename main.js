@@ -15,29 +15,38 @@ import "@fortawesome/fontawesome-free/css/all.css";
 // BOOTSTRAP
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap";
-// slick // for slick slider
-// import Slick from "vue-slick";
-// import "slick-carousel/slick/slick.css";
-// validation package
+
 import Vuelidate from "vuelidate";
 // loading proggress bar
 import NProgress from "vue-nprogress";
-Vue.use(NProgress);
 // for teleport
 import Skeleton from "@/components/shared/Skeleton/index.vue";
 import SkeletonMentors from "@/components/shared/SkeletonInstructors/index.vue";
 import PortalVue from "portal-vue";
-Vue.use(PortalVue);
-// for ModalVedios
+import InfiniteScroll from "v-infinite-scroll";
+import "v-infinite-scroll/dist/v-infinite-scroll.css";
+import VueSweetalert2 from "vue-sweetalert2";
 import Loader from "@/components/shared/Loader/index.vue";
-//
 import VedioModal from "@/components/shared/vediioModal/index.vue";
-
-// end teleport
 import SearchTerm from "@/components/shared/Search/index.vue";
+import "sweetalert2/dist/sweetalert2.min.css";
+import VueMeta from "vue-meta";
+import axios from "axios";
 
+let lang = localStorage.getItem("lang") || "en";
+axios.defaults.headers["Accept-Language"] = lang;
+if (lang === "ar") {
+  import("../public/css/Arabic/main.css");
+} else if (lang === "en") {
+  document.getElementsByTagName("body")[0].dir = "ltr";
+}
+Vue.use(VueSweetalert2);
+Vue.use(InfiniteScroll);
+Vue.use(PortalVue);
+Vue.use(NProgress);
+Vue.use(VueMeta);
 Vue.config.productionTip = false;
-// Vue.component("ve-slick", Slick);
+//
 Vue.component("ve-carousel", Carousel);
 Vue.component("default-layout", defaultLayout);
 Vue.component("custome-layout", CustomeLayout);

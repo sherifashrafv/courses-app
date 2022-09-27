@@ -9,7 +9,11 @@
                 v-model="sectionName"
                 type="text"
                 placeholder="Section Name"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.sectionName.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <Button
@@ -43,6 +47,15 @@ export default {
     },
     information: {
       type: Object,
+    },
+    sectionTitle: {
+      type: String,
+    },
+    userId: {
+      type: String,
+    },
+    categoryName: {
+      type: String,
     },
   },
   data() {

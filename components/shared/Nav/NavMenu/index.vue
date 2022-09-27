@@ -20,7 +20,7 @@
               </div>
             </li>
             <router-link
-              to="/subscribe"
+              :to="`/${$i18n.locale}/subscribe`"
               @click.native="cancel"
               class="subscribe_link-button d-flex flex-row align-items-center justify-content-center"
               tag="li"
@@ -102,7 +102,11 @@
                     Your DashBoard
                   </a>
                 </li>
-                <li @click="BecomeMentor({ route: 'Become-Mentor' })" v-else>
+                <li
+                  class="d-flex flex-row align-items-center padding_listed_information"
+                  @click="BecomeMentor({ route: 'Become-Mentor' })"
+                  v-else
+                >
                   <a class="text-decoration-underline" to="/Become-Mentor">
                     Become an instructor
                   </a>
@@ -166,22 +170,26 @@ export default {
     },
     DashBoardRoute({ email, id }) {
       this.$emit("modalHide");
-      this.$router.push(`/instractor/user/${email}/id/${id}`);
+      this.$router.push(
+        `/${this.$i18n.locale}/instractor/user/${email}/id/${id}`
+      );
       window.location.reload();
     },
     BecomeMentor({ route }) {
       this.$emit("modalHide");
-      this.$router.push(`/${route}`);
+      this.$router.push(`/${this.$i18n.locale}/${route}`);
       window.location.reload();
     },
     myCoursesRoute({ email, id }) {
       this.$emit("modalHide");
-      this.$router.push(`/instractor/user/${email}/id/${id}/courses/Languages`);
+      this.$router.push(
+        `/${this.$i18n.locale}/instractor/user/${email}/id/${id}/courses/Languages`
+      );
       window.location.reload();
     },
     courseWish_list_route() {
       this.$emit("modalHide");
-      this.$router.push(`/favorite-page`);
+      this.$router.push(`/${this.$i18n.locale}/favorite-page`);
       // window.location.reload();
     },
   },
@@ -240,12 +248,12 @@ export default {
 .modal-container .modal-content::before {
   content: "";
   position: absolute;
-  top: -44px;
-  left: 25px;
+  top: -11%;
+  left: 39px;
   border-width: 23px;
   border-color: transparent transparent #1b1f1f transparent;
   border-style: dashed dashed dashed dashed;
-  z-index: 1;
+  z-index: -1;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -273,16 +281,16 @@ export default {
   max-height: 485px;
   overflow-y: auto;
 }
-.main_menu_categories::-webkit-scrollbar {
-  display: none;
-}
+/* .main_menu_categories::-webkit-scrollbar {
+  display: block;
+} */
 .main_menu_categories li {
   cursor: pointer;
   color: var(--map-numbers-count);
 }
 .main_menu_categories li:hover,
 .main_menu_categories li.active {
-  background: #3b4242;
+  background: #252a2a;
 }
 .tab_text_categories {
   font-size: 19px;

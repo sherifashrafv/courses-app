@@ -65,7 +65,7 @@ export default {
     };
   },
   validations: {
-    email: { email, minLength: minLength(0, 25) },
+    email: { email },
     password: { required, minLength: minLength(0, 25) },
   },
   computed: {

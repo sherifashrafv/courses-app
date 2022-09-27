@@ -520,10 +520,6 @@ export default {
       }).then(() => {
         this.getWhatYouWillOBJ();
       });
-      // await axios.put(
-      //   `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}/${id}/image1/0.json `,
-      //   newValue
-      // );
     },
     async updateImage2({ newValue }) {
       const washingtonRef = doc(

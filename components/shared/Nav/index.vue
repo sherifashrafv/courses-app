@@ -8,13 +8,17 @@
           <!-- logo&subscribe -->
           <div class="logo_subscripe d-flex flex-row align-items-center gap-4">
             <div class="logo_links d-flex align-items-center">
-              <span class="icon_menu_mobile">
+              <span @click="dropMenuHandelar" class="icon_menu_mobile">
                 <img src="@/assets/Images/Icons/menus.png" alt="" />
+                <DropMenu
+                  :show="dropMenu"
+                  :modalHide="hideMenuHandelar"
+                ></DropMenu>
               </span>
               <h4 class="logo me-3 m-0 p-0">
                 <router-link
                   exact
-                  to="/"
+                  :to="`/${$i18n.locale}/`"
                   class="logo_image d-flex flex-row align-items-center text-decoration-none"
                 >
                   <img src="@/assets/Images/Icons/xx.png" />
@@ -24,25 +28,27 @@
             </div>
             <div class="links_mentors_main-parent">
               <ul class="links_mentors p-0 d-flex flex-row align-items-center">
-                <li role="button" @click="showModalHandler">
-                  <h5 class="m-0">
-                    courses
-                    <i class="fa-solid fa-chevron-down fs-6 ms-1"></i>
-                  </h5>
+                <li
+                  class="d-flex align-items-center justify-content-between"
+                  role="button"
+                  @click="showModalHandler"
+                >
+                  <h5 class="m-0">{{ $t("navbar.courses") }}</h5>
+                  <i class="fa-solid fa-chevron-down fs-6 ms-2 mt-1 me-2"></i>
                 </li>
                 <li>
                   <router-link
                     role="button"
                     tag="h5"
                     class="m-0 p=0"
-                    to="/Mentors"
+                    :to="`/${$i18n.locale}/Mentors`"
                   >
-                    instractors
+                    {{ $t("navbar.Instractors") }}
                   </router-link>
                 </li>
                 <li class="btn-subscribe">
-                  <router-link tag="span" to="/Subscripe">
-                    Subscripe
+                  <router-link tag="span" :to="`/${$i18n.locale}/subscribe`">
+                    {{ $t("navbar.Subscripe") }}
                   </router-link>
                 </li>
               </ul>
@@ -63,15 +69,45 @@
                 <li class="space_line">
                   <hr />
                 </li>
-                <li class="lang">
+                <li
+                  role="button"
+                  v-if="languages === 'en'"
+                  @click="switchLang('ar')"
+                  class="lang"
+                >
                   <p>ع</p>
+                </li>
+                <li
+                  role="button"
+                  v-if="languages === 'ar'"
+                  @click="switchLang('en')"
+                  class="lang"
+                >
+                  <p
+                    style="
+                      margin: 0;
+                      text-align: center;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      padding: 0;
+                      font-family: 'Roboto', 'sans-serif' !important;
+                      font-size: 24px;
+                      line-height: 50px;
+                      text-transform: uppercase;
+                    "
+                  >
+                    En
+                  </p>
                 </li>
                 <li class="actions">
                   <img src="@/assets/Images/Icons/monitorlevels.png" alt="" />
                 </li>
                 <li v-if="currentUser"></li>
                 <li v-else class="login">
-                  <router-link to="/login">Login</router-link>
+                  <router-link :to="`/${$i18n.locale}/login`">{{
+                    $t("registering.Login")
+                  }}</router-link>
                 </li>
                 <li
                   @click="showSettings"
@@ -98,8 +134,12 @@
                   <!--  -->
                 </li>
                 <li v-else role="button" class="btn-sign-up">
-                  <router-link tag="span" class="" to="/signup">
-                    SignUp
+                  <router-link
+                    tag="span"
+                    class=""
+                    :to="`/${$i18n.locale}/signup`"
+                  >
+                    {{ $t("registering.signUp") }}
                   </router-link>
                 </li>
               </ul>
@@ -119,11 +159,14 @@
 <script>
 import NavMenu from "@/components/User/Home/menuModal/index.vue";
 import SettingsMenu from "@/components/shared/Nav/NavMenu/index.vue";
+import DropMenu from "@/components/shared/dropMenu/index.vue";
+const lang = localStorage.getItem("lang") || "en";
 export default {
   name: "nav-bar",
   components: {
     NavMenu,
     SettingsMenu,
+    DropMenu,
   },
   data() {
     return {
@@ -133,6 +176,8 @@ export default {
       user: [],
       menuCourses: false,
       CourseByNanme: [],
+      dropMenu: false,
+      languages: lang,
     };
   },
   methods: {
@@ -149,7 +194,7 @@ export default {
       this.showSettingsMenu = false;
     },
     navFixed() {
-      if (window.scrollY >= 0) {
+      if (window.scrollY >= 50) {
         this.$refs.navbar.classList.add("fixed-nav-bar");
         let body = document.querySelector("body");
         body.style.marginTop = "9vh";
@@ -158,6 +203,26 @@ export default {
         let body = document.querySelector("body");
         body.style.marginTop = "0";
       }
+    },
+    dropMenuHandelar() {
+      const body = document.getElementsByTagName("body")[0];
+      body.classList.toggle("overflow-hidden");
+      console.log("dooxxx");
+      this.dropMenu = !this.dropMenu;
+    },
+    hideMenuHandelar() {
+      this.dropMenu = false;
+      const body = document.getElementsByTagName("body")[0];
+      body.classList.remove("overflow-hidden");
+    },
+    switchLang(locale) {
+      console.log(locale);
+      localStorage.setItem("lang", locale);
+      this.$i18n.locale = locale;
+      this.$router.push({
+        params: { lang: locale },
+      });
+      window.location.reload();
     },
   },
   computed: {

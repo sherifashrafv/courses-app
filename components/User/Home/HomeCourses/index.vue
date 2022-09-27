@@ -10,7 +10,7 @@
               @click="activeTab = 'SalesMarketing'"
               :class="[CategoryTitle === 'SalesMarketing' ? 'active' : '']"
             >
-              Featured Courses
+              {{ $t("home.Featured Courses") }}
             </li>
             <li
               @click="activeTab = 'MediaPhotographyFilm'"
@@ -18,13 +18,13 @@
                 CategoryTitle === 'MediaPhotographyFilm' ? 'active' : '',
               ]"
             >
-              Most Viewed
+              {{ $t("home.Most Viewed") }}
             </li>
             <li
               @click="activeTab = 'Arts & Design'"
               :class="[CategoryTitle === 'ArtsDesign' ? 'active' : '']"
             >
-              New Courses
+              {{ $t("home.New Courses") }}
             </li>
           </ul>
           <!-- carousel -->
@@ -41,7 +41,6 @@
 
 <script>
 import axios from "axios";
-// optional style for arrows & dots
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 export default {
   name: "home-courses",

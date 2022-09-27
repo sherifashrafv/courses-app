@@ -7,13 +7,13 @@
         >
           <div class="categories_nav_list m-0">
             <div class="head_title_categories">
-              <h4 class="m-0">Categories</h4>
+              <h4 class="m-0">{{ $t("menuModal.Categories") }}</h4>
             </div>
             <ul class="main_menu_categories d-flex flex-column w-100">
               <li
                 v-for="(course, i) in Categories"
                 :key="i"
-                @click="activeTab = course"
+                @mouseenter="activeTab = course"
                 :class="[CategoryTitle === course ? 'active' : '']"
               >
                 <div
@@ -32,7 +32,7 @@
               class="button_browse_courses_categories d-flex align-items-center justify-content-between"
               @click.native="$emit('hide')"
             >
-              <span class="m-auto"> Browse Courses </span>
+              <span class="m-auto">{{ $t("menuModal.BrowseCourses") }} </span>
               <span>
                 <i class="fa-solid fa-arrow-right-long"></i>
               </span>
@@ -53,7 +53,8 @@
                     :key="course.id"
                   >
                     <router-link
-                      :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}`"
+                      @click.native="modalHide"
+                      :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
                       class="listed-course d-flex flex-row align-items-center mb-5"
                     >
                       <div class="course_image">
@@ -70,13 +71,15 @@
                 </transition-group>
               </li>
             </ul>
-            <router-link
-              to="/coursePage"
+            <span
+              @click="goTo"
               :class="
                 activeMenu ? 'view_all_courses d-none' : 'view_all_courses'
               "
-              >View All</router-link
+              role="button"
             >
+              {{ $t("viewAll") }}
+            </span>
           </div>
         </div>
       </div>
@@ -136,6 +139,10 @@ export default {
         }
         this.courses = course;
       });
+    },
+    goTo() {
+      this.$emit("hide");
+      this.$router.push(`/categories/${this.activeTab}`);
     },
   },
   watch: {
@@ -254,15 +261,24 @@ export default {
   max-height: 485px;
   overflow-y: auto;
 }
+.main_menu_categories:hover::-webkit-scrollbar {
+  opacity: 1;
+  display: block;
+  width: 5px;
+}
 .main_menu_categories::-webkit-scrollbar {
   display: none;
+  opacity: 0;
+  transition: all;
+  width: 5px;
 }
 .main_menu_categories li {
   cursor: pointer;
   color: var(--map-numbers-count);
 }
-.main_menu_categories li:hover {
-  background: #3b4242;
+.main_menu_categories li:hover,
+.main_menu_categories li.active {
+  background: #252a2a;
 }
 .tab_text_categories {
   font-size: 19px;

@@ -9,14 +9,13 @@
                 class="discription_about-courses active d-flex flex-column align-items-center justify-content-center"
               >
                 <p class="discription_about_title">
-                  Start Your Learning Journey
+                  {{ $t("journey.StartYourLearningJourney") }}
                 </p>
                 <p class="subtitle_discription-carousel_card">
-                  Browse through our courses catalog and choose what you want to
-                  learn
+                  {{ $t("journey.body") }}
                 </p>
                 <router-link class="btn btn-light" to="/courses">
-                  Browse Courses
+                  {{ $t("journey.Browse Courses") }}
                 </router-link>
               </div>
             </div>
@@ -25,57 +24,72 @@
       </div>
 
       <section class="section_carousle content position-relative">
-        <Slick id="slick_slider" ref="slick" class="mt-4" :options="settings">
+        <Slick
+          id="slick_slider"
+          ref="slick"
+          class="mt-4"
+          :rtl="rtl"
+          :options="settings"
+        >
           <div class="carousel-card main_card_content_discripe">
             <div
               class="discription_about-courses d-flex flex-column align-items-start justify-content-center"
             >
-              <p class="discription_about_title">Start Your Learning Journey</p>
+              <p class="discription_about_title">
+                {{ $t("journey.StartYourLearningJourney") }}
+              </p>
               <p class="subtitle_discription-carousel_card">
-                Browse through our courses catalog and choose what you want to
-                learn
+                {{ $t("journey.body") }}
               </p>
               <router-link class="btn btn-light" to="/courses">
-                Browse Courses
+                {{ $t("journey.Browse Courses") }}
               </router-link>
             </div>
           </div>
-          <div v-for="(course, index) in courses" :key="course.id">
-            <router-link
-              tag="div"
-              role="button"
-              :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
-              class="carousel-card"
-            >
-              <img class="img_card_carosuel" :src="course.backgroundImage" />
-              <div class="course_body">
-                <p class="card-title">{{ course.courseName }}</p>
-                <div
-                  class="card-call-to-action d-flex flex-row align-items-center justify-content-between"
-                >
-                  <p class="course-card-subtitle">
-                    {{ course.FirstName + " " + course.LastName }}
-                  </p>
-                  <span
-                    v-if="savedCourses"
-                    @click.capture="addToWish($event, course, index)"
-                    class="img_wishlist_course"
-                    :ref="'courseSaved' + course.id"
-                  >
-                    <img src="@/assets/Images/Icons/wishlist.png" alt="" />
-                  </span>
-                  <span
-                    ref="courseSaved"
-                    v-else
-                    style="opacity: 0.3"
-                    class="img_wishlist_course"
-                  >
-                    <img src="@/assets/Images/Icons/wishlist.png" alt="" />
-                  </span>
+          <!-- laading -->
+          <template v-if="loading">
+            <div v-for="(lis, i) in empty" :key="i * 20" class="carousel-card">
+              <div class="movie--isloading">
+                <div class="loading-image"></div>
+                <div class="loading-content">
+                  <div class="loading-text-container">
+                    <div class="loading-main-text"></div>
+                    <div class="loading-sub-text"></div>
+                  </div>
                 </div>
               </div>
-            </router-link>
-          </div>
+            </div>
+          </template>
+          <!-- end-loading -->
+          <template v-else>
+            <div v-for="course in courses" :key="course.id">
+              <router-link
+                tag="div"
+                role="button"
+                :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
+                class="carousel-card"
+              >
+                <img class="img_card_carosuel" :src="course.backgroundImage" />
+                <div class="course_body">
+                  <p class="card-title">{{ course.courseName }}</p>
+                  <div
+                    class="card-call-to-action d-flex flex-row align-items-center justify-content-between"
+                  >
+                    <p class="course-card-subtitle">
+                      {{ course.FirstName + " " + course.LastName }}
+                    </p>
+                    <span
+                      @click.capture="addToSavedVedios($event, course)"
+                      class="img_wishlist_course"
+                      :ref="'coursestx' + course.id"
+                    >
+                      <img src="@/assets/Images/Icons/wishlist.png" alt="" />
+                    </span>
+                  </div>
+                </div>
+              </router-link>
+            </div>
+          </template>
         </Slick>
       </section>
     </section>
@@ -85,13 +99,16 @@
 import Slick from "vue-slick";
 import "slick-carousel/slick/slick.css";
 import axios from "axios";
+
 export default {
   name: "carousel-cards",
   components: { Slick },
   data() {
     return {
       slick: false,
-      coursesGot: [],
+      wishList: [],
+      wishListed: [],
+      empty: Array(8).fill(""),
       settings: {
         infinite: false,
         // initialSlide: 4,
@@ -101,7 +118,7 @@ export default {
         slidesToScroll: 1,
         slidesToShow: 3,
         arrows: true,
-
+        rtl: false,
         // centerPadding: "10px",
         responsive: [
           {
@@ -120,23 +137,24 @@ export default {
           {
             breakpoint: 600,
             settings: {
+              variableWidth: true,
               slidesToShow: 2,
               slidesToScroll: 2,
+              arrows: true,
               initialSlide: 2,
             },
           },
           {
             breakpoint: 480,
             settings: {
+              variableWidth: true,
               slidesToShow: 1,
               slidesToScroll: 1,
+              arrows: true,
             },
           },
         ],
       },
-      wishList: [],
-      wishListed: [],
-      savedCourses: false,
     };
   },
   computed: {
@@ -145,38 +163,65 @@ export default {
     },
   },
   methods: {
-    async getWishList(id) {
-      await axios
-        .get(`/wishList/${id}.json`)
+    async getWishList() {
+      let user = localStorage.getItem("user-info");
+      let id = JSON.parse(user).id;
+      axios
+        .get(`/savedCourses/${id}.json`)
         .then((res) => {
-          let newData = res.data;
-          let wishList = [];
-          for (let key in newData) {
-            newData[key].id = key;
-            // this.wishList.push(newData[key]);
-            wishList.push(newData[key]);
-          }
-          this.wishList = wishList;
+          this.wishList = res.data;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error.code);
         });
     },
-    async addToWish(e, item) {
+    async addToSavedVedios(e, item) {
       e.preventDefault();
-      const found = this.wishList.find((course) => course.id === item.id);
-      if (found) {
-        this.$refs["courseSaved" + item.id][0].classList.remove("active");
-        axios.delete(`/wishList/${this.user.id}/${item.id}.json`).then(() => {
-          this.getWishList(this.user.id);
-        });
+      this.$refs["coursestx" + item.id][0].classList.add("active");
+      let user = localStorage.getItem("user-info");
+      let id = JSON.parse(user).id;
+      if (user) {
+        if (this.wishList === null) {
+          await axios
+            .post(`savedCourses/${id}/${item.id}.json`, {
+              ...item,
+            })
+            .then(() => {
+              this.getWishList();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+        //
+        else if (this.wishList) {
+          let found = this.wishListed.find((ele) => ele.id == item.id);
+          //
+          if (found) {
+            await axios
+              .delete(`savedCourses/${id}/${item.id}.json`)
+              .then(() => {
+                this.getWishList();
+              });
+            this.$refs["coursestx" + item.id][0].classList.remove("active");
+          }
+          //
+          else {
+            await axios
+              .post(`savedCourses/${id}/${item.id}.json`, {
+                ...item,
+              })
+              .then(() => {
+                this.getWishList();
+              });
+          }
+        }
+        //
+        else if (this.wishList.length === 0) {
+          console.log(0);
+        }
       } else {
-        this.$refs["courseSaved" + item.id][0].classList.add("active");
-        await axios
-          .post(`/wishList/${this.user.id}/${item.id}.json`, item)
-          .then(() => {
-            this.getWishList(this.user.id);
-          });
+        this.$router.push(`/${this.$i18n.locale}/login`);
       }
     },
   },
@@ -196,48 +241,32 @@ export default {
     courses: {
       type: Array,
     },
+    loading: {
+      type: Boolean,
+    },
   },
   mounted() {
-    let refurnce = localStorage.getItem("user-info");
-    let id = JSON.parse(refurnce).id;
-    this.getWishList(id);
+    this.getWishList();
+    this.$watch(
+      (vm) => [vm.courses, vm.wishListed],
+      (val) => {
+        val[0].forEach((ele) => {
+          let found = val[1].find((course) => course.id === ele.id);
+          console.log(found);
+          if (found) {
+            this.$refs["coursestx" + ele.id][0].classList.add("active");
+          } else {
+            this.$refs["coursestx" + ele.id][0].classList.remove("active");
+          }
+        });
+      },
+      {
+        immediate: true, // run immediately
+        deep: true, // detects changes inside objects. not needed here, but maybe in other cases
+      }
+    );
   },
   watch: {
-    courses(newValue) {
-      if (newValue) {
-        // this.handleBeforeChange();
-        this.coursesGot = newValue;
-      }
-    },
-    user(newValue) {
-      if (newValue) {
-        this.savedCourses = true;
-        this.getWishList(newValue.id);
-      }
-    },
-    wishList(newwishList) {
-      if (newwishList) {
-        newwishList.forEach((ele) => {
-          const found = newwishList.find((course) => course.id === ele.id);
-          if (found) {
-            this.$refs["courseSaved" + ele.id][0].classList.add("active");
-          } else {
-            this.$refs["courseSaved" + ele.id][0].classList.remove("active");
-          }
-          //
-          axios.get(`/wishList/${this.user.id}/${ele.id}.json`).then((res) => {
-            let newData = res.data;
-            let course = [];
-            for (let key in newData) {
-              newData[key].id = key;
-              course.push(newData[key]);
-              console.log(course);
-            }
-            this.wishListed = course;
-          });
-        });
-      }
-    },
     "$route.name": {
       handler: function (name) {
         if (name) {
@@ -246,6 +275,17 @@ export default {
       },
       deep: true,
       immediate: true,
+    },
+    wishList(newValue) {
+      if (newValue) {
+        let newData = newValue;
+        let course = [];
+        for (let key in newData) {
+          newData[key].id = key;
+          course.push(newData[key]);
+        }
+        this.wishListed = course;
+      }
     },
   },
 };
@@ -324,7 +364,7 @@ section.section_carousle.content {
 }
 @media (max-width: 600px) {
   .discription_about-courses.active {
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 }
 @media (max-width: 768px) {
@@ -428,7 +468,7 @@ button.slick-next.slick-arrow {
     background: #1b1f1f;
     background: #1b1f1f;
     padding: 33px 0;
-    margin-top: 9rem;
+    margin-top: 6rem;
   }
 }
 @media (min-width: 1200px) {

@@ -29,12 +29,22 @@ linear-gradient(
         <div class="col-md-12 col-lg-8">
           <div class="course_main_wrapper">
             <div
-              :style="{
-                'background-image': `url(${course.backgroundImage})`,
-              }"
-              class="img_course_background"
+              :style="[
+                course.backgroundImage
+                  ? { backgroundImage: `url(${course.backgroundImage})` }
+                  : {
+                      backgroundImage: `url(https://app.almentor.net/assets/images/images-logo-placeholder.svg)`,
+                    },
+              ]"
+              class="img_course_background position-relative"
             >
-              <!-- <img :src="course.backgroundImage" alt="" /> -->
+              <div @click="showModalVd" class="modal_open_vedio">
+                <div v-if="previewVedio.length > 0" class="icon_vedio_modal">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+              </div>
+              <Vd-Modal :url="urlvd" :show="showVd" :modalHide="hideVd">
+              </Vd-Modal>
             </div>
           </div>
           <div class="category_title_course">
@@ -62,8 +72,13 @@ linear-gradient(
           <div
             class="mentor_information mt-4 d-flex flex-row align-items-center gap-3"
           >
-            <div class="img_mentor">
-              <img :src="course.userimage" alt="" />
+            <div class="img_mentor position-relative">
+              <img v-if="course.userimage" :src="course.userimage" alt="" />
+              <img
+                v-else
+                src="../../../assets/Images/Icons/Loader.svg"
+                alt=""
+              />
             </div>
             <div class="instructor_information">
               <p class="name">{{ course.FirstName + " " + course.LastName }}</p>
@@ -237,7 +252,7 @@ linear-gradient(
           </div>
           <div class="course_content"></div>
         </div>
-        <div class="col-md-12 col-lg-4">
+        <div class="detx_wrpp col-md-12 col-lg-4">
           <div class="details_wrapper">
             <div class="content">
               <p class="title_course_desxx">
@@ -304,6 +319,9 @@ linear-gradient(
             </div>
           </div>
         </div>
+        <div class="box_md_">
+          <p></p>
+        </div>
       </div>
       <div class="row">
         <div class="col-12"></div>
@@ -334,6 +352,11 @@ export default {
       ArtsDesign: [],
       ArtsDesignListed: [],
       sections: [],
+      previewVedio: [],
+      titleCourse: "",
+      urlvd: "",
+      showVd: false,
+      preview: false,
     };
   },
 
@@ -400,6 +423,29 @@ export default {
     hideVedioModal() {
       this.vedioModal = false;
     },
+    async getPreviwVedio() {
+      await axios
+        .get(
+          `/${this.categoryCourse}-previews/${this.userid}/${this.titleCourse}.json`
+        )
+        .then((res) => {
+          this.loader = false;
+          console.log(res.data);
+          let newData = res.data;
+          let course = [];
+          for (let key in newData) {
+            newData[key].id = key;
+            course.push(newData[key]);
+          }
+          this.previewVedio = course;
+        });
+    },
+    showModalVd() {
+      this.showVd = !this.showVd;
+    },
+    hideVd() {
+      this.showVd = false;
+    },
   },
   watch: {
     async ArtsDesign(newgetcourses) {
@@ -433,15 +479,44 @@ export default {
       deep: true,
       immediate: true,
     },
+    previewVedio(newValue) {
+      newValue.forEach((element) => {
+        this.urlvd = element.url;
+      });
+    },
   },
   mounted() {
     this.title = this.$route.params.categoryCourse;
     this.categoryCourse = this.$route.params.categoryCourse;
+    this.titleCourse = this.$route.params.courseTitle;
     this.id = this.$route.params.id;
     this.userid = this.$route.params.userid;
     this.get_course();
     this.ArtsAndDesign();
+    this.getPreviwVedio();
+    document.title = this.$route.params.courseTitle;
   },
 };
 </script>
-<style></style>
+<style scoped>
+.modal_open_vedio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon_vedio_modal {
+  width: 40px;
+  height: 40px;
+  background: white;
+  text-align: center;
+  border-radius: 50%;
+  color: black;
+  line-height: 40px;
+  cursor: pointer;
+}
+</style>
