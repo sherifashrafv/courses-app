@@ -120,7 +120,6 @@ export default {
     },
     // get cousrses of the user
     get_ArtsDesign: async (store, { email, userId }) => {
-      console.log(email, userId);
       const result = await axios.get(
         `/ArtsDesign?email=${email}&userId=${userId}`
       );
@@ -131,7 +130,6 @@ export default {
       }
     },
     get_Languages: async (store, { email, userId }) => {
-      console.log(email, userId);
       const result = await axios.get(
         `/Languages?email=${email}&userId=${userId}`
       );
@@ -142,7 +140,6 @@ export default {
       }
     },
     get_SoftSkills: async (store, { email, userId }) => {
-      console.log(email, userId);
       let result = await axios.get(
         `/SoftSkills?email=${email}&userId=${userId}`
       );

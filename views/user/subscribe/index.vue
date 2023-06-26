@@ -5,15 +5,16 @@
         <div class="row align-items-center">
           <div class="col-lg-6 col-md-12 col-sm-12">
             <h2 class="simplified-subscription-page__plans-section__title">
-              {{ $t("subscribepage.subscribeForPrice") }}
+              Choose Your Subscription Plan
             </h2>
             <p class="simplified-subscription-page__plans-section__subtitle">
-              {{ $t("subscribepage.Get unlimited access") }}
+              Get the best educational content in the Arab world at the best
+              price
             </p>
             <div class="subscribe_plans_wrapper">
               <div class="card_month_plan position-relative">
                 <h5 class="simplified-subscription-plan-card__title month">
-                  {{ $t("subscribeForPrice.Monthly Plan") }}
+                  Monthly Plan
                 </h5>
                 <div class="simplified-subscription-plan-card__body">
                   <p
@@ -27,26 +28,26 @@
                     </span>
                   </p>
                   <p class="simplified-subscription-plan-card__description">
-                    {{ $t("Subscribecomponent.permounthtext") }}
+                    Per Month
                   </p>
                   <p
                     class="simplified-subscription-plan-card__billing-note month"
                   >
-                    {{ $t("subscribeForPrice.Billed monthly") }}
+                    Billed monthly
                   </p>
                   <button
                     class="btn btn-outline-light simplified-subscription-plan-card__select-btn"
                   >
-                    {{ $t("subscribepage.select") }}
+                    select
                   </button>
                 </div>
               </div>
               <div class="card_year_plan position-relative active">
                 <h5 class="simplified-subscription-plan-card__title yearly">
-                  {{ $t("Subscribecomponent.YearlyPlan") }}
+                  YearlyPlan
                 </h5>
                 <div class="simplified-subscription-plan-card__ribbon">
-                  {{ $t("Subscribecomponent.bigsalesubscriptioncard") }}
+                  big sale subscription card
                 </div>
                 <div class="simplified-subscription-plan-card__body">
                   <p
@@ -60,24 +61,24 @@
                     </span>
                   </p>
                   <p class="simplified-subscription-plan-card__description">
-                    {{ $t("Subscribecomponent.permounthtext") }}
+                    Per Month
                   </p>
                   <p
                     class="simplified-subscription-plan-card__billing-note yearly"
                   >
-                    {{ $t("subscribeForPrice.Billed yearly") }}
+                    Billed yearly
                   </p>
                   <button
                     class="btn btn-outline-light simplified-subscription-plan-card__select-btn"
                   >
-                    {{ $t("subscribepage.select") }}
+                    select
                   </button>
                 </div>
               </div>
             </div>
             <div class="simplified-subscription-page__form">
               <p class="simplified-subscription-plan-card__billing-note">
-                {{ $t("subscribepage.Do you have a discount code") }}
+                Do you have a discount code?
               </p>
               <div
                 class="simplified_copoon d-flex align-items-center justify-content-between gap-3"
@@ -85,15 +86,13 @@
                 <input
                   type="text"
                   class="flex-grow-1"
-                  :placeholder="$t('subscribepage.discountCode')"
+                  placeholder="discountCode"
                 />
                 <button class="simplified-subscription-page__form_button">
-                  {{ $t("subscribepage.apply") }}
+                  apply
                 </button>
               </div>
-              <button class="btn btn-danger plan-button">
-                {{ $t("subscribepage.next") }}
-              </button>
+              <button class="btn btn-danger plan-button">next</button>
             </div>
           </div>
           <div class="col-lg-6 col-md-12 col-sm-12">
@@ -101,7 +100,7 @@
               <h2
                 class="simplified-subscription-page-benefits__what-you-get_title"
               >
-                {{ $t("subscribepage.What you get") }}
+                What you get
               </h2>
               <div
                 class="simplified-subscription-page-benefits__what-you-get__item d-flex align-items-center"
@@ -110,7 +109,7 @@
                 <p
                   class="simplified-subscription-page-benefits__what-you-get__item-title"
                 >
-                  {{ $t("subscribepage.Unlimited access to all courses") }}
+                  Unlimited access to all courses
                 </p>
               </div>
               <div
@@ -123,7 +122,7 @@
                 <p
                   class="simplified-subscription-page-benefits__what-you-get__item-title"
                 >
-                  {{ $t("subscribepage.Save on all courses") }}
+                  Save on all courses
                 </p>
               </div>
               <div
@@ -133,7 +132,7 @@
                 <p
                   class="simplified-subscription-page-benefits__what-you-get__item-title"
                 >
-                  {{ $t("subscribepage.Earn a certificate of completion") }}
+                  Earn a certificate of completion
                 </p>
               </div>
               <div
@@ -143,15 +142,13 @@
                 <p
                   class="simplified-subscription-page-benefits__what-you-get__item-title"
                 >
-                  {{ $t("subscribepage.Download learning content on our app") }}
+                  Download learning content on our app
                 </p>
               </div>
               <div
                 class="simplified-subscription-page-benefits__payment-methods"
               >
-                <h3>
-                  {{ $t("subscribepage.Flexible payment methods") }}
-                </h3>
+                <h3>Flexible payment methods</h3>
                 <div
                   class="simplified-subscription-page-benefits__payment-methods_row"
                 >
@@ -180,7 +177,9 @@
                   class="simplified-subscription-page-benefits__payment-methods__note"
                 >
                   <p>
-                    {{ $t("subscribepage.Prices are subject") }}
+                    *Prices are subject to change and may vary based on country,
+                    currency conversion rate, bank fees and subscription
+                    package.
                   </p>
                 </div>
               </div>
@@ -198,10 +197,10 @@
         <div class="d-flex flex-row align-items-center justify-content-between">
           <div class="subscription-details-page-questions__titles-wrapper">
             <h2 class="subscription-details-page-questions__title">
-              {{ $t("Got Questions?.Got Questions?") }}
+              Got Questions?
             </h2>
             <p class="subscription-details-page-questions__subtitle">
-              {{ $t("Got Questions?.See if our FAQs") }}
+              See if our FAQs help you know more about our service
             </p>
           </div>
           <div class="img-subscription">
@@ -220,7 +219,7 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <div class="subscription-details-question_title">
-              {{ $t("Got Questions?.How do I subscribe?") }}
+              "How do I subscribe?": "How do I subscribe?",
             </div>
             <div>
               <i class="fa-solid fa-chevron-down"></i>
@@ -241,7 +240,7 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <div class="subscription-details-question_title">
-              {{ $t("Got Questions?.How does the plan renewal work?") }}
+              How does the plan renewal work?
             </div>
             <div>
               <i class="fa-solid fa-chevron-down"></i>
@@ -262,9 +261,7 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <div class="subscription-details-question_title">
-              {{
-                $t("Got Questions?.How many devices are allowed per account?")
-              }}
+              How many devices are allowed per account?
             </div>
             <div>
               <i class="fa-solid fa-chevron-down"></i>
@@ -285,11 +282,7 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <div class="subscription-details-question_title">
-              {{
-                $t(
-                  "Got Questions?.Can I change or cancel my subscription plan?"
-                )
-              }}
+              Can I change or cancel my subscription plan?
             </div>
             <div>
               <i class="fa-solid fa-chevron-down"></i>
@@ -312,11 +305,7 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <div class="subscription-details-question_title">
-              {{
-                $t(
-                  "Got Questions?.Can I refund my subscription fees after subscribing?"
-                )
-              }}
+              Can I refund my subscription fees after subscribing?
             </div>
             <div>
               <i class="fa-solid fa-chevron-down"></i>

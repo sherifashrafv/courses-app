@@ -13,14 +13,12 @@
     <div class="login_container my-5">
       <div class="auth-content">
         <div class="auth-header">
-          <h5 class="auth-title text-center">
-            {{ $t("registering.SignUp For Free Email") }}
-          </h5>
+          <h5 class="auth-title text-center">SignUp For Free Email</h5>
           <h6
             style="line-height: 1.5; letter-spacing: 0.2"
             class="account_exist text-center"
           >
-            {{ $t("registering.To The Biggest Video") }}
+            To The Biggest Video Based Arabic Content Library Of Courses
           </h6>
         </div>
         <!--  -->
@@ -35,39 +33,30 @@
             <span class="f_icon">
               <i class="fa-brands fa-facebook-f"></i>
             </span>
-            <span class="m-auto">
-              {{ $t("registering.Facebook SignUp") }}
-            </span>
+            <span class="m-auto"> Facebook SignUp </span>
           </div>
         </div>
         <!--  -->
-        <h5 class="or_text">
-          {{ $t("registering.or_text") }}
-        </h5>
+        <h5 class="or_text">OR</h5>
         <form class="form_validation_login">
           <router-link
             tag="button"
-            :to="`/${$i18n.locale}/signUpWithEmail`"
+            to="/signUpWithEmail"
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
             <span
               ><i class="fa-regular fa-envelope text-white fw-bold"></i>
             </span>
             <span class="text-white fw-normal ps-2">
-              {{ $t("registering.SignUp With Your Email") }}
+              SignUp With Your Email
             </span>
           </router-link>
           <div class="mt-3 text-center"></div>
           <hr class="line_login_dec" />
           <p class="text-center">
-            <span style="font-size: 15px">
-              {{ $t("registering.Already have an account") }}
-            </span>
-            <router-link
-              class="sign_up_link ms-2"
-              :to="`/${$i18n.locale}/login`"
-            >
-              {{ $t("registering.Login") }}
+            <span style="font-size: 15px"> Already have an account </span>
+            <router-link class="sign_up_link ms-2" to="/login">
+              Login
             </router-link>
           </p>
         </form>

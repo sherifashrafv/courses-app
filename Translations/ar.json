@@ -4,7 +4,7 @@
     "Instractors": "الخبراء",
     "Subscripe": "اشتراك",
     "Search": "ابحث عن دورات تدريبية، موضوعات، خبراء",
-    "Subscribe": "اشترك الان"
+    "الإشتراك": "اشترك الان"
   },
   "menuModal": {
     "Categories": "الفئات",
@@ -180,5 +180,14 @@
     "How many devices are allowed per account?": "كم عدد الأجهزة المسموح بها لكل حساب؟",
     "Can I change or cancel my subscription plan?": "هل يمكنني تغيير أو إلغاء خطة اشتراكي؟",
     "Can I refund my subscription fees after subscribing?": "هل يمكنني استرداد رسوم اشتراكي بعد الاشتراك؟"
+  },
+  "userMenu": {
+    "Subscribe": "الإشتراك",
+    "Saved Courses": "الدورات المحفوظة",
+    "Account Settings": "إعدادت الحساب",
+    "Your DashBoard": "لوحة التحكم ",
+    "Become an instructor": "كن مدربًا",
+    "Logout": "تسجيل خروج",
+    "my courses": "كورساتي"
   }
 }

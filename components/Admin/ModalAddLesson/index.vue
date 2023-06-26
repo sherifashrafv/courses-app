@@ -48,7 +48,6 @@ import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 export default {
   name: "modalAddVedios",
-
   props: {
     show: {
       type: Boolean,
@@ -113,21 +112,9 @@ export default {
             this.youtubeLink = "";
             this.lessonName = "";
           });
-        console.log("done");
       } else {
         console.log("notdone");
       }
-      // await axios
-      //   .post("/lessons/", {
-      //     lessonName: this.lessonName,
-      //     userId: this.userId,
-      //     sectionTitle: this.sectionTitle,
-      //     youtubeLink: this.youtubeLink,
-      //   })
-      //   .then(() => {
-      //     this.$emit("cancel");
-      //     window.location.reload();
-      //   });
     },
   },
   mounted() {
@@ -136,15 +123,6 @@ export default {
   },
   components: {
     Teleport,
-  },
-  watch: {
-    // sectionTitle: {
-    //   immediate: true,
-    //   deep: true,
-    //   handler(newValue, oldValue) {
-    //     console.log(newValue);
-    //   },
-    // },
   },
 };
 </script>

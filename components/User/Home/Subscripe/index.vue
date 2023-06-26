@@ -9,15 +9,11 @@
             >
               <div>
                 <p class="home_subscribe_title">
-                  {{
-                    $t("Subscribecomponent.UnlimitedaccesstoallAlmentorCourses")
-                  }}
+                  Unlimited access to all Almentor Courses
                 </p>
-                <p class="home_subscribe_subtitle">
-                  {{ $t("Subscribecomponent.subscribenow") }}
-                </p>
+                <p class="home_subscribe_subtitle">Subscribe Now !</p>
                 <p class="home__subscribe-text">
-                  {{ $t("Subscribecomponent.homesubscribetext") }}
+                  Save more, and get access to our huge library
                 </p>
               </div>
               <div
@@ -29,7 +25,7 @@
                   tag="div"
                   class="btn btn-danger subscribe_link"
                 >
-                  {{ $t("Subscribecomponent.subscribenow") }}
+                  subscribe now
                 </router-link>
               </div>
             </div>
@@ -54,12 +50,8 @@
                       <span class="pricing">119.99</span>
                       <span class="currency_subscribe">EGB</span>
                     </span>
-                    <span class="per_mounth_text">{{
-                      $t("Subscribecomponent.permounthtext")
-                    }}</span>
-                    <span class="mounth_plan_sbuscribe_text">{{
-                      $t("Subscribecomponent.mounthplansbuscribetext")
-                    }}</span>
+                    <span class="per_mounth_text">Per Month</span>
+                    <span class="mounth_plan_sbuscribe_text">Monthly Plan</span>
                   </p>
                 </div>
               </div>
@@ -67,9 +59,9 @@
                 class="card-subscribe_parent d-flex flex-column justify-content-center align-items-center"
               >
                 <div class="subscription-card-ribbon">
-                  <span class="big_sale_subscription-card">{{
-                    $t("Subscribecomponent.bigsalesubscriptioncard")
-                  }}</span>
+                  <span class="big_sale_subscription-card"
+                    >Best Value: Big Save
+                  </span>
                 </div>
                 <div class="subscribe_card">
                   <img
@@ -84,12 +76,10 @@
                       <span class="pricing">79.99</span>
                       <span class="currency_subscribe">EGB</span>
                     </span>
-                    <span class="per_mounth_text">{{
-                      $t("Subscribecomponent.PerYearly")
-                    }}</span>
-                    <span class="mounth_plan_sbuscribe_text ng-star-inserted">{{
-                      $t("Subscribecomponent.YearlyPlan")
-                    }}</span>
+                    <span class="per_mounth_text">Per Yearly </span>
+                    <span class="mounth_plan_sbuscribe_text ng-star-inserted"
+                      >Yearly Plan</span
+                    >
                   </p>
                 </div>
               </div>

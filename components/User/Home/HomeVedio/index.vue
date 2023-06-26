@@ -2,9 +2,9 @@
   <section
     class="home_vedio d-flex flex-column justify-content-center align-items-center"
   >
-    <p class="home_vedio_title">{{ $t("home.Learn Online") }}</p>
+    <p class="home_vedio_title">Learn Online</p>
     <p class="home_vedios-subtitle">
-      {{ $t("home.The biggest Arabic library of video based courses") }}
+      The biggest Arabic library of video based courses
     </p>
     <img
       @click="showModalHandel"
@@ -18,12 +18,8 @@
       :modalHide="modalHide"
     >
     </Vd-Modal>
-    <router-link
-      tag="button"
-      class="btn-home-vedios"
-      :to="`/${$i18n.locale}/signUp`"
-    >
-      {{ $t("registering.signUp") }}
+    <router-link tag="button" class="btn-home-vedios" :to="`/signUp`">
+      SignUp
     </router-link>
   </section>
 </template>

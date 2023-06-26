@@ -3,7 +3,7 @@
     <ve-skeleton-mentors :list="fakeApi" v-if="Skeleton"></ve-skeleton-mentors>
     <div v-else class="container">
       <div class="row justify-content-center">
-        <h4 class="my-5">{{ $t("Our Instructors") }}</h4>
+        <h4 class="my-5">Our Instructors</h4>
         <div
           v-for="instrct in result"
           :key="instrct.id"
@@ -29,7 +29,7 @@
               class="btn btn-success load_More_data"
               v-else
             >
-              {{ $t("loadMore") }}
+              Load More
               <ve-loader v-if="loader"></ve-loader>
             </button>
           </div>

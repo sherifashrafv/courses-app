@@ -10,31 +10,36 @@
                 v-model="FirstName"
                 type="text"
                 placeholder="FirstName"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.FirstName.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
+
             <div class="input-group mb-4">
               <input
                 v-model="LastName"
                 type="text"
                 placeholder="Last Name"
-                :class="'form-control input_customize vedios'"
-              />
-            </div>
-            <div class="input-group mb-4">
-              <input
-                v-model="LastName"
-                type="text"
-                placeholder="Last Name"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.LastName.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
               <input
                 v-model="Password"
-                type="text"
+                type="password"
                 placeholder="Password"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.Password.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
@@ -42,7 +47,11 @@
                 v-model="MobilePhone"
                 type="text"
                 placeholder="Mobile Phone"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.MobilePhone.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
@@ -50,7 +59,11 @@
                 v-model="Email"
                 type="text"
                 placeholder="Email"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.Email.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
@@ -58,7 +71,11 @@
                 v-model="linkedInUrl"
                 type="text"
                 placeholder="Linked In Profile"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.linkedInUrl.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input-group mb-4">
@@ -66,7 +83,11 @@
                 v-model="FacebookUrl"
                 type="text"
                 placeholder="Facebook Page"
-                :class="'form-control input_customize vedios'"
+                :class="
+                  $v.FacebookUrl.$error
+                    ? 'form-control input_customize error'
+                    : 'form-control input_customize'
+                "
               />
             </div>
             <div class="input_type_file_background-course my-4">
@@ -79,7 +100,11 @@
               />
               <label
                 for="file"
-                class="input_file_uploader-background position-relative"
+                :class="
+                  $v.CvPicture.$error
+                    ? 'input_file_uploader-background position-relative error'
+                    : 'input_file_uploader-background position-relative'
+                "
               >
                 Upolad Your Cv
                 <img
@@ -92,7 +117,11 @@
             <div class="description_about_course mb-3">
               <textarea
                 v-model="discription"
-                class="text_area_course-discrpition"
+                :class="
+                  $v.discription.$error
+                    ? 'text_area_course-discrpition error'
+                    : 'text_area_course-discrpition'
+                "
                 placeholder="What are the topics that you would like to introduce on the platform?"
                 cols="30"
                 rows="10"
@@ -242,9 +271,11 @@ export default {
   right: 0;
   z-index: 999999999;
   background-color: rgba(0, 0, 0, 0.65px);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(14px);
   width: 100%;
   height: 100vh;
+  z-index: 999999999999999999999;
 }
 .dialog-videoPlayerPreview-container {
   padding: 55.25% 0 0;
@@ -331,6 +362,10 @@ export default {
   color: #818383 !important;
   outline: none;
   caret-color: #eb2027;
+}
+.text_area_course-discrpition.error,
+.input_file_uploader-background.error {
+  border: 1px solid #eb2027 !important;
 }
 .input_file_uploader-background {
   position: absolute;

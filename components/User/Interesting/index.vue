@@ -5,8 +5,8 @@
         class="interests_section d-flex flex-lg-row flex-md-column flex-sm-column justify-content-lg-between align-items-md-center justify-content-sm-between"
       >
         <div class="describe_intrsted align-self-md-start d-flex flex-column">
-          <h4>{{ $t("What are your interests") }}</h4>
-          <h5>{{ $t("Help us show you courses that you actually like") }}</h5>
+          <h4>What are your interests ?</h4>
+          <h5>Help us show you courses that you actually like</h5>
           <img
             src="@/assets/Images/instrests/home-user-interests-illustration.png"
             alt=""
@@ -15,7 +15,7 @@
         <div>
           <div class="skils_interesting-in">
             <div
-              v-for="(skill, indx) in this.$t('skills')"
+              v-for="(skill, indx) in Categories"
               :key="indx"
               class="'skill_checkboxes_add position-relative"
             >
@@ -46,7 +46,7 @@
                   : 'btn_btn-saveIntersted'
               "
             >
-              {{ $t("Save interests") }}
+              Save interests
             </button>
           </div>
         </div>
@@ -60,6 +60,20 @@ export default {
   data() {
     return {
       skillUpdated: [],
+
+      Categories: [
+        { title: "Languages", isActive: false },
+        { title: "Arts & Design", isActive: false },
+        { title: "Soft Skills", isActive: false },
+        { title: "Media, Photography & Film", isActive: false },
+        { title: "Business Management", isActive: false },
+        { title: "Sales & Marketing", isActive: false },
+        { title: "Technology, Science & Productivity", isActive: false },
+        { title: "Parenting & Relationships", isActive: false },
+        { title: "Lifestyle & Health", isActive: false },
+        { title: "Entrepreneurship", isActive: false },
+        { title: "Mental Health & Wellness", isActive: false },
+      ],
     };
   },
   methods: {

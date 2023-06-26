@@ -372,7 +372,6 @@ export default {
       await axios.get("/ArtsDesign.json").then((res) => {
         let newData = res.data;
         let course = [];
-        console.log(res.data);
         for (let key in newData) {
           newData[key].id = key;
           course.push(newData[key]);
@@ -398,7 +397,6 @@ export default {
         .get(`/${this.categoryCourse}-lessons/${this.userid}/${title}.json`)
         .then((res) => {
           this.loader = false;
-          console.log(res.data);
           let newData = res.data;
           let course = [];
           for (let key in newData) {
@@ -430,7 +428,6 @@ export default {
         )
         .then((res) => {
           this.loader = false;
-          console.log(res.data);
           let newData = res.data;
           let course = [];
           for (let key in newData) {
@@ -457,7 +454,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.ArtsDesignListed.push(...course);
           });
@@ -466,6 +462,9 @@ export default {
     },
     "$route.params": {
       handler: function (params) {
+        if (params) {
+          this.get_course();
+        }
         const myRegx = params.categoryCourse.replace(
           /[/^\s+|\s+$/|&;$%@"<>()+,]/gm,
           ""

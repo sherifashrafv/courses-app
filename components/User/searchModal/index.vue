@@ -1,120 +1,84 @@
 <template>
-  <section>
-    <!-- <h1>sdsadsads</h1> -->
-    <CarouselPage :title="`Course Categories`"></CarouselPage>
-    <CarouselTabs></CarouselTabs>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="ArtsDesignListed"
-          :title="`Arts & Design`"
-          :loading="loader"
-        >
-        </ve-carousel>
+  <Teleport to="#Modal">
+    <transition name="fade">
+      <div @click.self="modalHide" class="modal-container" v-if="show">
+        <div class="modal-content">
+          <div
+            class="input_search_results d-flex align-items-center position-relative"
+          >
+            <span>
+              <img src="@/assets/Images/Icons/magnifying-glass.png" alt="" />
+            </span>
+            <input
+              v-model="searchTerm"
+              type="text"
+              placeholder="Search courses, topics, instructors...')"
+            />
+            <div v-if="searchTerm.length > 0" class="result_term">
+              <ul class="m-0">
+                <li v-for="(res, indx) in filteredList" :key="indx * 75201">
+                  <router-link
+                    class="content_result_term d-flex align-items-center my-4"
+                    tag="span"
+                    @click="modalHide"
+                    :to="`/coursePage/${res.categoryCourse}/${res.userid}/${res.id}/${res.courseName}`"
+                  >
+                    <span>
+                      <i class="fa-solid fa-clapperboard me-3"></i>
+                    </span>
+                    {{ res.courseName }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="SoftSkillsListed"
-          :title="`Soft Skills`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <SubscribeForPrice />
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="MediaPhotographyFilmListed"
-          :title="`Media, Photography & Film`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="BusinessManagementListed"
-          :title="`Business Management`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="SalesMarketingListed"
-          :title="`Sales & Marketing`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="SoftSkillsListed"
-          :title="`Enjoy Learning Arts and Crafts`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row position-relative my-5">
-        <ve-carousel
-          :courses="ArtsDesignListed"
-          :title="`Crash Courses`"
-          :loading="loader"
-        >
-        </ve-carousel>
-      </div>
-    </div>
-    <SubscribeForPrice class="mb-5" />
-  </section>
+    </transition>
+  </Teleport>
 </template>
 <script>
-import CarouselPage from "@/components/shared/courses-page-carousel/index.vue";
-import CarouselTabs from "@/components/User/Home/HomeCourses/index.vue";
-
-import SubscribeForPrice from "@/components/User/Home/SubscribeForPrice/index.vue";
 import axios from "axios";
+import Teleport from "vue2-teleport";
 export default {
-  name: "courses-page",
+  name: "ve-search",
   data() {
     return {
-      fakeArray: Array(8).fill(""),
+      all: [],
+      searchTerm: "",
       Languages: [],
-      LanguagesListed: [],
       coursesOjc: [],
       //
       ArtsDesign: [],
-      ArtsDesignListed: [],
       ///
       SoftSkills: [],
-      SoftSkillsListed: [],
       //
       MediaPhotographyFilm: [],
-      MediaPhotographyFilmListed: [],
       //
       BusinessManagement: [],
-      BusinessManagementListed: [],
       //
       SalesMarketing: [],
-      SalesMarketingListed: [],
-      loader: true,
     };
   },
   components: {
-    CarouselPage,
-    CarouselTabs,
-    SubscribeForPrice,
+    Teleport,
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    modalHide: {
+      type: Function,
+    },
   },
   methods: {
+    reportWindowSize() {
+      if (window.innerWidth) {
+        this.modalHide();
+      }
+    },
     async getAll() {
       axios
         .all([
@@ -195,7 +159,19 @@ export default {
     },
   },
   mounted() {
+    window.addEventListener("resize", () => {
+      this.reportWindowSize();
+    });
     this.getAll();
+  },
+  computed: {
+    filteredList() {
+      return this.all.filter((course) => {
+        return course.courseName
+          .toLowerCase()
+          .includes(this.searchTerm.toLowerCase());
+      });
+    },
   },
   watch: {
     // Languages
@@ -209,7 +185,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.LanguagesListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -230,7 +206,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.ArtsDesignListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -246,7 +222,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.SoftSkillsListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -262,7 +238,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.MediaPhotographyFilmListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -278,7 +254,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.BusinessManagementListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -294,7 +270,7 @@ export default {
               newData[key].id = key;
               course.push(newData[key]);
             }
-            this.SalesMarketingListed.push(...course);
+            this.all.push(...course);
           });
         });
       }
@@ -302,3 +278,72 @@ export default {
   },
 };
 </script>
+<style scoped>
+.modal-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgb(0 0 0 / 82%);
+  width: 100%;
+  height: 100vh;
+}
+.modal-container .modal-content {
+  width: 100%;
+  min-width: unset !important;
+  max-width: unset !important;
+  top: 75px;
+  left: 50%;
+  position: fixed;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+}
+.input_search_results span img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  object-position: center;
+  margin-right: 0.8rem;
+}
+.input_search_results {
+  background: #0c0e0e;
+  padding: 14px;
+  width: 265px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between;
+  height: 49px;
+}
+.input_search_results input {
+  background: #0c0e0e;
+  border: none;
+  margin: 0;
+  padding: 0;
+  height: 28px;
+  outline: none;
+  caret-color: #f33728;
+  color: #ddd;
+}
+.result_term {
+  position: absolute;
+  background: #0c0e0e;
+  top: 100%;
+  height: 299px;
+  width: 100%;
+  left: 0;
+  border-radius: 0 0px 12px 12px;
+  overflow-y: scroll;
+  overflow-x: none;
+}
+.content_result_term {
+  padding: 15px;
+  cursor: pointer;
+}
+.content_result_term:hover {
+  background: #3b4242;
+}
+</style>

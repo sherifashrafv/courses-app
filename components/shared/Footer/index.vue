@@ -20,7 +20,7 @@
                   role="button"
                   to="/About"
                 >
-                  {{ $t("footer.About") }}
+                  About
                 </router-link>
                 <router-link
                   role="button"
@@ -28,7 +28,7 @@
                   tag="li"
                   to="/About"
                 >
-                  {{ $t("footer.Press") }}
+                  Press
                 </router-link>
                 <router-link
                   role="button"
@@ -36,7 +36,7 @@
                   tag="li"
                   to="/About"
                 >
-                  {{ $t("footer.Team") }}
+                  Team
                 </router-link>
                 <router-link
                   role="button"
@@ -44,7 +44,7 @@
                   tag="li"
                   to="/About"
                 >
-                  {{ $t("footer.Contact") }}
+                  Contact
                 </router-link>
               </ul>
             </div>
@@ -54,9 +54,7 @@
             class="footer_cols d-inline-flex justify-content-center col-lg-3 col-md-6 col-sm-12 mb-md-0 mb-4"
           >
             <div class="footer_custome_size d-flex flex-column">
-              <h1 class="footer_explore">
-                {{ $t("footer.Explore") }}
-              </h1>
+              <h1 class="footer_explore">Explore</h1>
               <ul class="link_footer_parent">
                 <router-link
                   class="links_footer"
@@ -64,39 +62,39 @@
                   role="button"
                   to="/courses"
                 >
-                  {{ $t("journey.Browse Courses") }}
+                  Browse Courses
                 </router-link>
                 <router-link
                   role="button"
                   class="links_footer"
                   tag="li"
-                  to="/About"
+                  to="/categories/Languages"
                 >
-                  {{ $t("footer.Popular courses") }}
+                  Popular courses
                 </router-link>
                 <router-link
                   role="button"
                   class="links_footer"
                   tag="li"
-                  to="/About"
+                  to="/subscribe"
                 >
-                  {{ $t("footer.Subscription Plans") }}
+                  Subscription Plans
                 </router-link>
                 <router-link
                   role="button"
                   class="links_footer"
                   tag="li"
-                  to="/About"
+                  to="/Mentors"
                 >
-                  {{ $t("footer.Instructors") }}
+                  Instructors
                 </router-link>
                 <router-link
                   role="button"
                   class="links_footer"
                   tag="li"
-                  to="/About"
+                  to="/Become-Mentor"
                 >
-                  {{ $t("footer.Learning Partners") }}
+                  Learning Partners
                 </router-link>
               </ul>
             </div>
@@ -106,14 +104,15 @@
             class="footer_cols d-inline-flex justify-content-center col-lg-3 col-md-6 col-sm-12 mb-md-0 mb-4"
           >
             <div class="footer_custome_size d-flex flex-column">
-              <h1 class="footer_explore m-0">
-                {{ $t("footer.Business") }}
-              </h1>
-              <router-link style="" class="instructor-text my-3" to="/x">{{
-                $t("footer.Become an instructor")
-              }}</router-link>
-              <router-link to="/" tag="span" class="btn_subscribe">
-                {{ $t("footer.Train your team") }}
+              <h1 class="footer_explore m-0">Business</h1>
+              <router-link
+                style=""
+                class="instructor-text my-3"
+                to="/Become-Mentor"
+                >Become an instructor</router-link
+              >
+              <router-link to="/Mentors" tag="span" class="btn_subscribe">
+                Train your team
               </router-link>
             </div>
           </div>
@@ -124,9 +123,7 @@
             <div class="px-3">
               <div class="d-flex flex-column justify-content-center">
                 <div class="card_footer_apps">
-                  <p class="our-text-footer">
-                    {{ $t("footer.Our new app is coming soon") }}
-                  </p>
+                  <p class="our-text-footer">Our new app is coming soon</p>
                   <img
                     class="mb-3"
                     src="@/assets/Images/Home/app-store.svg"
@@ -136,9 +133,7 @@
                 </div>
                 <div class="footer_social_kalmat my-2 d-flex flex-row">
                   <div class="d-flex flex-column">
-                    <p class="find_footer">
-                      {{ $t("footer.Find talks & books on") }}
-                    </p>
+                    <p class="find_footer">Find talks & books on</p>
                     <img
                       class="kalemat_pic"
                       src="@/assets/Images/Home/kalimat-logo-white-new.svg"

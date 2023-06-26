@@ -21,8 +21,6 @@
 </template>
 <script>
 import ModalVediosAdd from "@/components/Admin/ModalVedios/index.vue";
-// import axios from "axios";
-// import axios from "axios";
 export default {
   name: "CoursesListed",
   data() {
@@ -37,24 +35,6 @@ export default {
     hideModal() {
       this.showModal = false;
     },
-    async deleteItem(course) {
-      console.log(course);
-      // let category = course.Category;
-      // let myRegx = category.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
-      // await axios.delete(`/${myRegx}/` + course.id);
-
-      //   this.$store.dispatch("admin/deleteCourse", {
-      //     id: id,
-      //     category: myRegx,
-      //     userId: uid,
-      //     title: title,
-      //   });
-    },
-  },
-  computed: {
-    // getAllCourses() {
-    //   return this.$store.state.admin.CategoriesMix;
-    // },
   },
   components: {
     ModalVediosAdd,

@@ -105,7 +105,6 @@ export default {
             this.youtubeLink = "";
             this.lessonName = "";
           });
-        console.log("done");
       } else {
         console.log("notdone");
       }

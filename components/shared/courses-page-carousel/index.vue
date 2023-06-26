@@ -4,18 +4,12 @@
       <h3 style="color: #eee">{{ title }}</h3>
       <VueSlickCarousel id="slick_slider" ref="carousel" v-bind="settings">
         <!-- first-col -->
-        <router-link
-          tag="div"
-          role="button"
-          :to="`/${$i18n.locale}/categories/Languages`"
-        >
+        <router-link tag="div" role="button" :to="`/categories/Languages`">
           <div class="category-fh-100">
             <div
               class="imag_categories_ h-100 img_1 w-100 d-flex flex-column justify-content-center align-items-center"
             >
-              <h5>
-                {{ $t("Categories.Languages") }}
-              </h5>
+              <h5>Languages</h5>
             </div>
           </div>
         </router-link>
@@ -23,27 +17,23 @@
         <!-- second-col -->
         <div class="DBB-boxes d-flex flex-column gap-5 justify-content-between">
           <router-link
-            :to="`${$i18n.locale}/categories/Arts & Design`"
+            :to="`/categories/Arts & Design`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="category_half_height img_1 d-flex flex-column align-items-center justify-content-center"
             >
-              <h4>
-                {{ $t("Categories.Arts & Design") }}
-              </h4>
+              <h4>Arts & Design</h4>
             </div>
           </router-link>
           <router-link
-            :to="`/${$i18n.locale}/categories/Soft Skills`"
+            :to="`/categories/Soft Skills`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="category_half_height img_2 d-flex flex-column align-items-center justify-content-center"
             >
-              <h4>
-                {{ $t("Categories.Soft Skills") }}
-              </h4>
+              <h4>Soft Skills</h4>
             </div>
           </router-link>
         </div>
@@ -53,42 +43,36 @@
           class="category-full-width-cards d-flex flex-column justify-content-between"
         >
           <router-link
-            :to="`/${$i18n.locale}/categories/Soft Skills`"
+            :to="`/categories/Soft Skills`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="media_photos_films d-flex flex-column justify-content-center align-items-center"
             >
-              <h3>
-                {{ $t("Categories.Media, Photography & Film") }}
-              </h3>
+              <h3>Media, Photography & Film</h3>
             </div>
           </router-link>
           <div
             class="flex_wrapper_business d-flex flex-row justify-content-center align-items-center gap-5"
           >
             <router-link
-              :to="`${$i18n.locale}/categories/Business Management`"
+              :to="`/categories/Business Management`"
               class="h-100 text-decoration-none text-white"
             >
               <div
                 class="Business_Management d-flex text-center flex-column justify-content-center align-items-center"
               >
-                <h4>
-                  {{ $t("Categories.Business Management") }}
-                </h4>
+                <h4>Business Management</h4>
               </div>
             </router-link>
             <router-link
-              :to="`/${$i18n.locale}/categories/Sales & Marketing`"
+              :to="`/categories/Sales & Marketing`"
               class="h-100 text-decoration-none text-white"
             >
               <div
                 class="Sales_Marketing text-center d-flex flex-column justify-content-center align-items-center"
               >
-                <h4>
-                  {{ $t("Categories.Sales & Marketing") }}
-                </h4>
+                <h4>Sales & Marketing</h4>
               </div>
             </router-link>
           </div>
@@ -97,15 +81,13 @@
         <!-- fourth-col -->
         <div class="category-fh-100">
           <router-link
-            :to="`/${$i18n.locale}/categories/Languages`"
+            :to="`/categories/Languages`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="imag_categories_ h-100 img_2 w-100 d-flex flex-column justify-content-center align-items-center"
             >
-              <h5>
-                {{ $t("Categories.Language") }}
-              </h5>
+              <h5>Language</h5>
             </div>
           </router-link>
         </div>
@@ -113,27 +95,23 @@
         <!-- start-fifth -->
         <div class="DBB-boxes d-flex flex-column gap-5 justify-content-between">
           <router-link
-            :to="`/${$i18n.locale}/categories/Parenting & Relationships`"
+            :to="`/categories/Parenting & Relationships`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="category_half_height img_3 d-flex flex-column align-items-center justify-content-center"
             >
-              <h5>
-                {{ $t("Categories.Parenting & Relationships") }}
-              </h5>
+              <h5>Parenting & Relationships</h5>
             </div>
           </router-link>
           <router-link
-            :to="`/${$i18n.locale}/categories/Kids Development`"
+            :to="`/categories/Kids Development`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="category_half_height img_4 d-flex flex-column align-items-center justify-content-center"
             >
-              <h5>
-                {{ $t("Categories.Kids Development") }}
-              </h5>
+              <h5>Kids Development</h5>
             </div>
           </router-link>
         </div>
@@ -142,42 +120,36 @@
           class="category-full-width-cards d-flex flex-column justify-content-between"
         >
           <router-link
-            :to="`/${$i18n.locale}/categories/Lifestyle & Health`"
+            :to="`/categories/Lifestyle & Health`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="Lifestyle_Health d-flex flex-column justify-content-center align-items-center"
             >
-              <h5>
-                {{ $t("Categories.Lifestyle & Health") }}
-              </h5>
+              <h5>Lifestyle & Health</h5>
             </div>
           </router-link>
           <div
             class="flex_wrapper_business d-flex flex-row justify-content-center align-items-center gap-5"
           >
             <router-link
-              :to="`/${$i18n.locale}/categories/Entrepreneurship`"
+              :to="`/categories/Entrepreneurship`"
               class="h-100 text-decoration-none text-white"
             >
               <div
                 class="Entrepreneurship d-flex text-center flex-column justify-content-center align-items-center"
               >
-                <h5>
-                  {{ $t("Categories.Entrepreneurship") }}
-                </h5>
+                <h5>Entrepreneurship</h5>
               </div>
             </router-link>
             <router-link
-              :to="`/${$i18n.locale}/categories/Mental Health & Wellness`"
+              :to="`/categories/Mental Health & Wellness`"
               class="h-100 text-decoration-none text-white"
             >
               <div
                 class="Mental_Health_Wellness text-center d-flex flex-column justify-content-center align-items-center"
               >
-                <h5>
-                  {{ $t("Categories.Mental Health & Wellness") }}
-                </h5>
+                <h5>Mental Health & Wellness</h5>
               </div>
             </router-link>
           </div>
@@ -186,13 +158,13 @@
 
         <div class="category-fh-100">
           <router-link
-            :to="`/${$i18n.locale}/categories/Education`"
+            :to="`/categories/Education`"
             class="h-100 text-decoration-none text-white"
           >
             <div
               class="imag_categories_ h-100 img_5 w-100 d-flex flex-column justify-content-center align-items-center"
             >
-              <h5>{{ $t("Categories.Education") }}</h5>
+              <h5>Education</h5>
             </div>
           </router-link>
         </div>

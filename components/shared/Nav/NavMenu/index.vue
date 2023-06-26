@@ -9,19 +9,24 @@
                 class="information-user padding_listed_information d-flex flex-row"
               >
                 <img
-                  class="current_user-image_menu"
+                  v-if="getUser.userimage"
                   :src="getUser.userimage"
-                  alt=""
+                  class="current_user-image_menu"
+                />
+                <img
+                  v-else
+                  src="@/assets/Images/Icons/avatar_user.jpg"
+                  class="current_user-image_menu"
                 />
                 <div class="ps-3">
                   <h5 class="p-0 m-0">{{ getUser.displayName }}</h5>
-                  <p>{{ getUser.email }}</p>
+                  <p class="email">{{ getUser.email }}</p>
                 </div>
               </div>
             </li>
             <router-link
-              :to="`/${$i18n.locale}/subscribe`"
-              @click.native="cancel"
+              :to="`/subscribe`"
+              @click="subscribeRoute"
               class="subscribe_link-button d-flex flex-row align-items-center justify-content-center"
               tag="li"
             >
@@ -46,7 +51,7 @@
                       src="@/assets/Images/Icons/wishlist.png"
                       alt=""
                   /></span>
-                  <span>Saved Courses</span>
+                  <span> Saved Courses</span>
                 </li>
               </a>
 
@@ -64,7 +69,7 @@
                       src="@/assets/Images/Icons/youtube.png"
                       alt=""
                   /></span>
-                  <span>my courses</span>
+                  <span>my courses </span>
                 </li>
               </a>
               <a
@@ -82,14 +87,13 @@
                       src="@/assets/Images/Icons/cogwheel.png"
                       alt=""
                   /></span>
-                  <span>Account Settings</span>
+                  <span>Account Settings </span>
                 </li>
               </a>
 
               <div class="break-line"></div>
               <div class="anchor_logOut">
                 <li
-                  v-if="accepted"
                   @click="
                     DashBoardRoute({ email: getUser.email, id: getUser.id })
                   "
@@ -102,7 +106,7 @@
                     Your DashBoard
                   </a>
                 </li>
-                <li
+                <!-- <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                   @click="BecomeMentor({ route: 'Become-Mentor' })"
                   v-else
@@ -110,7 +114,7 @@
                   <a class="text-decoration-underline" to="/Become-Mentor">
                     Become an instructor
                   </a>
-                </li>
+                </li> -->
               </div>
               <div class="break-line"></div>
               <div class="anchor_logOut">
@@ -124,7 +128,7 @@
                       src="@/assets/Images/Icons/logout_user.png"
                       alt=""
                   /></span>
-                  <span>Logout</span>
+                  <span> Logout </span>
                 </li>
               </div>
             </ul>
@@ -170,27 +174,26 @@ export default {
     },
     DashBoardRoute({ email, id }) {
       this.$emit("modalHide");
-      this.$router.push(
-        `/${this.$i18n.locale}/instractor/user/${email}/id/${id}`
-      );
+      this.$router.push(`/instractor/user/${email}/id/${id}`);
       window.location.reload();
+    },
+    subscribeRoute() {
+      this.$emit("modalHide");
+      this.$router.push(`/subscribe`);
     },
     BecomeMentor({ route }) {
       this.$emit("modalHide");
-      this.$router.push(`/${this.$i18n.locale}/${route}`);
+      this.$router.push(`/${route}`);
       window.location.reload();
     },
     myCoursesRoute({ email, id }) {
       this.$emit("modalHide");
-      this.$router.push(
-        `/${this.$i18n.locale}/instractor/user/${email}/id/${id}/courses/Languages`
-      );
+      this.$router.push(`/instractor/user/${email}/id/${id}/courses/Languages`);
       window.location.reload();
     },
     courseWish_list_route() {
       this.$emit("modalHide");
-      this.$router.push(`/${this.$i18n.locale}/favorite-page`);
-      // window.location.reload();
+      this.$router.push(`/favorite-page`);
     },
   },
   mounted() {
@@ -200,20 +203,6 @@ export default {
         id: JSON.parse(user).id,
       });
     }
-  },
-  watch: {
-    getUser(newvalue) {
-      if (newvalue) {
-        this.accepted = newvalue.InstructorAccepted;
-      }
-    },
-    accepted(newvalue) {
-      if (newvalue) {
-        this.accepted = newvalue;
-      } else {
-        this.accepted = false;
-      }
-    },
   },
 };
 </script>
@@ -350,5 +339,15 @@ export default {
 }
 .categories_nav_list {
   background: #1b1f1f;
+}
+.email {
+  font-size: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #6c6c6c;
+  word-break: break-all !important;
 }
 </style>

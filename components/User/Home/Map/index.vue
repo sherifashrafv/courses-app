@@ -16,7 +16,7 @@
               >
             </transition-group>
             <!--  -->
-            <div class="body_world_content">
+            <div id="bodyWorld" class="body_world_content">
               <p class="map_counter">
                 <VueJsCounter
                   start="0"
@@ -27,20 +27,15 @@
                 <!-- 3,416,953 -->
               </p>
               <p class="map__text">
-                <span>{{ $t("worldWide.one") }} </span>
-                <span>{{ $t("worldWide.two") }} </span>
-                <span>{{ $t("worldWide.three") }} </span>
-                <span class="map_counting"
-                  ><br />&amp; {{ $t("worldWide.four") }}
-                </span>
+                <span>Learning </span>
+                <span>experiences </span>
+                <span>worldwide </span>
+                <span class="map_counting"><br />&amp; counting </span>
               </p>
             </div>
             <div class="button_browse_courses">
-              <router-link
-                tag="button"
-                :to="`/${$i18n.locale}/courses`"
-                class="btn-courses"
-                >{{ $t("journey.Browse Courses") }}</router-link
+              <router-link tag="button" :to="`courses`" class="btn-courses"
+                >Browse Courses</router-link
               >
             </div>
             <!--  -->
@@ -51,11 +46,10 @@
   </section>
 </template>
 <script>
-import countTo from "vue-count-to";
 import VueJsCounter from "vue-js-counter";
 export default {
   name: "map-home",
-  components: { countTo, VueJsCounter },
+  components: { VueJsCounter },
   data() {
     return {
       fakeArray: Array(12).fill(""),

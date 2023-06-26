@@ -5,20 +5,18 @@
     <div class="login_container my-5">
       <div class="auth-content">
         <div class="auth-header">
-          <h5 class="auth-title text-center">
-            {{ $t("registering.SignUp For Free Email") }}
-          </h5>
+          <h5 class="auth-title text-center">SignUp For Free Email</h5>
           <h6 class="account_exist text-center">
-            {{ $t("registering.To The Biggest Video") }}
+            To The Biggest Video Based Arabic Content Library Of Courses
           </h6>
         </div>
         <!--  -->
-        <h5 class="or_text">{{ $t("registering.or_text") }}</h5>
+        <h5 class="or_text">OR</h5>
         <form @submit.prevent="submit" class="form_validation_login">
           <div class="input-group mb-4">
             <input
               type="text"
-              :placeholder="$t('registering.name')"
+              placeholder="Name"
               v-model="name"
               :class="
                 $v.name.$error
@@ -33,7 +31,7 @@
           <div class="input-group mb-4">
             <input
               type="text"
-              :placeholder="$t('registering.lastName')"
+              placeholder="LastName"
               v-model="lastName"
               :class="
                 $v.lastName.$error
@@ -47,9 +45,9 @@
           </div>
           <div
             :class="
-              $v.password.$error
+              $v.userImage.$error
                 ? 'input_type_file_userImage error'
-                : 'input_type_file_userImage my-4'
+                : 'input_type_file_userImage my-4 justify-content-center align-items-center'
             "
           >
             <input
@@ -60,21 +58,28 @@
               accept="image/*"
             />
             <label
+              v-if="userImage.length === 0"
               for="file"
               class="input_file_uploader-background position-relative"
             >
-              {{ $t("registering.User Image") }}
+              User Image
               <img
                 class="image_add-file"
                 src="@/assets/Images/Icons/avatar_user.jpg"
                 alt=""
               />
             </label>
+            <div
+              v-else
+              class="input_file_uploader-background position-relative d-flex justify-content-center align-items-center h-100"
+            >
+              <i class="fas fa-check"></i>
+            </div>
           </div>
           <div class="input-group mb-4">
             <input
               type="text"
-              :placeholder="$t('registering.email')"
+              placeholder="Email"
               class="form-control input_customize"
               v-model="email"
               :class="
@@ -89,7 +94,7 @@
           </div>
           <div class="input-group mb-4 position-relative">
             <input
-              :placeholder="$t('registering.password')"
+              placeholder="Password"
               type="password"
               v-model="password"
               :class="
@@ -104,25 +109,26 @@
               <i class="fa-solid fa-eye"></i>
             </span>
           </div>
+          <div
+            v-if="loader"
+            class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
+          >
+            <ve-loader />
+          </div>
           <button
+            v-else
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
             <span
               ><i class="fa-regular fa-envelope text-white fw-bold"></i>
             </span>
-            <span class="text-white fw-normal ps-2">{{
-              $t("registering.Login With Your Email")
-            }}</span>
+            <span class="text-white fw-normal ps-2">Login With Your Email</span>
           </button>
           <hr class="line_login_dec" />
           <p class="text-center">
-            <span style="font-size: 15px">
-              {{ $t("registering.Already have an account") }}</span
-            >
-            <router-link
-              class="sign_up_link ms-2"
-              :to="`/${$i18n.locale}login`"
-              >{{ $t("registering.Login") }}</router-link
+            <span style="font-size: 15px"> Already have an account</span>
+            <router-link class="sign_up_link ms-2" to="/login"
+              >Login</router-link
             >
           </p>
         </form>
@@ -157,7 +163,6 @@ export default {
     submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        console.log("validation-true");
         this.$store.dispatch("createUser", {
           email: this.email,
           password: this.password,
@@ -166,7 +171,6 @@ export default {
           lastName: this.lastName,
         });
       } else {
-        console.log("validation-false");
         this.$v.errors = true;
       }
     },
@@ -178,6 +182,9 @@ export default {
     errorMessage() {
       return this.$store.state.ErrorMessage;
     },
+    loader() {
+      return this.$store.state.loader;
+    },
   },
 };
 </script>
@@ -186,7 +193,7 @@ export default {
   max-width: 650px;
   width: 100%;
   background: #141717;
-  height: 697px;
+  height: fit-content;
   border-radius: 10px;
   box-shadow: 0 0 20px 0 #ffffff1a;
 }
@@ -353,6 +360,9 @@ export default {
 }
 /* errors */
 input.form-control.input_customize.error {
+  border: 3px solid #a00006 !important;
+}
+.input_type_file_userImage.error {
   border: 3px solid #a00006 !important;
 }
 /*  */

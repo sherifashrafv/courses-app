@@ -138,7 +138,6 @@ export default {
           FacebookUrl,
           id,
         } = this.userInformation;
-        console.log(id);
         this.$store
           .dispatch("admin/AddCourse", {
             firebaseFiles: {
@@ -163,7 +162,6 @@ export default {
             this.$emit("cancelHandel");
           });
       } else {
-        console.log("not validation");
       }
     },
     uploadImage(e) {

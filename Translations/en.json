@@ -181,5 +181,14 @@
     "How many devices are allowed per account?": "How many devices are allowed per account?",
     "Can I change or cancel my subscription plan?": "Can I change or cancel my subscription plan?",
     "Can I refund my subscription fees after subscribing?": "Can I refund my subscription fees after subscribing?"
+  },
+  "userMenu": {
+    "Subscribe": "Subscribe",
+    "Saved Courses": "Saved Courses",
+    "Account Settings": "Account Settings",
+    "Your DashBoard": "Your DashBoard",
+    "Become an instructor": "Become an instructor",
+    "Logout": "Logout",
+    "my courses": "my courses"
   }
 }

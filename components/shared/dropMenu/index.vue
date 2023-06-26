@@ -19,7 +19,7 @@
                   style="margin-right: 12px"
                   class="fa-solid fa-user-plus icon_registering"
                 ></i>
-                {{ $t("registering.signUp") }}
+                SignUp
               </router-link>
             </div>
             <div class="header-mobile-menu__vertical-separator"></div>
@@ -34,7 +34,7 @@
                   style="margin-right: 12px"
                   class="fa-solid fa-arrow-right-from-bracket icon_registering"
                 ></i>
-                {{ $t("registering.Login") }}
+                Login
               </router-link>
             </div>
           </div>
@@ -48,7 +48,7 @@
               role="button"
               class="header-mobile-menu__upper-navigation-links-link courses_categories d-flex align-items-center"
             >
-              {{ $t("navbar.courses") }}
+              Courses
               <span style="margin-left: 24px">
                 <i class="fa-solid fa-chevron-right"></i>
               </span>
@@ -60,7 +60,7 @@
               @click.native="modalHide"
               class="header-mobile-menu__upper-navigation-links-link"
             >
-              {{ $t("footer.Popular courses") }}
+              Popular courses
             </router-link>
             <hr class="fasla" />
             <router-link
@@ -70,44 +70,18 @@
               to="/Mentors"
               class="header-mobile-menu__upper-navigation-links-link"
             >
-              {{ $t("footer.Instructors") }}
+              Instructors
             </router-link>
             <hr class="fasla" />
             <router-link
               @click.native="modalHide"
               role="button"
               tag="span"
-              :to="`/${$i18n.locale}/subscribe`"
+              :to="`/subscribe`"
               class="header-mobile-menu__upper-navigation-links-link"
             >
-              {{ $t("navbar.Subscribe") }}
+              Subscribe
             </router-link>
-            <hr class="fasla" />
-            <div
-              v-if="languages === 'en'"
-              @click="switchLang('ar')"
-              role="button"
-              style="font-weight: 500"
-              class="header-mobile-menu__upper-navigation-links-link"
-            >
-              <span style="margin-right: 12px">
-                <i class="fa-solid fa-globe"></i>
-              </span>
-              العربية
-            </div>
-            <!--  -->
-            <div
-              role="button"
-              v-if="languages === 'ar'"
-              @click="switchLang('en')"
-              style="font-weight: 500"
-              class="header-mobile-menu__upper-navigation-links-link"
-            >
-              <span style="margin-right: 12px">
-                <i class="fa-solid fa-globe"></i>
-              </span>
-              English
-            </div>
             <hr class="fasla" />
           </div>
           <!-- Categories_referrer -->
@@ -128,7 +102,7 @@
                   class="fa-solid fa-chevron-right"
                 ></i>
               </span>
-              {{ $t("back.Subscribecomponent") }}
+              back
             </div>
             <router-link
               to="/courses"
@@ -153,7 +127,7 @@
               "
               class="btn-courses"
             >
-              {{ $t("journey.Browse Courses") }}
+              Browse Courses
             </router-link>
             <hr class="fasla" />
             <div
@@ -236,25 +210,24 @@ export default {
       this.$refs.categoriesList.classList.add("d-none");
     },
     reportWindowSize() {
-      console.log(window.innerWidth);
       if (window.innerWidth) {
         this.modalHide();
       }
     },
     switchLang(locale) {
-      console.log(locale);
       localStorage.setItem("lang", locale);
       this.$i18n.locale = locale;
       this.$router.push({
         params: { lang: locale },
       });
-      window.location.reload();
     },
   },
   mounted() {
     const lang = localStorage.getItem("lang") || "en";
     this.languages = lang;
-    window.onresize = this.reportWindowSize;
+    window.addEventListener("resize", () => {
+      this.reportWindowSize();
+    });
     let user = localStorage.getItem("user-info");
     if (user) {
       this.currentUser = true;

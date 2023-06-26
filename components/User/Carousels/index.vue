@@ -9,13 +9,14 @@
                 class="discription_about-courses active d-flex flex-column align-items-center justify-content-center"
               >
                 <p class="discription_about_title">
-                  {{ $t("journey.StartYourLearningJourney") }}
+                  Start Your Learning Journey
                 </p>
                 <p class="subtitle_discription-carousel_card">
-                  {{ $t("journey.body") }}
+                  Browse through our courses catalog and choose what you want to
+                  learn
                 </p>
                 <router-link class="btn btn-light" to="/courses">
-                  {{ $t("journey.Browse Courses") }}
+                  Browse Courses
                 </router-link>
               </div>
             </div>
@@ -24,25 +25,18 @@
       </div>
 
       <section class="section_carousle content position-relative">
-        <Slick
-          id="slick_slider"
-          ref="slick"
-          class="mt-4"
-          :rtl="rtl"
-          :options="settings"
-        >
+        <Slick id="slick_slider" ref="slick" class="mt-4" :options="settings">
           <div class="carousel-card main_card_content_discripe">
             <div
               class="discription_about-courses d-flex flex-column align-items-start justify-content-center"
             >
-              <p class="discription_about_title">
-                {{ $t("journey.StartYourLearningJourney") }}
-              </p>
+              <p class="discription_about_title">Start Your Learning Journey</p>
               <p class="subtitle_discription-carousel_card">
-                {{ $t("journey.body") }}
+                Browse through our courses catalog and choose what you want to
+                learn
               </p>
               <router-link class="btn btn-light" to="/courses">
-                {{ $t("journey.Browse Courses") }}
+                Browse Courses
               </router-link>
             </div>
           </div>
@@ -118,39 +112,31 @@ export default {
         slidesToScroll: 1,
         slidesToShow: 3,
         arrows: true,
-        rtl: false,
         // centerPadding: "10px",
         responsive: [
           {
             breakpoint: 1024,
             settings: {
               slidesToShow: 4,
-              slidesToScroll: 1,
-              initialSlide: 1,
-              // infinite: false,
-              // centerMode: true,
-              // variableWidth: true,
-              dots: false,
-              arrows: false,
+              slidesToScroll: 3,
+              initialSlide: 4,
+              infinite: true,
+              dots: true,
             },
           },
           {
             breakpoint: 600,
             settings: {
-              variableWidth: true,
-              slidesToShow: 2,
+              slidesToShow: 1,
               slidesToScroll: 2,
-              arrows: true,
-              initialSlide: 2,
+              initialSlide: 1,
             },
           },
           {
             breakpoint: 480,
             settings: {
-              variableWidth: true,
               slidesToShow: 1,
               slidesToScroll: 1,
-              arrows: true,
             },
           },
         ],
@@ -165,15 +151,17 @@ export default {
   methods: {
     async getWishList() {
       let user = localStorage.getItem("user-info");
-      let id = JSON.parse(user).id;
-      axios
-        .get(`/savedCourses/${id}.json`)
-        .then((res) => {
-          this.wishList = res.data;
-        })
-        .catch((error) => {
-          console.log(error.code);
-        });
+      if (user) {
+        let id = JSON.parse(user).id;
+        axios
+          .get(`/savedCourses/${id}.json`)
+          .then((res) => {
+            this.wishList = res.data;
+          })
+          .catch((error) => {
+            console.log(error.code);
+          });
+      }
     },
     async addToSavedVedios(e, item) {
       e.preventDefault();
@@ -221,7 +209,7 @@ export default {
           console.log(0);
         }
       } else {
-        this.$router.push(`/${this.$i18n.locale}/login`);
+        this.$router.push(`/login`);
       }
     },
   },
@@ -252,7 +240,6 @@ export default {
       (val) => {
         val[0].forEach((ele) => {
           let found = val[1].find((course) => course.id === ele.id);
-          console.log(found);
           if (found) {
             this.$refs["coursestx" + ele.id][0].classList.add("active");
           } else {

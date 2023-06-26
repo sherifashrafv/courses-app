@@ -7,7 +7,7 @@
         >
           <div class="categories_nav_list m-0">
             <div class="head_title_categories">
-              <h4 class="m-0">{{ $t("menuModal.Categories") }}</h4>
+              <h4 class="m-0">Categories</h4>
             </div>
             <ul class="main_menu_categories d-flex flex-column w-100">
               <li
@@ -32,7 +32,7 @@
               class="button_browse_courses_categories d-flex align-items-center justify-content-between"
               @click.native="$emit('hide')"
             >
-              <span class="m-auto">{{ $t("menuModal.BrowseCourses") }} </span>
+              <span class="m-auto">BrowseCourses</span>
               <span>
                 <i class="fa-solid fa-arrow-right-long"></i>
               </span>
@@ -78,7 +78,7 @@
               "
               role="button"
             >
-              {{ $t("viewAll") }}
+              viewAll
             </span>
           </div>
         </div>
@@ -125,14 +125,13 @@ export default {
   methods: {
     async getCourse(title) {
       const regx = title.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
-      this.activeTab = regx;
+      this.activeTab = title;
       this.CategoryTitle = title;
       this.activeMenu = true;
       await axios.get(`/${regx}.json`).then((res) => {
         this.activeMenu = false;
         let newData = res.data;
         let course = [];
-        console.log(res.data.documents);
         for (let key in newData) {
           newData[key].id = key;
           course.push(newData[key]);
@@ -143,6 +142,11 @@ export default {
     goTo() {
       this.$emit("hide");
       this.$router.push(`/categories/${this.activeTab}`);
+    },
+    reportWindowSize() {
+      if (window.innerWidth) {
+        this.modalHide();
+      }
     },
   },
   watch: {
@@ -157,7 +161,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.coursesListed.push(...course);
           });
@@ -165,12 +168,10 @@ export default {
       }
       if (oldCourse) {
         this.coursesListed = [];
-        console.log("newData");
       }
     },
     async activeTab(newCategory) {
       if (newCategory) {
-        console.log("newCategory");
         const regx = newCategory.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
         this.activeTab = regx;
         this.activeMenu = true;
@@ -191,6 +192,9 @@ export default {
     },
   },
   mounted() {
+    window.addEventListener("resize", () => {
+      this.reportWindowSize();
+    });
     if (this.activeTab.includes("Languages")) {
       this.getCourse("Languages");
     } else {

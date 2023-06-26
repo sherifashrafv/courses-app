@@ -5,36 +5,15 @@
     <div class="login_container my-5">
       <div class="auth-content">
         <div class="auth-header">
-          <h5 class="auth-title text-center">{{ $t("registering.Login") }}</h5>
-          <h6 class="account_exist text-center">
-            {{ $t("registering.Access Your Existing Account") }}
-          </h6>
+          <h5 class="auth-title text-center">Login</h5>
+          <h6 class="account_exist text-center">Login With Your Email</h6>
         </div>
-        <!--  -->
-        <div
-          class="social_registering d-flex flex-row align-items-center gap-4 justify-content-center"
-        >
-          <div
-            @click="loginWithFaceBook"
-            role="button"
-            class="d-flex flex-row align-items-center face_book_register_button gap-3 my-4"
-          >
-            <span class="f_icon">
-              <i class="fa-brands fa-facebook-f"></i>
-            </span>
-            <span class="m-auto">{{ $t("registering.Facebook Login") }}</span>
-          </div>
-        </div>
-        <!--  -->
-        <h5 class="or_text">
-          {{ $t("registering.or_text") }}
-        </h5>
         <form @submit.prevent class="form_validation_login">
           <div class="input-group mb-4">
             <input
               v-model="email"
               type="text"
-              :placeholder="$t('registering.email')"
+              placeholder="Email"
               :class="
                 $v.email.$error
                   ? 'form-control input_customize error'
@@ -49,7 +28,7 @@
             <input
               v-model="password"
               ref="passowrdtrigger"
-              :placeholder="$t('registering.password')"
+              placeholder="Password"
               type="password"
               :class="
                 $v.password.$error
@@ -76,7 +55,7 @@
                   class="form-check-label"
                   for="defaultCheck1"
                 >
-                  {{ $t("registering.Remember Me") }}
+                  Login With Your Email
                 </label>
               </div>
               <div v-if="error" class="error bg-danger text-white p-3">
@@ -88,30 +67,26 @@
             @click="submit"
             class="login_submit_form mt-4 d-flex flex-row align-items-center justify-content-center"
           >
-            <span
-              ><i class="fa-regular fa-envelope text-white fw-bold"></i>
-            </span>
-            <span class="text-white fw-normal ps-2">{{
-              $t("registering.Login With Your Email")
-            }}</span>
+            <ve-loader v-if="Loader"></ve-loader>
+            <div v-else>
+              <span
+                ><i class="fa-regular fa-envelope text-white fw-bold"></i>
+              </span>
+              <span class="text-white fw-normal ps-2"
+                >Login With Your Email</span
+              >
+            </div>
           </button>
           <div class="mt-3 text-center">
-            <router-link
-              :to="`/${$i18n.locale}/forgetPassword`"
-              class="link_forget_password"
-              >{{ $t("registering.Forgot your password") }}</router-link
+            <router-link :to="`/forgetPassword`" class="link_forget_password"
+              >Forgot your password ?</router-link
             >
           </div>
           <hr class="line_login_dec" />
           <p class="text-center">
-            <span style="font-size: 15px">
-              {{ $t("registering.Dont have an account") }}
-            </span>
-            <router-link
-              class="sign_up_link ms-2"
-              :to="`/${$i18n.locale}/signUp`"
-            >
-              {{ $t("registering.signUp") }}
+            <span style="font-size: 15px"> Dont have an account ? </span>
+            <router-link class="sign_up_link ms-2" :to="`/signUp`">
+              SignUp
             </router-link>
           </p>
         </form>
@@ -135,6 +110,7 @@ export default {
   },
   methods: {
     submit() {
+      this.$store.commit("LOADER", true);
       this.$v.$touch();
       if (!this.$v.$invalid) {
         console.log("validation");
@@ -145,6 +121,7 @@ export default {
       } else {
         console.log("not validation");
         this.$v.errors = true;
+        this.$store.commit("LOADER", false);
       }
     },
     loginWithFaceBook() {
@@ -173,6 +150,9 @@ export default {
     },
     errorMessage() {
       return this.$store.state.ErrorMessage;
+    },
+    Loader() {
+      return this.$store.state.loader;
     },
   },
 };

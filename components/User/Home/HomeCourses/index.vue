@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="tabs_vedios">
+    <section class="tabs_product">
       <div class="container">
         <div>
           <ul
@@ -10,7 +10,7 @@
               @click="activeTab = 'SalesMarketing'"
               :class="[CategoryTitle === 'SalesMarketing' ? 'active' : '']"
             >
-              {{ $t("home.Featured Courses") }}
+              Featured Courses
             </li>
             <li
               @click="activeTab = 'MediaPhotographyFilm'"
@@ -18,13 +18,13 @@
                 CategoryTitle === 'MediaPhotographyFilm' ? 'active' : '',
               ]"
             >
-              {{ $t("home.Most Viewed") }}
+              Most Viewed
             </li>
             <li
               @click="activeTab = 'Arts & Design'"
               :class="[CategoryTitle === 'ArtsDesign' ? 'active' : '']"
             >
-              {{ $t("home.New Courses") }}
+              New Courses
             </li>
           </ul>
           <!-- carousel -->
@@ -32,7 +32,11 @@
           <!-- end -->
         </div>
         <div class="position-relative">
-          <ve-carousel :courses="coursesListed" />
+          <ve-carousel
+            :loading="loader"
+            :list="fakeArray"
+            :courses="coursesListed"
+          />
         </div>
       </div>
     </section>
@@ -51,6 +55,8 @@ export default {
       coursesListed: [],
       activeMenu: false,
       CategoryTitle: "",
+      fakeArray: Array(8).fill(""),
+      loader: true,
     };
   },
   methods: {
@@ -63,7 +69,6 @@ export default {
         this.activeMenu = false;
         let newData = res.data;
         let course = [];
-        console.log(res.data.documents);
         for (let key in newData) {
           newData[key].id = key;
           course.push(newData[key]);
@@ -78,13 +83,13 @@ export default {
         this.activeMenu = true;
         newgetcourses.forEach((ele) => {
           axios.get(`/${this.CategoryTitle}/${ele.id}.json`).then((res) => {
+            this.loader = false;
             this.activeMenu = false;
             let newData = res.data;
             let course = [];
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.coursesListed.push(...course);
           });
@@ -92,12 +97,10 @@ export default {
       }
       if (oldCourse) {
         this.coursesListed = [];
-        console.log("newData");
       }
     },
     async activeTab(newCategory) {
       if (newCategory) {
-        console.log("newCategory");
         const regx = newCategory.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
         this.activeTab = regx;
         this.activeMenu = true;

@@ -78,7 +78,6 @@ export default {
       );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         this.data = doc.data();
       });
     },

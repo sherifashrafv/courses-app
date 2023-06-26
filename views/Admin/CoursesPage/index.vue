@@ -81,7 +81,6 @@ export default {
       this.showModalVedios = false;
     },
     async getCourses({ id, courseCategory }) {
-      console.log(id, courseCategory);
       await axios.get(`/${courseCategory}/${id}.json`).then((res) => {
         this.loading = false;
         let newData = res.data;
@@ -109,7 +108,6 @@ export default {
           this.getInstructorInformation({ id: params.id });
         }
         if (params.name) {
-          console.log(params.name);
           this.getCourses({ id: params.id, courseCategory: myRegx });
         }
       },

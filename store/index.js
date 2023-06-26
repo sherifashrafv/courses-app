@@ -42,6 +42,7 @@ export default new Vuex.Store({
     userExist: false,
     ErrorLogin: false,
     ErrorMessage: "",
+    loader: false,
   },
   getters: {},
   mutations: {
@@ -79,9 +80,12 @@ export default new Vuex.Store({
       state.ErrorLogin = payload;
       state.ErrorMessage = payload2;
     },
+    LOADER(state, payload) {
+      state.loader = payload;
+    },
   },
   actions: {
-    // to login with face book
+    // Login With Facebook
     FacebookSignUp({ commit }) {
       const provider = new FacebookAuthProvider();
       signInWithPopup(auth, provider)
@@ -106,24 +110,23 @@ export default new Vuex.Store({
                 userimage: user.photoURL,
               })
             );
-            router.push("/");
-            window.scrollTo(0, 0);
-            window.location.reload();
-          });
-          commit("SIGN_UP_WITH_FACEBOOK", {
-            displayName: user.displayName,
-            image: user.photoURL,
-            email: user.email,
-          });
-          localStorage.setItem(
-            "user-info",
-            JSON.stringify({
+            commit("SIGN_UP_WITH_FACEBOOK", {
               displayName: user.displayName,
               image: user.photoURL,
               email: user.email,
-            })
-          );
-          // router.push("/");
+            });
+            localStorage.setItem(
+              "user-info",
+              JSON.stringify({
+                displayName: user.displayName,
+                image: user.photoURL,
+                email: user.email,
+              })
+            );
+            router.push("/");
+            window.location.reload();
+            this.dispatch("getUserInformation", user.uid);
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -132,11 +135,13 @@ export default new Vuex.Store({
           }
         });
     },
-    //  create user-SignUpWithEmail-Password
+    // user-SignUp-WithEmail-Password
     createUser: async (
       { commit },
       { email, password, userImage, lastName, name }
     ) => {
+      console.log(email, password, userImage, lastName, name);
+      commit("LOADER", true);
       const storage = getStorage();
       const image = userImage;
       const storageRef = await ref(
@@ -159,8 +164,9 @@ export default new Vuex.Store({
                 InstructorAccepted: false,
                 displayName: name + " " + lastName,
               }).then(() => {
+                commit("LOADER", false);
                 router.push("/");
-                window.scrollTo(0, 0);
+                window.location.reload();
                 localStorage.setItem(
                   "user-info",
                   JSON.stringify({
@@ -176,23 +182,13 @@ export default new Vuex.Store({
             });
           });
         })
-        .catch((error) => {
-          if (error.code == "auth/email-already-in-use") {
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "email already in use",
-            });
-          } else if (error.code == "auth/invalid-email") {
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "Wrong Email",
-            });
-          } else if (error.code == "auth/weak-password") {
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "Week Password",
-            });
-          }
+        .catch((e) => {
+          Vue.swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: e.code,
+          });
+          commit("LOADER", false);
         });
     },
     // log-in
@@ -202,31 +198,17 @@ export default new Vuex.Store({
           const user = userCredential.user;
           const id = user.uid;
           localStorage.setItem("user-info", JSON.stringify({ id: id, email }));
-          router.push("/");
+          // router.push("/");
           window.scrollTo(0, 0);
-          window.location.reload();
+          // window.location.reload();
         })
-        .catch((error) => {
-          console.log("error", error);
-          if (error.code == "auth/wrong-password") {
-            console.log("error", error);
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "Wrong Password",
-            });
-          }
-          if (error.code == "auth/user-not-found") {
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "user not found",
-            });
-          }
-          if (error.code == "auth/user-not-found") {
-            commit("ERROR_HANDLE", {
-              payload: true,
-              payload2: "user not found",
-            });
-          }
+        .catch((e) => {
+          Vue.swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: e.code,
+          });
+          commit("LOADER", false);
         });
     },
     // log-out
@@ -249,6 +231,7 @@ export default new Vuex.Store({
       { commit },
       { informations, CvPicture, accepted, user }
     ) => {
+      commit("LOADER", true);
       const storage = getStorage();
       const storageRef = await ref(
         storage,
@@ -293,17 +276,16 @@ export default new Vuex.Store({
                 accepted: accepted,
               })
             );
+            commit("LOADER", false);
           });
         });
       });
     },
     // get-instructor-information
     getUserInstructor: async ({ commit }, { id }) => {
-      console.log(id);
       const q = query(collection(db, "instructors"), where("id", "==", id));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         commit("INSTURACTOR_INFORMATION", doc.data());
       });
     },
@@ -320,7 +302,6 @@ export default new Vuex.Store({
       }
     ) => {
       commit("SET_BUTTON_LOADER", true);
-      console.log(instructor);
       const storage = getStorage();
       const storageRef = await ref(
         storage,

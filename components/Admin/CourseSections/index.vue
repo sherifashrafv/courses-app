@@ -177,7 +177,6 @@ export default {
       this.activeTabs = "";
     },
     async delete_element({ id, sectionTitle }) {
-      console.log(this.id, this.categoryName, this.courseid);
       await axios
         .delete(
           `/${this.categoryName}-sections/${this.id}/${this.courseid}/${id}.json`
@@ -201,7 +200,6 @@ export default {
         .get(`/${this.categoryName}-lessons/${this.id}/${title}.json`)
         .then((res) => {
           this.loader = false;
-          console.log(res.data);
           let newData = res.data;
           let course = [];
           for (let key in newData) {

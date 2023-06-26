@@ -74,7 +74,7 @@ export default {
       type: Function,
     },
     id: {
-      type: Number,
+      type: String,
     },
     courseCategory: {
       type: String,
@@ -108,7 +108,6 @@ export default {
     async submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        console.log("ddone");
         this.$store
           .dispatch("addCourse", {
             instructor: this.getInstructor,

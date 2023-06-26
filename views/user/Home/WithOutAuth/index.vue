@@ -11,7 +11,7 @@
           :loading="loader"
           :list="fakeArray"
           :courses="ArtsDesignListed"
-          :title="$t('categoires.ArtsDesign')"
+          :title="'ArtsDesign'"
         >
         </ve-carousel>
       </div>
@@ -22,7 +22,7 @@
         <ve-carousel
           :loading="loader"
           :courses="SoftSkillsListed"
-          :title="$t('categoires.SoftSkills')"
+          :title="'Soft Skills'"
         >
         </ve-carousel>
       </div>
@@ -33,7 +33,7 @@
         <ve-carousel
           :loading="loader"
           :courses="MediaPhotographyFilmListed"
-          :title="$t('categoires.MediaPhotographyFilm')"
+          :title="'Media Photography Film'"
         >
         </ve-carousel>
       </div>
@@ -43,7 +43,7 @@
         <ve-carousel
           :loading="loader"
           :courses="BusinessManagementListed"
-          :title="$t('categoires.BusinessManagement')"
+          :title="'Business Management'"
         >
         </ve-carousel>
       </div>
@@ -53,7 +53,7 @@
         <ve-carousel
           :loading="loader"
           :courses="SalesMarketingListed"
-          :title="$t('categoires.SalesMarketing')"
+          :title="'Sales Marketing'"
         >
         </ve-carousel>
       </div>
@@ -63,7 +63,7 @@
         <ve-carousel
           :loading="loader"
           :courses="SoftSkillsListed"
-          :title="$t('categoires.EnjoyLearningArtsandCrafts')"
+          :title="'Enjoy Learning Arts and Crafts'"
         >
         </ve-carousel>
       </div>
@@ -73,7 +73,7 @@
         <ve-carousel
           :loading="loader"
           :courses="ArtsDesignListed"
-          :title="$t('categoires.CrashCourses')"
+          :title="'Crash Courses'"
         >
         </ve-carousel>
       </div>
@@ -84,7 +84,7 @@
         <ve-carousel
           :loading="loader"
           :courses="SoftSkillsListed"
-          :title="$t('categoires.ForYourMentalHealth')"
+          :title="'For Your Mental Health'"
         >
         </ve-carousel>
       </div>
@@ -222,7 +222,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.LanguagesListed.push(...course);
           });
@@ -244,7 +243,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.ArtsDesignListed.push(...course);
           });
@@ -261,7 +259,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.SoftSkillsListed.push(...course);
           });
@@ -274,12 +271,10 @@ export default {
         newgetcourses.forEach((ele) => {
           axios.get(`/MediaPhotographyFilm/${ele.id}.json`).then((res) => {
             let newData = res.data;
-            console.log(res.data);
             let course = [];
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(newData);
             }
             this.MediaPhotographyFilmListed.push(...course);
           });
@@ -296,7 +291,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.BusinessManagementListed.push(...course);
           });
@@ -313,7 +307,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.SalesMarketingListed.push(...course);
           });

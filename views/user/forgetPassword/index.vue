@@ -3,9 +3,9 @@
     <div class="row">
       <div class="box">
         <div class="forget-password-form">
-          <h1>{{ $t("registering.Forgot your password") }}</h1>
+          <h1>Send Message To Your Email</h1>
           <form @submit.prevent class="forget_form d-flex flex-column">
-            <label for="Email">{{ $t("registering.email") }}</label>
+            <label for="Email">Email</label>
             <input
               v-model="email"
               type="text"
@@ -17,13 +17,14 @@
               "
             />
             <div class="error_required" v-if="!$v.email.required">
-              {{ $t("registering.Field is required") }}
+              Field is required.
             </div>
             <div class="error_required" v-if="message.length > 0">
               {{ message }}
             </div>
             <button @click="submit" class="btn_forget_password mt-5">
-              {{ $t("registering.Send email") }}
+              <ve-loader v-if="loader" />
+              <span v-else>Send email</span>
             </button>
           </form>
         </div>
@@ -40,6 +41,7 @@ export default {
     return {
       email: "",
       message: "",
+      loader: false,
     };
   },
   validations: {
@@ -49,36 +51,37 @@ export default {
     async submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
+        this.loader = true;
         const auth = getAuth();
         sendPasswordResetEmail(auth, this.email)
           .then(() => {
             this.$swal
               .fire({
-                position: "bottom-end",
+                position: "center",
                 icon: "success",
                 title:
                   "Check Your Email , Message is In Your Email Just Verify And Login ",
                 showConfirmButton: true,
               })
               .then((result) => {
+                this.loader = false;
                 if (result.isConfirmed) {
                   this.$router.push("/login");
                 }
               });
           })
           .catch((error) => {
+            this.loader = false;
             const errorCode = error.code;
-            const errorMessage = error.message;
             if (errorCode === "auth/user-not-found") {
               this.message = "Email Not Found";
             }
             if (errorCode === "auth/too-many-requests") {
               this.message = "Check Your Email Please !";
             }
-            console.log(errorMessage, errorCode);
-            // ..
           });
       } else {
+        this.loader = false;
         console.log("not-validate");
       }
     },

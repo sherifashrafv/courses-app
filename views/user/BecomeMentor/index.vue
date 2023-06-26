@@ -354,9 +354,11 @@ export default {
       this.id = value.id;
     },
   },
+  mounted() {
+    const user = localStorage.getItem("user-info");
+    if (!user) {
+      this.$router.push("/login");
+    }
+  },
 };
 </script>
-<style>
-.fade {
-}
-</style>

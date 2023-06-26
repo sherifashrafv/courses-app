@@ -103,9 +103,7 @@ export default {
             let course = [];
             this.loader = false;
             for (let key in newData) {
-              // newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.wish.push(...course);
           });
@@ -124,6 +122,7 @@ export default {
       axios
         .get(`/savedCourses/${id}.json`)
         .then((res) => {
+          this.loader = false;
           this.wishList = res.data;
           if (res.data === null) {
             this.empty = true;

@@ -1,0 +1,19 @@
+// {
+//   "projects": {
+//     "default": "1:264289139347:web:b662c2e98a0b07c0676b66"
+//   },
+//   "hosting": {
+//     "public": "dist",
+//     "ignore": [
+//       "firebase.json",
+//       "**/.*",
+//       "**/node_modules/**"
+//     ],
+//     "rewrites": [
+//       {
+//         "source": "**",
+//         "destination": "/index.html"
+//       }
+//     ]
+//   }
+// }

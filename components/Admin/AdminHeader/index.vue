@@ -72,7 +72,6 @@
                   <li tag="li" v-for="(list, i) in Categories" :key="i * 2">
                     <router-link
                       :to="{
-                        exact,
                         name: 'courses',
                         params: { name: list },
                       }"
@@ -161,7 +160,6 @@ export default {
         this.email = params.email;
         this.id = params.id;
         if (params.id) {
-          console.log(params.id);
           this.$store.dispatch("getUserInformation", { id: params.id });
         }
       },

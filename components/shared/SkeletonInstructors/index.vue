@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <h4 style="color: #eee" class="my-5">{{ $t("Our Instructors") }}</h4>
+      <h4 style="color: #eee" class="my-5">Our Instructors</h4>
       <div
         v-for="(mentor, i) in list"
         :key="i * 50"

@@ -149,7 +149,6 @@ export default {
       this.$refs.slick.prev();
     },
     handleBeforeChange(event, slick) {
-      console.log("handleBeforeChange");
       if (slick == 0) {
         this.$refs.prevbutton.classList.add("d-none");
       } else if (slick > 0) {
@@ -159,15 +158,17 @@ export default {
     },
     async getWishList() {
       let user = localStorage.getItem("user-info");
-      let id = JSON.parse(user).id;
-      axios
-        .get(`/savedCourses/${id}.json`)
-        .then((res) => {
-          this.wishList = res.data;
-        })
-        .catch((error) => {
-          console.log(error.code);
-        });
+      if (user) {
+        let id = JSON.parse(user).id;
+        axios
+          .get(`/savedCourses/${id}.json`)
+          .then((res) => {
+            this.wishList = res.data;
+          })
+          .catch((error) => {
+            console.log(error.code);
+          });
+      }
     },
     async addToSavedVedios(e, item) {
       e.preventDefault();
@@ -186,7 +187,6 @@ export default {
               console.log(error);
             });
         } else if (this.wishList) {
-          console.log(item.id);
           let found = this.wishListed.find((ele) => ele.id == item.id);
           if (found) {
             await axios
@@ -208,7 +208,7 @@ export default {
           console.log(0);
         }
       } else {
-        this.$router.push(`/${this.$i18n.locale}/login`);
+        this.$router.push(`/login`);
       }
     },
   },
@@ -220,14 +220,15 @@ export default {
   mounted() {
     let user = localStorage.getItem("user-info");
     this.user = JSON.parse(user);
-    this.id = JSON.parse(user).id;
+    if (user) {
+      this.id = JSON.parse(user).id;
+    }
     this.getWishList();
     this.$watch(
       (vm) => [vm.courses, vm.wishListed],
       (val) => {
         val[0].forEach((ele) => {
           let found = val[1].find((course) => course.id === ele.id);
-          console.log(found);
           if (found) {
             this.$refs["courses" + ele.id][0].classList.add("active");
           } else {
@@ -384,6 +385,7 @@ button.slick-next.slick-arrow {
   font-weight: 500;
   line-height: 1.25;
   margin-top: 1rem;
+  color: white !important;
 }
 @media (max-width: 639px) {
   .carousel-card {

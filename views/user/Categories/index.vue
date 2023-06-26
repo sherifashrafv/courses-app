@@ -8,7 +8,7 @@
           <div class="container">
             <div class="row">
               <div class="col-12">
-                <h3>{{ $route.params.name }}</h3>
+                <h3>{{ title }}</h3>
                 <div class="subscribe_with_price_categories">
                   <p>
                     Only at 91.67 EGP /month!
@@ -121,6 +121,7 @@ export default {
       wishListed: [],
       user: null,
       id: null,
+      title: "",
     };
   },
   methods: {
@@ -128,7 +129,6 @@ export default {
       await axios.get(`/${name}.json`).then((res) => {
         const data = res.data;
         let newData = data;
-        console.log(newData);
         let course = [];
         for (let key in newData) {
           newData[key].id = key;
@@ -168,7 +168,6 @@ export default {
               console.log(error);
             });
         } else if (this.wishList) {
-          console.log(item.id);
           let found = this.wishListed.find((ele) => ele.id == item.id);
           if (found) {
             await axios
@@ -190,7 +189,7 @@ export default {
           console.log(0);
         }
       } else {
-        this.$router.push(`/${this.$i18n.locale}/login`);
+        this.$router.push(`/login`);
       }
     },
   },
@@ -201,6 +200,35 @@ export default {
         this.category = regx;
         if (params) {
           const regx = params.name.replace(/[/^\s+|\s+$/|&;$%@"<>()+,]/gm, "");
+          this.title = regx;
+          // if (localStorage.getItem("lang") === "ar") {
+          //   if (regx === "Languages") {
+          //     this.title = "اللغات";
+          //   } else if (regx === "ArtsDesign") {
+          //     this.title = "الفنون والتصميم";
+          //   } else if (regx === "SoftSkills") {
+          //     this.title = "المهارات اللينة";
+          //   } else if (regx === "MediaPhotographyFilm") {
+          //     this.title = "وسائل الإعلام والتصوير والسينما";
+          //   } else if (regx === "BusinessManagement") {
+          //     this.title = "ادارة اعمال";
+          //   } else if (regx === "SalesMarketing") {
+          //     this.title = "المبيعات والتسويق";
+          //   } else if (regx === "TechnologyScienceProductivity") {
+          //     this.title = "التكنولوجيا والعلوم والإنتاجية";
+          //   } else if (regx === "Parenting Relationships") {
+          //     this.title = "الأبوة والأمومة والعلاقات";
+          //   } else if (regx === "LifestyleHealth") {
+          //     this.title = "نمط الحياة والصحة";
+          //   } else if (regx === "Entrepreneurship") {
+          //     this.title = "ريادة الأعمال";
+          //   } else if (regx === "MentalHealthWellness") {
+          //     this.title = "الصحة العقلية والعافية";
+          //   }
+          // }
+          // if (localStorage.getItem("lang") === "en") {
+          //   this.title = this.$route.params.name;
+          // }
           this.getCourses(regx);
           this.$route.meta.title = regx;
         }
@@ -235,7 +263,6 @@ export default {
             for (let key in newData) {
               newData[key].id = key;
               course.push(newData[key]);
-              console.log(course);
             }
             this.coursesListed.push(...course);
           });
@@ -255,9 +282,6 @@ export default {
     },
     twoVariables(newValue) {
       newValue[0].forEach((ele) => {
-        // let xx = [];
-        // xx.push(newValue[1]);
-        // console.log(xx);
         let found = newValue[1].find((course) => course.id === ele.id);
         if (found) {
           this.$refs["coursesListed" + ele.id][0].classList.add("active");
