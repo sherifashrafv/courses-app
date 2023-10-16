@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer_parent">
+  <footer :class="theme == 'light' ? 'footer_parent light' : 'footer_parent'">
     <div class="footer_upper">
       <div class="container">
         <div class="row">
@@ -13,9 +13,17 @@
                 src="@/assets/Images/Icons/xx.png"
                 alt=""
               />
-              <ul class="link_footer_parent">
+              <ul
+                :class="
+                  theme == 'light'
+                    ? 'link_footer_parent light'
+                    : 'link_footer_parent'
+                "
+              >
                 <router-link
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   role="button"
                   to="/About"
@@ -24,7 +32,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/About"
                 >
@@ -32,7 +42,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/About"
                 >
@@ -40,7 +52,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/About"
                 >
@@ -57,7 +71,9 @@
               <h1 class="footer_explore">Explore</h1>
               <ul class="link_footer_parent">
                 <router-link
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   role="button"
                   to="/courses"
@@ -66,7 +82,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/categories/Languages"
                 >
@@ -74,7 +92,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/subscribe"
                 >
@@ -82,7 +102,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/Mentors"
                 >
@@ -90,7 +112,9 @@
                 </router-link>
                 <router-link
                   role="button"
-                  class="links_footer"
+                  :class="
+                    theme == 'light' ? 'links_footer light' : 'links_footer'
+                  "
                   tag="li"
                   to="/Become-Mentor"
                 >
@@ -152,6 +176,11 @@
 <script>
 export default {
   name: "footer-component",
+  computed: {
+    theme() {
+      return this.$store.state.theme;
+    },
+  },
 };
 </script>
 <style></style>

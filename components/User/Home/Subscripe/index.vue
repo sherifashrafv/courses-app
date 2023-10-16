@@ -1,5 +1,5 @@
 <template>
-  <section class="subscribe">
+  <section :class="theme == 'light' ? 'subscribe light' : 'subscribe'">
     <div class="home_subscribe">
       <div class="container">
         <div class="row">
@@ -8,11 +8,23 @@
               class="subscription-details w-100 d-flex flex-column align-items-lg-start justify-content-lg-end align-items-md-center justify-content-md-center"
             >
               <div>
-                <p class="home_subscribe_title">
+                <p
+                  :class="
+                    theme == 'light'
+                      ? 'home_subscribe_title light'
+                      : 'home_subscribe_title '
+                  "
+                >
                   Unlimited access to all Almentor Courses
                 </p>
                 <p class="home_subscribe_subtitle">Subscribe Now !</p>
-                <p class="home__subscribe-text">
+                <p
+                  :class="
+                    theme == 'light'
+                      ? 'home__subscribe-text text-dark'
+                      : 'home__subscribe-text'
+                  "
+                >
                   Save more, and get access to our huge library
                 </p>
               </div>
@@ -95,6 +107,15 @@
 <script>
 export default {
   name: "subscribe-page",
+  computed: {
+    theme() {
+      return this.$store.state.theme;
+    },
+  },
 };
 </script>
-<style></style>
+<style scoped>
+.card-subscribe_parent {
+  border-radius: 15px 15px 1px 1px;
+}
+</style>

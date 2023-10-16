@@ -1,146 +1,189 @@
 <template>
   <div>
-    <header ref="navbar" class="nav_specific_styles">
-      <div class="container">
-        <div
-          class="w-100 d-flex flex-row align-items-center justify-content-between"
-        >
-          <!-- logo&subscribe -->
-          <div class="logo_subscripe d-flex flex-row align-items-center gap-4">
-            <div class="logo_links d-flex align-items-center">
-              <span @click="dropMenuHandelar" class="icon_menu_mobile">
-                <img src="@/assets/Images/Icons/menus.png" alt="" />
-                <DropMenu
-                  :show="dropMenu"
-                  :modalHide="hideMenuHandelar"
-                ></DropMenu>
-              </span>
-              <h4 class="logo me-3 m-0 p-0">
-                <router-link
-                  exact
-                  :to="`/`"
-                  class="logo_image d-flex flex-row align-items-center text-decoration-none"
-                >
-                  <img src="@/assets/Images/Icons/xx.png" />
-                  almonmon
-                </router-link>
-              </h4>
-            </div>
-            <div class="links_mentors_main-parent">
-              <ul class="links_mentors p-0 d-flex flex-row align-items-center">
-                <li
-                  class="d-flex align-items-center justify-content-between"
-                  role="button"
-                  @click="showModalHandler"
-                >
-                  <h5 class="m-0">courses</h5>
-                  <i class="fa-solid fa-chevron-down fs-6 ms-2 mt-1 me-2"></i>
-                </li>
-                <li>
+    <nav ref="navbar">
+      <div
+        :class="
+          theme === 'light'
+            ? 'nav_specific_styles light'
+            : 'nav_specific_styles'
+        "
+      >
+        <div class="container">
+          <div
+            class="w-100 d-flex flex-row align-items-center justify-content-between"
+          >
+            <!-- logo&subscribe -->
+            <div
+              class="logo_subscripe d-flex flex-row align-items-center gap-4"
+            >
+              <div class="logo_links d-flex align-items-center">
+                <span @click="dropMenuHandelar" class="icon_menu_mobile">
+                  <img src="@/assets/Images/Icons/menus.png" alt="" />
+                  <DropMenu
+                    :show="dropMenu"
+                    :modalHide="hideMenuHandelar"
+                  ></DropMenu>
+                </span>
+                <h4 class="logo me-3 m-0 p-0">
                   <router-link
-                    role="button"
-                    tag="h5"
-                    class="m-0 p=0"
-                    :to="`/Mentors`"
+                    exact
+                    :to="`/`"
+                    :class="
+                      theme === 'light'
+                        ? 'logo_image light d-flex flex-row align-items-center text-decoration-none'
+                        : 'logo_image d-flex flex-row align-items-center text-decoration-none'
+                    "
                   >
-                    Instractors
+                    <img src="@/assets/Images/Icons/xx.png" />
+                    almonmon
                   </router-link>
-                </li>
-                <li class="btn-subscribe">
-                  <router-link tag="span" :to="`/subscribe`">
-                    Subscripe
-                  </router-link>
-                </li>
-              </ul>
+                </h4>
+              </div>
+              <div class="links_mentors_main-parent">
+                <ul
+                  :class="
+                    theme === 'light'
+                      ? 'links_mentors light p-0 d-flex flex-row align-items-center'
+                      : 'links_mentors  p-0 d-flex flex-row align-items-center'
+                  "
+                >
+                  <li
+                    class="d-flex align-items-center justify-content-between"
+                    role="button"
+                    @click="showModalHandler"
+                  >
+                    <h5 :class="'m-0'">courses</h5>
+                    <i class="fa-solid fa-chevron-down fs-6 ms-2 mt-1 me-2"></i>
+                  </li>
+                  <li>
+                    <router-link
+                      role="button"
+                      tag="h5"
+                      class="m-0 p=0"
+                      :to="`/Mentors`"
+                    >
+                      Instractors
+                    </router-link>
+                  </li>
+                  <li
+                    :class="
+                      theme === 'light'
+                        ? 'btn-subscribe light'
+                        : 'btn-subscribe'
+                    "
+                  >
+                    <router-link tag="span" :to="`/subscribe`">
+                      Subscripe
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <!-- end logo&subscribe -->
-          <div class="search_langs position-relative">
-            <div>
-              <ul class="user_menu d-flex gap-3 align-items-center">
-                <li class="serach_comp">
-                  <div class="w-100 h-100">
-                    <div class="input_serach_async h-100 position-relative">
-                      <input
-                        v-model="searchTerm"
-                        placeholder="Search courses, topics, instructors..."
-                        class="w-100 h-100"
-                        type="text"
-                      />
-                      <div v-if="searchTerm.length > 0" class="result_term">
-                        <ul class="m-0">
-                          <li
-                            v-for="(res, indx) in filteredList"
-                            :key="indx * 75201"
-                          >
-                            <router-link
-                              class="content_result_term d-flex align-items-center my-4"
-                              tag="span"
-                              @click="emptyTerm"
-                              :to="`/coursePage/${res.categoryCourse}/${res.userid}/${res.id}/${res.courseName}`"
+            <!-- end logo&subscribe -->
+            <div class="search_langs position-relative">
+              <div>
+                <ul class="user_menu d-flex gap-3 align-items-center">
+                  <li class="serach_comp">
+                    <div class="w-100 h-100">
+                      <div
+                        :class="
+                          theme === 'light'
+                            ? 'input_serach_async light h-100 position-relative'
+                            : 'input_serach_async h-100 position-relative'
+                        "
+                      >
+                        <input
+                          v-model="searchTerm"
+                          placeholder="Search courses, topics, instructors..."
+                          class="w-100 h-100"
+                          type="text"
+                        />
+                        <div v-if="searchTerm.length > 0" class="result_term">
+                          <ul class="m-0">
+                            <li
+                              v-for="(res, indx) in filteredList"
+                              :key="indx * 75201"
                             >
-                              <span>
-                                <i class="fa-solid fa-clapperboard me-3"></i>
-                              </span>
-                              {{ res.courseName }}
-                            </router-link>
-                          </li>
-                        </ul>
+                              <router-link
+                                class="content_result_term d-flex align-items-center my-4"
+                                tag="span"
+                                @click="emptyTerm"
+                                :to="`/coursePage/${res.categoryCourse}/${res.userid}/${res.id}/${res.courseName}`"
+                              >
+                                <span>
+                                  <i class="fa-solid fa-clapperboard me-3"></i>
+                                </span>
+                                {{ res.courseName }}
+                              </router-link>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-                <li @click="openSearchTerm" class="mobile_serach_component">
-                  <span class="search_typing"> Search... </span>
-                  <img
-                    src="@/assets/Images/Icons/magnifying-glass.png"
-                    alt=""
-                  />
-                </li>
-                <SearchModal
-                  :show="searchTrig"
-                  :modalHide="hideModalSearch"
-                ></SearchModal>
-                <li class="space_line">
-                  <hr />
-                </li>
-                <li class="light_dark-mode">
-                  <img src="../../../assets/Images/Icons/contrast.png" alt="" />
-                </li>
-                <li v-if="currentUser"></li>
-                <li v-else class="login">
-                  <router-link :to="{ name: 'login' }">Login</router-link>
-                </li>
-                <li
-                  @click="showSettings"
-                  v-if="currentUser"
-                  role="button"
-                  class="current_user-image position-relative"
-                >
-                  <img
-                    v-if="getUser.userimage"
-                    :src="getUser.userimage"
-                    alt=""
-                  />
-                  <img
-                    v-else
-                    src="@/assets/Images/Icons/avatar_user.jpg"
-                    alt=""
-                  />
+                  </li>
+                  <li @click="openSearchTerm" class="mobile_serach_component">
+                    <span class="search_typing"> Search... </span>
+                    <img
+                      src="@/assets/Images/Icons/magnifying-glass.png"
+                      alt=""
+                    />
+                  </li>
+                  <SearchModal
+                    :show="searchTrig"
+                    :modalHide="hideModalSearch"
+                  ></SearchModal>
+                  <li class="space_line">
+                    <hr />
+                  </li>
+                  <li @click="toggleDarkMode" class="light_dark-mode">
+                    <img
+                      src="../../../assets/Images/Icons/contrast.png"
+                      alt=""
+                    />
+                  </li>
+                  <li v-if="currentUser"></li>
+                  <li v-else class="login">
+                    <router-link
+                      :class="theme == 'light' ? 'text-dark' : 'text-white'"
+                      :to="{ name: 'login' }"
+                      >Login</router-link
+                    >
+                  </li>
+                  <li
+                    @click="showSettings"
+                    v-if="currentUser"
+                    role="button"
+                    class="current_user-image position-relative"
+                  >
+                    <img
+                      v-if="getUser.userimage"
+                      :src="getUser.userimage"
+                      alt=""
+                    />
+                    <img
+                      v-else
+                      src="@/assets/Images/Icons/avatar_user.jpg"
+                      alt=""
+                    />
 
-                  <SettingsMenu
-                    :modalHide="hideSettingsMenu"
-                    :show="showSettingsMenu"
-                    @cancel="hideSettingsMenu"
-                  ></SettingsMenu>
-                  <!--  -->
-                </li>
-                <li v-else role="button" class="btn-sign-up">
-                  <router-link tag="span" class="w-100 d-block" :to="`/signup`">
-                    SignUp
-                  </router-link>
-                </li>
-              </ul>
+                    <SettingsMenu
+                      :modalHide="hideSettingsMenu"
+                      :show="showSettingsMenu"
+                      @modalHide="hideSettingsMenu"
+                    ></SettingsMenu>
+                    <!--  -->
+                  </li>
+                  <li v-else role="button" class="btn-sign-up">
+                    <router-link
+                      tag="span"
+                      class="w-100 d-block"
+                      :to="`/signup`"
+                    >
+                      SignUp
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -150,7 +193,7 @@
         :modalHide="hideModal"
         :show="ShowModal"
       ></NavMenu>
-    </header>
+    </nav>
     <router-view></router-view>
   </div>
 </template>
@@ -317,14 +360,15 @@ export default {
     emptyTerm() {
       this.searchTerm = "";
     },
-    lightMode() {
+    toggleDarkMode() {
       document.body.classList.toggle("light");
       const theme = document.body.className;
       if (theme === "light") {
         localStorage.setItem("theme", "light");
-        require("../../../../public/css/lightTheme.css");
+        this.$store.commit("TOGGLE_THEME", "light");
       } else if (theme === "") {
-        require("../../../../public/css/main.css");
+        this.$store.commit("TOGGLE_THEME", "dark");
+
         localStorage.setItem("theme", "dark");
       }
     },
@@ -332,6 +376,9 @@ export default {
   computed: {
     getUser() {
       return this.$store.state.user;
+    },
+    theme() {
+      return this.$store.state.theme;
     },
     filteredList() {
       return this.all.filter((course) => {

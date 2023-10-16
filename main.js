@@ -28,9 +28,10 @@ import Loader from "@/components/shared/Loader/index.vue";
 import VedioModal from "@/components/shared/vediioModal/index.vue";
 import "sweetalert2/dist/sweetalert2.min.css";
 import VueMeta from "vue-meta";
-
 Vue.use(VueSweetalert2);
-
+global.jQuery = require("jquery");
+var $ = global.jQuery;
+window.$ = $;
 const theme = localStorage.getItem("theme");
 if (theme === "light") {
   require("../public/css/lightTheme.css");

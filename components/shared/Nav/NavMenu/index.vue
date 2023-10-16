@@ -94,6 +94,7 @@
               <div class="break-line"></div>
               <div class="anchor_logOut">
                 <li
+                  v-if="getUser.InstructorAccepted"
                   @click="
                     DashBoardRoute({ email: getUser.email, id: getUser.id })
                   "
@@ -106,7 +107,7 @@
                     Your DashBoard
                   </a>
                 </li>
-                <!-- <li
+                <li
                   class="d-flex flex-row align-items-center padding_listed_information"
                   @click="BecomeMentor({ route: 'Become-Mentor' })"
                   v-else
@@ -114,7 +115,7 @@
                   <a class="text-decoration-underline" to="/Become-Mentor">
                     Become an instructor
                   </a>
-                </li> -->
+                </li>
               </div>
               <div class="break-line"></div>
               <div class="anchor_logOut">
@@ -184,7 +185,6 @@ export default {
     BecomeMentor({ route }) {
       this.$emit("modalHide");
       this.$router.push(`/${route}`);
-      window.location.reload();
     },
     myCoursesRoute({ email, id }) {
       this.$emit("modalHide");
@@ -203,6 +203,19 @@ export default {
         id: JSON.parse(user).id,
       });
     }
+  },
+  watch: {
+    getUser(newvalue, oldValue) {
+      if (newvalue) {
+        console.log(newvalue, oldValue);
+        this.accepted = newvalue.InstructorAccepted;
+      }
+    },
+    // accepted(newvalue) {
+    //   if (newvalue) {
+    //     this.accepted = newvalue;
+    //   }
+    // },
   },
 };
 </script>

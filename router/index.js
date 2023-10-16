@@ -22,9 +22,8 @@ import categories from "@/views/user/Categories/index.vue";
 import forgetPassword from "@/views/user/forgetPassword/index.vue";
 import Subscribe from "@/views/user/subscribe/index.vue";
 import VueMeta from "vue-meta";
+import axios from "axios";
 
-Vue.use(VueMeta);
-Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
@@ -109,6 +108,9 @@ const routes = [
         name: "courseName",
         path: "vedios/:category/:courseId/:title",
         component: CourseDetails,
+        meta: {
+          layout: "custome-layout",
+        },
       },
     ],
   },
@@ -133,8 +135,26 @@ const routes = [
     component: Subscribe,
   },
 
-  //
+  // For Handling NProgress With Request & Response
 ];
+axios.interceptors.request.use(
+  function (config) {
+    NProgress.start();
+    return config;
+  },
+  function (error) {
+    console.error(error);
+  }
+);
+axios.interceptors.response.use(
+  function (config) {
+    NProgress.done();
+    return config;
+  },
+  function (error) {
+    console.error(error);
+  }
+);
 // const routes = [...baseRoutes, ...Admin];
 const router = new VueRouter({
   mode: "hash",
@@ -157,3 +177,5 @@ router.afterEach(() => {
   NProgress.done();
 });
 export default router;
+Vue.use(VueMeta);
+Vue.use(VueRouter);

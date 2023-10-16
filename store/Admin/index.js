@@ -10,9 +10,6 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-// import router from "@/router";
-// import { signInWithEmailAndPassword } from "firebase/auth";
-// import router from "@/router";
 export default {
   namespaced: true,
   state: {
@@ -41,7 +38,7 @@ export default {
     },
   },
   actions: {
-    getProducts: async ({ commit }) => {
+    getCourses: async ({ commit }) => {
       let result = await axios.get("/Categories");
       if (result.status == 200 && result.data.length > 0) {
         commit("GET_CATEGORIES", result.data);

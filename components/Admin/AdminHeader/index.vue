@@ -4,6 +4,12 @@
       <nav
         class="profile_settings_head d-flex flex-row align-items-center justify-content-between"
       >
+        <span role="button" @click="toggleNav">
+          <i
+            style="font-size: 20px"
+            :class="navVisibility ? 'fas fa-bars' : 'fas fa-minus'"
+          ></i>
+        </span>
         <div class="w-100 d-flex align-items-center justify-content-center">
           <div>
             <img
@@ -17,8 +23,8 @@
           </div>
         </div>
       </nav>
-      <header
-        :class="navVisibility ? 'admin-header pt-2 ' : 'admin-header_hide pt-2'"
+      <div
+        :class="navVisibility ? 'admin-header pt-2 ' : 'admin-header hide pt-2'"
       >
         <nav>
           <ul class="links-admin_settings">
@@ -45,6 +51,7 @@
             </li>
 
             <li
+              v-if="user.InstructorAccepted"
               @click="SelectedCourses"
               :class="{ active: $route.name == 'courses' }"
               class="listed_categories-links position-relative"
@@ -72,6 +79,7 @@
                   <li tag="li" v-for="(list, i) in Categories" :key="i * 2">
                     <router-link
                       :to="{
+                        exact,
                         name: 'courses',
                         params: { name: list },
                       }"
@@ -99,7 +107,7 @@
             </li>
           </ul>
         </nav>
-      </header>
+      </div>
     </div>
   </div>
 </template>
@@ -224,6 +232,8 @@ ul li a:hover,
 }
 
 .admin-header {
+  visibility: visible;
+  opacity: 1;
   display: block;
   width: 170px;
   position: fixed;
@@ -231,11 +241,13 @@ ul li a:hover,
   bottom: 0;
   left: 0;
   color: #bcbcbf;
-  transition: all 0.5s;
+  transition: all 0.5s ease-in-out;
   z-index: 900;
 }
-.admin-header_hide {
-  display: none;
+.admin-header.hide {
+  /* opacity: 0; */
+  /* visibility: hidden !important; */
+  left: -50%;
 }
 nav.show {
   display: block;
@@ -307,7 +319,7 @@ ul.courses_listed_anmimation {
   background: transparent !important;
   transform: translateY(0);
   opacity: 1;
-  height: 165px;
+  height: 286px;
   overflow-y: scroll;
   overflow-x: hidden;
 }

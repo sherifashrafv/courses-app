@@ -160,8 +160,8 @@ export default {
           })
           .then(() => {
             this.$emit("cancelHandel");
+            this.$store.dispatch("admin/getCourses");
           });
-      } else {
       }
     },
     uploadImage(e) {
@@ -169,7 +169,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("admin/getProducts");
+    this.$store.dispatch("admin/getCourses");
   },
   components: {
     Teleport,

@@ -9,6 +9,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  getAdditionalUserInfo,
+  getAuth,
 } from "firebase/auth";
 import { db, auth } from "@/Firebase/firebase";
 import router from "@/router";
@@ -43,6 +45,8 @@ export default new Vuex.Store({
     ErrorLogin: false,
     ErrorMessage: "",
     loader: false,
+    loaderInstructor: false,
+    theme: "dark",
   },
   getters: {},
   mutations: {
@@ -83,49 +87,69 @@ export default new Vuex.Store({
     LOADER(state, payload) {
       state.loader = payload;
     },
+    INSTACTOR_LOADER(state, payload) {
+      state.loaderInstructor = payload;
+    },
+    TOGGLE_THEME(state, payload) {
+      console.log(payload);
+      state.theme = payload;
+    },
   },
   actions: {
     // Login With Facebook
-    FacebookSignUp({ commit }) {
+    FacebookSignUp: async ({ commit }) => {
+      const auth = getAuth();
+
       const provider = new FacebookAuthProvider();
+      let result = await signInWithPopup(auth, provider);
+
+      let additional = getAdditionalUserInfo(result);
+      const additionalprofile = additional.profile;
+      const pic = additionalprofile.picture;
+      const userIamgeprofile = pic.data.url;
+      console.log("picture_url: ", userIamgeprofile);
+      // if token is needet
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      console.log("credential: ", credential);
       signInWithPopup(auth, provider)
         .then((res) => {
           const user = res.user;
-          setDoc(doc(db, "users", user.uid), {
+          const data = {
             password: "",
             firstName: "",
-            email: user.email,
+            email: additionalprofile.email,
+            InstructorAccepted: true,
             lastName: "",
             id: user.uid,
-            userimage: user.photoURL,
-            displayName: user.displayName,
+            userimage: userIamgeprofile,
+            displayName: additionalprofile.name,
+          };
+          setDoc(doc(db, "users", user.uid), {
+            data,
           }).then(() => {
             localStorage.setItem(
               "user-info",
               JSON.stringify({
+                displayName: additionalprofile.name,
                 firstName: "",
-                email: user.email,
-                lastName: "",
+                email: additionalprofile.email,
+                lastName: additionalprofile.lastname,
                 id: user.uid,
-                userimage: user.photoURL,
+                userimage: userIamgeprofile,
+                InstructorAccepted: true,
               })
             );
             commit("SIGN_UP_WITH_FACEBOOK", {
-              displayName: user.displayName,
-              image: user.photoURL,
-              email: user.email,
+              displayName: additionalprofile.name,
+              firstName: "",
+              email: additionalprofile.email,
+              lastName: additionalprofile.lastname,
+              id: user.uid,
+              userimage: userIamgeprofile,
+              InstructorAccepted: true,
             });
-            localStorage.setItem(
-              "user-info",
-              JSON.stringify({
-                displayName: user.displayName,
-                image: user.photoURL,
-                email: user.email,
-              })
-            );
             router.push("/");
             window.location.reload();
-            this.dispatch("getUserInformation", user.uid);
           });
         })
         .catch((error) => {
@@ -198,9 +222,9 @@ export default new Vuex.Store({
           const user = userCredential.user;
           const id = user.uid;
           localStorage.setItem("user-info", JSON.stringify({ id: id, email }));
-          // router.push("/");
+          router.push("/");
           window.scrollTo(0, 0);
-          // window.location.reload();
+          window.location.reload();
         })
         .catch((e) => {
           Vue.swal.fire({
@@ -231,7 +255,7 @@ export default new Vuex.Store({
       { commit },
       { informations, CvPicture, accepted, user }
     ) => {
-      commit("LOADER", true);
+      commit("INSTACTOR_LOADER", true);
       const storage = getStorage();
       const storageRef = await ref(
         storage,
@@ -241,43 +265,56 @@ export default new Vuex.Store({
       );
       await uploadBytesResumable(storageRef, CvPicture, CvPicture).then(() => {
         getDownloadURL(storageRef).then((url) => {
-          const washingtonRef = doc(db, "users", user.id);
-          updateDoc(washingtonRef, {
+          const ref = doc(db, "users", user.id);
+          updateDoc(ref, {
             InstructorAccepted: true,
-          }).then(() => {
-            const q = query(
-              collection(db, "users"),
-              where("id", "==", user.id)
-            );
-            getDocs(q).then((doc) => {
-              doc.forEach((doc) => {
-                commit("USER_INFORMATION", doc.data());
-              });
-            });
-          });
-          setDoc(doc(db, "instructors", user.id), {
-            ...informations,
-            userimage: user.userimage,
-            id: user.id,
-            cvPic: url,
-            day: "",
-            gender: "",
-            month: "",
-            year: "",
-            country: "",
-            city: "",
-          }).then(() => {
-            localStorage.setItem(
-              "instructor-apply",
-              JSON.stringify({
+          })
+            .then(() => {
+              const q = query(
+                collection(db, "users"),
+                where("id", "==", user.id)
+              );
+              getDocs(q)
+                .then((doc) => {
+                  doc.forEach((doc) => {
+                    commit("USER_INFORMATION", doc.data());
+                  });
+                })
+                .catch((e) => {
+                  {
+                    console.log(e);
+                  }
+                });
+            })
+            .then(() => {
+              setDoc(doc(db, "instructors", user.id), {
                 ...informations,
+                userimage: user.userimage,
                 id: user.id,
                 cvPic: url,
-                accepted: accepted,
-              })
-            );
-            commit("LOADER", false);
-          });
+                day: "",
+                gender: "",
+                month: "",
+                year: "",
+                country: "",
+                city: "",
+              });
+            })
+            .then(() => {
+              localStorage.setItem(
+                "instructor-apply",
+                JSON.stringify({
+                  ...informations,
+                  id: user.id,
+                  cvPic: url,
+                  accepted: accepted,
+                })
+              );
+              commit("INSTACTOR_LOADER", false);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         });
       });
     },

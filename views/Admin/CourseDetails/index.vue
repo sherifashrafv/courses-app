@@ -92,7 +92,7 @@ linear-gradient(
                   </p>
                   <div class="break-line my-4"></div>
                   <div
-                    class="d-flex align-items-center justify-content-center p-5 w-100"
+                    class="d-flex align-items-center justify-content-center w-100"
                   >
                     <button
                       v-if="previewVedio.length > 0"
@@ -313,7 +313,7 @@ export default {
     this.CategoryCourse = myRegx;
     this.courseid = this.$route.params.courseId;
     this.getPreviwVedio();
-    document.title = this.$route.params.courseTitle;
+    document.title = this.$route.params.title;
   },
 };
 </script>

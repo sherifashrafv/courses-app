@@ -27,7 +27,7 @@
             </div>
             <div class="col-lg-10 col-md-10">
               <input
-                v-model="name"
+                v-model="instructor.displayName"
                 :class="
                   $v.name.$error
                     ? 'input_instructor_name error'
@@ -82,7 +82,7 @@
           </div>
           <div class="row mb-5 align-items-center">
             <div class="col-lg-2 col-md-2">
-              <div class="dateOfBirth">
+              <div class="name_instractor">
                 <h1 class="m-0">Date of Birth</h1>
               </div>
             </div>
@@ -146,34 +146,30 @@
             </div>
           </div>
           <div class="row mb-5">
-            <div style="gap: 45px" class="d-flex align-items-center flex-wrap">
+            <div class="col-lg-2 col-md-2">
               <div class="name_instractor">
                 <h1 class="m-0">Country</h1>
               </div>
-              <div class="date_of_birth d-flex flex-row position-relative">
-                <select @change="cityChange($event)" class="countries">
-                  <option v-for="(city, indx) in citiesOptions" :key="indx">
-                    {{ city }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-lg-10 col-md-10"></div>
-          </div>
-          <div class="row mb-5">
-            <div style="gap: 78px" class="d-flex align-items-center flex-wrap">
-              <div class="name_instractor">
+              <div style="margin-top: 37px !important" class="name_instractor">
                 <h1 class="m-0">City</h1>
               </div>
+            </div>
+            <div class="col-lg-10 col-md-10">
               <div class="date_of_birth d-flex flex-row position-relative">
-                <select class="countries">
-                  <option v-for="(city, indx) in states" :key="indx">
-                    {{ city }}
-                  </option>
-                </select>
+                <vueCountriesCities
+                  :city="true"
+                  @country="selectedCountry = $event"
+                  @city="selectedCity = $event"
+                >
+                </vueCountriesCities>
+                <div v-if="instructor.country" ref="city" class="country_picUp">
+                  Your Country is {{ instructor.country }}
+                </div>
+                <div v-if="instructor.city" ref="city" class="city_picUp">
+                  Your City is {{ instructor.city }}
+                </div>
               </div>
             </div>
-            <div class="col-lg-10 col-md-10"></div>
           </div>
           <button
             @click="editInformation({ id: id })"
@@ -207,7 +203,6 @@ import {
   where,
 } from "@firebase/firestore";
 import { db } from "@/Firebase/firebase";
-import axios from "axios";
 export default {
   name: "your-courses",
   components: { vueCountriesCities },
@@ -226,10 +221,6 @@ export default {
       monthSelect: "",
       gotImage: [],
       spinner: false,
-      cities: [],
-      stateshandler: "",
-      states: [],
-      citiesOptions: [],
       monthOfYear: [
         {
           abbreviation: "Jan",
@@ -295,25 +286,6 @@ export default {
   methods: {
     getValue(e) {
       this.gender = e.target.value;
-    },
-    handleCountry(value) {
-      let state = this.cities.filter((state) => state.country === value);
-      state = [...new Set(state.map((item) => item.subcountry))];
-      this.states = state.sort();
-    },
-    async getCities() {
-      axios
-        .get(
-          "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json"
-        )
-        .then((res) => {
-          this.cities = res.data;
-          const country = [...new Set(res.data.map((item) => item.country))];
-          this.citiesOptions = country.sort();
-        });
-    },
-    cityChange(e) {
-      this.stateshandler = e.target.value;
     },
     rangeDays() {
       const start = 1;
@@ -416,7 +388,6 @@ export default {
     },
   },
   mounted() {
-    this.getCities();
     this.$store.dispatch("getUserInformation", {
       id: this.$route.params.id,
     });
@@ -436,14 +407,9 @@ export default {
         this.changeImage({ id: this.$route.params.id });
       }
     },
-    stateshandler(newValue) {
-      if (newValue) {
-        this.handleCountry(newValue);
-      }
-    },
     instructor(newInstr) {
       if (newInstr) {
-        this.name = newInstr.firstName;
+        this.name = newInstr.displayName;
         this.gender = newInstr.gender;
         this.dayConfirm = newInstr.day;
         this.YearsConfirm = newInstr.year;
@@ -484,9 +450,9 @@ export default {
   line-height: 45px;
   color: var(--map-numbers-count);
 }
-/* .name_instractor {
+.name_instractor {
   height: 45px;
-} */
+}
 .input_instructor_name {
   border-radius: 4px;
   height: 45px;
@@ -510,9 +476,6 @@ export default {
 }
 .select_gender input {
   display: none;
-}
-.dateOfBirth h1 {
-  font-size: 18px;
 }
 .select_gender label {
   position: absolute;
@@ -551,15 +514,36 @@ export default {
 .date_of_birth {
   gap: 4vw;
 }
-.countries {
+.countries-cities {
+  display: flex !important;
+  padding: 0 !important;
+  flex-direction: column;
+  gap: 35px;
+}
+/* >>> .countries-cities div:nth-child(2) {
+  display: none !important;
+  background: red !important;
+} */
+>>> .countries-cities .select-box {
+  border-color: transparent !important;
+  border: none !important;
+  color: #d4d4d4;
+  background: transparent !important;
+}
+>>> .countries-cities .select-box select {
   background: #252a2a !important;
   color: #d4d4d4 !important;
+  background-image: url("@/assets/Images/Admin/Your-Courses/down-arrow.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 16px 12px !important;
   width: 80% !important;
   height: 45px !important;
   border-radius: 0.375rem !important;
   padding: 0 19px;
-  border: transparent;
-  outline: none;
+}
+>>> .countries-cities .select-box svg {
+  display: none !important;
 }
 button.btn.btn-danger.user-settings-personal-info__container-form-submit-btn {
   width: 177px;

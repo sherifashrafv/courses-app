@@ -75,7 +75,7 @@ body {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: #181820;
+  background: #000;
   padding: 90px 15px;
   transition: padding-left 0.5s;
   color: #ffff;
@@ -109,13 +109,13 @@ body {
   line-height: 35px;
   cursor: pointer;
 }
-@media screen and (max-width: 600px) and (max-width: 992px) {
+@media (max-width: 600px) and (max-width: 992px) {
   .nav-visible .sc-y,
   .nav-hide .sc-y {
     overflow-y: scroll;
   }
 }
-@media screen and (max-width: 992px) {
+@media (max-width: 992px) {
   .nav-visible .sc-y,
   .nav-hide .sc-y {
     overflow-y: scroll;

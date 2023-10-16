@@ -157,7 +157,7 @@ export default {
 >>> .span.swal2-success-line-long {
   background-color: #eb2027 !important;
 }
->>>>.swal2-popup.swal2-modal.swal2-icon-success.swal2-show {
+>>> .swal2-popup.swal2-modal.swal2-icon-success.swal2-show {
   background: #141717 !important;
 }
 >>> h2#swal2-title {

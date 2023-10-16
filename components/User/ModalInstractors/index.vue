@@ -131,7 +131,10 @@
               @click.prevent="submit"
               class="btn btn-danger fw-bold w-100"
             >
-              <ve-loader v-if="Loader" :style="'margin:auto;'"></ve-loader>
+              <ve-loader
+                v-if="loaderInstructor"
+                :style="'margin:auto;'"
+              ></ve-loader>
               <span v-else>Apply as Instructor</span>
             </Button>
             <hr class="line_login_dec" />
@@ -224,6 +227,9 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    loaderInstructor() {
+      return this.$store.state.loaderInstructor;
+    },
   },
   methods: {
     async submit() {
@@ -260,7 +266,6 @@ export default {
   components: {
     Teleport,
   },
-  mounted() {},
 };
 </script>
 <style scoped>

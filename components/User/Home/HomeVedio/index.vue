@@ -1,6 +1,10 @@
 <template>
   <section
-    class="home_vedio d-flex flex-column justify-content-center align-items-center"
+    :class="
+      theme == 'light'
+        ? 'home_vedio light d-flex flex-column justify-content-center align-items-center'
+        : ' home_vedio d-flex flex-column justify-content-center align-items-center'
+    "
   >
     <p class="home_vedio_title">Learn Online</p>
     <p class="home_vedios-subtitle">
@@ -37,6 +41,11 @@ export default {
     },
     modalHide() {
       this.showModal = false;
+    },
+  },
+  computed: {
+    theme() {
+      return this.$store.state.theme;
     },
   },
 };

@@ -40,7 +40,7 @@
           </div>
           <div class="data_fetched d-flex flex-column position-relative">
             <ul
-              v-if="activeTab === CategoryTitle"
+              v-if="activeTab == CategoryTitle"
               class="courses_listed-links_mx"
             >
               <li v-if="activeMenu" class="spinner_getItems">

@@ -293,7 +293,7 @@ export default {
   width: 100%;
   min-width: unset !important;
   max-width: unset !important;
-  top: 75px;
+  top: 89px;
   left: 50%;
   position: fixed;
   z-index: 1500;

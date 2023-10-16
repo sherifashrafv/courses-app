@@ -33,7 +33,7 @@
         <div class="influence-international-learners__card">
           <div class="row">
             <div
-              class="influence-international-learners__card-item col-lg-4 m-auto col-sm-12"
+              class="influence-international-learners__card-item col-lg-4 col-md-4 m-auto col-sm-12"
             >
               <img src="@/assets/Images/BecomeMentor/svg_col1.svg" alt="" />
               <h5 class="influence-international-learners__card-title">
@@ -76,7 +76,9 @@
     <!--  -->
     <section class="produce-your-own-course">
       <h2 class="produce-your-own-course__title">Produce your own course</h2>
-      <div class="d-flex flex-row flex-grow-1">
+      <div
+        class="d-flex flex-row flex-grow-1 flex-wrap justify-content-center align-items-center"
+      >
         <div class="produce-your-own-course_card col-lg-4">
           <img src="@/assets/Images/BecomeMentor/typewriter.svg" alt="" />
           <div class="produce-your-own-course__item-text-wrapper">

@@ -34,12 +34,17 @@ linear-gradient(
                   ? { backgroundImage: `url(${course.backgroundImage})` }
                   : {
                       backgroundImage: `url(https://app.almentor.net/assets/images/images-logo-placeholder.svg)`,
+                      backgroundSize: `125px`,
                     },
               ]"
               class="img_course_background position-relative"
             >
-              <div @click="showModalVd" class="modal_open_vedio">
-                <div v-if="previewVedio.length > 0" class="icon_vedio_modal">
+              <div
+                v-if="previewVedio.length > 0"
+                @click="showModalVd"
+                class="modal_open_vedio"
+              >
+                <div class="icon_vedio_modal">
                   <i class="fa-solid fa-play"></i>
                 </div>
               </div>

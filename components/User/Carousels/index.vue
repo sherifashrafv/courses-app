@@ -25,7 +25,13 @@
       </div>
 
       <section class="section_carousle content position-relative">
-        <Slick id="slick_slider" ref="slick" class="mt-4" :options="settings">
+        <Slick
+          @beforeChange="handleBeforeChange"
+          id="slick_slider"
+          ref="slick"
+          class="mt-4"
+          :options="settings"
+        >
           <div class="carousel-card main_card_content_discripe">
             <div
               class="discription_about-courses d-flex flex-column align-items-start justify-content-center"
@@ -40,7 +46,7 @@
               </router-link>
             </div>
           </div>
-          <!-- laading -->
+          <!-- loading -->
           <template v-if="loading">
             <div v-for="(lis, i) in empty" :key="i * 20" class="carousel-card">
               <div class="movie--isloading">
@@ -61,7 +67,9 @@
                 tag="div"
                 role="button"
                 :to="`/coursePage/${course.categoryCourse}/${course.userid}/${course.id}/${course.courseName}`"
-                class="carousel-card"
+                :class="
+                  theme === 'light' ? 'carousel-card light' : 'carousel-card'
+                "
               >
                 <img class="img_card_carosuel" :src="course.backgroundImage" />
                 <div class="course_body">
@@ -85,6 +93,19 @@
             </div>
           </template>
         </Slick>
+        <span
+          @click="prev"
+          ref="left_arrow"
+          :class="theme === 'light' ? 'left-arrow light' : 'left-arrow '"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </span>
+        <span
+          @click="next"
+          :class="theme === 'light' ? 'right-arrow light' : 'right-arrow '"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
       </section>
     </section>
   </div>
@@ -105,13 +126,14 @@ export default {
       empty: Array(8).fill(""),
       settings: {
         infinite: false,
+
         // initialSlide: 4,
         speed: 500,
         // centerMode: true,
         variableWidth: true,
         slidesToScroll: 1,
         slidesToShow: 3,
-        arrows: true,
+        arrows: false,
         // centerPadding: "10px",
         responsive: [
           {
@@ -147,8 +169,24 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    theme() {
+      return this.$store.state.theme;
+    },
   },
   methods: {
+    next() {
+      this.$refs.slick.next();
+      this.$refs.left_arrow.style.cssText = "visibility: visible";
+    },
+    prev() {
+      this.$refs.slick.prev();
+    },
+    handleBeforeChange(event, slick, currentSlide) {
+      if (currentSlide === 1) {
+        this.$refs.left_arrow.style.cssText = "visibility: hidden";
+      }
+    },
+
     async getWishList() {
       let user = localStorage.getItem("user-info");
       if (user) {
@@ -263,6 +301,25 @@ export default {
       deep: true,
       immediate: true,
     },
+    theme(newValue, old) {
+      if (newValue) {
+        console.log(newValue);
+        const rightArrow = document.getElementsByClassName(
+          "slick-next slick-arrow"
+        );
+        rightArrow.forEach((arrow) => {
+          arrow.style.background = "white !important";
+          // console.log(arrow.style.background);
+          arrow.setAttribute(
+            "style",
+            "transition-duration: 6s; transform: rotateY(180deg); border: 1px solid red"
+          );
+          arrow.style.setProperty("background", "white", "important");
+        });
+      } else {
+        console.log(old);
+      }
+    },
     wishList(newValue) {
       if (newValue) {
         let newData = newValue;
@@ -285,6 +342,42 @@ export default {
   margin-right: 20px;
   background: transparent !important;
 }
+.right-arrow {
+  position: absolute;
+  right: 7.5%;
+  top: 52.4%;
+  background: #252a2a;
+  cursor: pointer;
+  height: 67%;
+  width: 10%;
+  width: 40px !important;
+  transform: translateY(-50%);
+  align-items: center;
+  display: flex !important;
+  justify-content: center;
+  border-radius: 10px;
+}
+.right-arrow.light,
+.left-arrow.light {
+  background: #f3f1f1;
+}
+.left-arrow {
+  visibility: hidden;
+  position: absolute;
+  left: 7.5%;
+  top: 52.4%;
+  background: #252a2a;
+  cursor: pointer;
+  height: 67%;
+  width: 10%;
+  width: 40px !important;
+  transform: translateY(-50%);
+  align-items: center;
+  display: flex !important;
+  justify-content: center;
+  border-radius: 10px;
+}
+
 >>> .slick-track {
   margin-left: 0 !important;
   display: flex !important;
@@ -389,6 +482,16 @@ button.slick-next.slick-arrow {
   width: 38px;
   background: #252a2a;
   border-radius: 10px;
+}
+>>> .slick-next:before {
+  content: "\f054" !important;
+  font-family: "Font Awesome 5 Free" !important ;
+  font-weight: 900;
+}
+>>> .slick-prev:before {
+  content: "\f053" !important;
+  font-family: "Font Awesome 5 Free" !important ;
+  font-weight: 900;
 }
 >>> .slick-prev {
   font-size: 0;

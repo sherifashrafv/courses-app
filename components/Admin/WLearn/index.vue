@@ -177,128 +177,14 @@
           </div>
           <!--  -->
         </div>
-        <div v-else class="col-md-12 col-lg-8">
-          <div class="main_learn_layout">
-            <div class="learn_description position-relative">
-              <div @click="editText1" class="edit_text">
-                <i
-                  :class="
-                    textedit1
-                      ? 'fa-solid fa-keyboard'
-                      : 'fa-solid fa-text-slash'
-                  "
-                ></i>
-              </div>
-              <span v-if="textedit1">
-                {{ data.FirstTextArea }}
-              </span>
-              <textarea
-                v-else
-                class="text_what-you_learn w-100 h-100"
-                cols="30"
-                ref="editText1"
-                rows="10"
-                maxlength="168"
-                :placeholder="refText1"
-                v-model="refText1"
-              ></textarea>
-            </div>
-            <div class="learn_description _img_uploded position-relative">
-              <img :src="data.image1" alt="" />
-              <div class="edit">
-                <input
-                  id="img_modified"
-                  type="file"
-                  class="img_modifed"
-                  accept="image/*"
-                  @change="modifiedImage1({ $event, id: data.id })"
-                />
-                <label for="img_modified" class="img_modified_label">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </label>
-              </div>
-            </div>
-            <div class="learn_description position-relative">
-              <div @click="editText2" class="edit_text">
-                <i
-                  :class="
-                    textedit2
-                      ? 'fa-solid fa-keyboard'
-                      : 'fa-solid fa-text-slash'
-                  "
-                ></i>
-              </div>
-              <span v-if="textedit2">
-                {{ data.SecondTextArea }}
-              </span>
-              <textarea
-                v-else
-                class="text_what-you_learn w-100 h-100"
-                cols="30"
-                ref="editText2"
-                rows="10"
-                maxlength="168"
-                :placeholder="refText2"
-                v-model="refText2"
-              ></textarea>
-            </div>
-            <div class="learn_description position-relative">
-              <div @click="editText3" class="edit_text">
-                <i
-                  :class="
-                    textedit3
-                      ? 'fa-solid fa-keyboard'
-                      : 'fa-solid fa-text-slash'
-                  "
-                ></i>
-              </div>
-              <span v-if="textedit3">
-                {{ data.ThrdTextArea }}
-              </span>
-              <textarea
-                v-else
-                class="text_what-you_learn w-100 h-100"
-                cols="30"
-                ref="editText3"
-                rows="10"
-                maxlength="168"
-                :placeholder="refText3"
-                v-model="refText3"
-              ></textarea>
-            </div>
-            <div class="learn_description img_spesifc position-relative">
-              <img :src="data.image2" alt="" />
-              <div class="edit">
-                <input
-                  id="img_modified2"
-                  type="file"
-                  class="img_modifed"
-                  accept="image/*"
-                  @change="modifiedImage2({ $event, id: data.id })"
-                />
-                <label for="img_modified2" class="img_modified_label">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="
-              textedit1 === false || textedit2 === false || textedit3 === false
-            "
-            class="submit_informations"
-          >
-            <button
-              @click="add_first_description"
-              class="btn_submit_information"
-            >
-              <span v-if="loader" class="loader_lessons_active">
-                <ve-loader></ve-loader>
-              </span>
-              <span v-else>edit</span>
-            </button>
-          </div>
-        </div>
+        <EditContent
+          :id="id"
+          :courseName="courseName"
+          :categoryCourse="categoryCourse"
+          :data="data"
+          @getDetails="getWhatYouWillOBJ"
+          v-else
+        />
       </div>
     </div>
   </div>
@@ -313,17 +199,21 @@ import {
   uploadBytesResumable,
 } from "@firebase/storage";
 import {
-  collection,
+  // collection,
   doc,
-  getDocs,
-  query,
-  setDoc,
+  // getDocs,
+  // query,
+  // setDoc,
   updateDoc,
-  where,
+  // where,
 } from "@firebase/firestore";
 import { db } from "@/Firebase/firebase";
+import EditContent from "@/components/Admin/EditContent";
 export default {
   name: "about-Course-learn",
+  components: {
+    EditContent,
+  },
   data() {
     return {
       id: null,
@@ -352,9 +242,6 @@ export default {
       refText1: "",
       refText2: "",
       refText3: "",
-      textedit1: true,
-      textedit2: true,
-      textedit3: true,
     };
   },
 
@@ -390,71 +277,61 @@ export default {
     cancelText() {
       this.openTextArea = !this.openTextArea;
     },
-    add_first_description() {
+    async add_first_description() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.loader = true;
-        setDoc(
-          doc(
-            db,
-            `what You Will Learn-${this.categoryCourse}`,
-            this.courseName
-          ),
-          {
-            FirstTextArea: this.FirstTextArea,
-            SecondTextArea: this.SecondTextArea,
-            ThrdTextArea: this.ThrdTextArea,
-            image1: this.image1,
-            image2: this.image2,
-            id: this.courseid,
-            courseName: this.courseName,
-          }
-        ).then(() => {
-          axios
-            .post(
-              `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `,
-              {
-                FirstTextArea: this.FirstTextArea,
-                SecondTextArea: this.SecondTextArea,
-                ThrdTextArea: this.ThrdTextArea,
-                image1: this.image1,
-                image2: this.image2,
-              }
-            )
-            .then(() => {
-              this.loader = false;
-            });
-        });
+        await axios
+          .post(
+            `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `,
+            {
+              FirstTextArea: this.FirstTextArea,
+              SecondTextArea: this.SecondTextArea,
+              ThrdTextArea: this.ThrdTextArea,
+              image1: this.image1,
+              image2: this.image2,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            this.loader = false;
+            this.getWhatYouWillOBJ();
+          });
       } else {
         console.log("not-validation");
       }
     },
     async getWhatYouWillOBJ() {
-      const q = query(
-        collection(db, `what You Will Learn-${this.categoryCourse}`),
-        where(`id`, "==", this.id)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        this.data = doc.data();
-      });
-      // await axios
-      //   .get(
-      //     `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `
-      //   )
-      //   .then((res) => {
-      //     const newData = res.data;
-      //     console.log(newData);
-      //     let course = [];
-      //     for (let key in newData) {
-      //       newData[key].id = key;
-      //       course.push(newData[key]);
-      //     }
-      //     this.data = course;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      // const q = query(
+      //   collection(db, `what You Will Learn-${this.categoryCourse}`),
+      //   where(`id`, "==", this.id)
+      // );
+      // const querySnapshot = await getDocs(q);
+      // querySnapshot.forEach((doc) => {
+      //   this.data = doc.data();
+      // });
+      await axios
+        .get(
+          `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `
+        )
+        .then((res) => {
+          if (res.data) {
+            const newData = res.data;
+            console.log(newData);
+            let course = [];
+            for (let key in newData) {
+              newData[key].id = key;
+              course.push(newData[key]);
+            }
+            this.data = course;
+            console.log("true");
+          } else {
+            this.data = null;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     uploadImage(e) {
       this.backgroundImage = e.target.files[0];
@@ -572,59 +449,49 @@ export default {
       });
       // commit("SET_LOADER", true);
     },
-    editText1() {
-      this.textedit1 = !this.textedit1;
-      this.refText1 = "";
-      this.$nextTick(() => this.$refs.editText1.focus());
-    },
-    editText2() {
-      this.textedit2 = !this.textedit2;
-      this.refText2 = "";
-      this.$nextTick(() => this.$refs.editText2.focus());
-    },
-    editText3() {
-      this.textedit3 = !this.textedit3;
-      this.refText3 = "";
-      this.$nextTick(() => this.$refs.editText3.focus());
-    },
-    add_edit_description() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        this.loader = true;
-        setDoc(
-          doc(
-            db,
-            `what You Will Learn-${this.categoryCourse}`,
-            this.courseName
-          ),
-          {
-            FirstTextArea: this.FirstTextArea,
-            SecondTextArea: this.SecondTextArea,
-            ThrdTextArea: this.ThrdTextArea,
-            image1: this.image1,
-            image2: this.image2,
-            id: this.courseid,
-          }
-        ).then(() => {
-          axios
-            .post(
-              `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `,
-              {
-                FirstTextArea: this.refText1,
-                SecondTextArea: this.refText2,
-                ThrdTextArea: this.refText3,
-                image1: this.image1,
-                image2: this.image2,
-              }
-            )
-            .then(() => {
-              this.loader = false;
-            });
-        });
-      } else {
-        console.log("not-validation");
-      }
-    },
+
+    // async add_edit_description() {
+    //   this.$v.$touch();
+    //   if (!this.$v.$invalid) {
+    //     this.loader = true;
+    //     // setDoc(
+    //     //   doc(
+    //     //     db,
+    //     //     `what You Will Learn-${this.categoryCourse}`,
+    //     //     this.courseName
+    //     //   ),
+    //     //   {
+    //     //     FirstTextArea: this.FirstTextArea,
+    //     //     SecondTextArea: this.SecondTextArea,
+    //     //     ThrdTextArea: this.ThrdTextArea,
+    //     //     image1: this.image1,
+    //     //     image2: this.image2,
+    //     //     id: this.courseid,
+    //     //   }
+    //     // ).then(() => {
+
+    //     // });
+    //     await axios
+    //       .post(
+    //         `what You Will Learn-${this.categoryCourse}/${this.id}/${this.courseName}.json `,
+    //         {
+    //           FirstTextArea: this.refText1,
+    //           SecondTextArea: this.refText2,
+    //           ThrdTextArea: this.refText3,
+    //           image1: this.image1,
+    //           image2: this.image2,
+    //         }
+    //       )
+    //       .then((res) => {
+    //         console.log(res);
+    //         this.data = res.data;
+    //         // this.getWhatYouWillOBJ();
+    //         this.loader = false;
+    //       });
+    //   } else {
+    //     console.log("not-validation");
+    //   }
+    // },
   },
   watch: {
     "$route.params": {

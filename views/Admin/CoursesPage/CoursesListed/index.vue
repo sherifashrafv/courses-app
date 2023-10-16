@@ -123,6 +123,7 @@ export default {
   bottom: 4%;
   right: 1rem;
   padding: 0 !important;
+  width: 54px;
 }
 button.btn.btn-danger.go_to_pag {
   padding: 1px 28px;

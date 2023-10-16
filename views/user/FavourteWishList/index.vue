@@ -49,6 +49,12 @@
                             {{ course.discription }}
                           </p>
                         </div>
+                        <span
+                          @click.self="deleteFromFavorit(course.id)"
+                          class="fs-1"
+                        >
+                          x
+                        </span>
                       </div>
                     </div>
                   </router-link>
@@ -109,6 +115,9 @@ export default {
           });
         });
       }
+    },
+    deleteFromFavorit(id) {
+      console.log(id);
     },
   },
   mounted() {

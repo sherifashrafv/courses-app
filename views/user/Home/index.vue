@@ -1,12 +1,12 @@
 <template>
   <div>
-    <WithOutAuth v-if="auth"></WithOutAuth>
-    <WithAuth v-else></WithAuth>
+    <WithAuth v-if="auth"></WithAuth>
+    <WithOutAuth v-else></WithOutAuth>
   </div>
 </template>
 <script>
-import WithOutAuth from "@/views/user/Home/WithOutAuth/index.vue";
-import WithAuth from "@/views/user/Home/WithAuth/index";
+import WithAuth from "@/views/user/Home/WithOutAuth/index.vue";
+import WithOutAuth from "@/views/user/Home/WithAuth/index";
 export default {
   name: "home-page",
   metaInfo: {
